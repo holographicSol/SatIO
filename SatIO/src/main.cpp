@@ -21094,6 +21094,14 @@ static void PrintHelp() {
 
   Serial.println();
   Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                              CONTROL (MULIPLEXERS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch ad-plex chan n                     Enables/Disables Analog/Digital Multiplexer Channel (0-15) specified by n.");
+  Serial.println("switch iic-plex chan n                    Enables/Disables IIC Multiplexer Channel (0-7) specified by n.");
+  Serial.println("switch iic-plex chan all                  Enables/Disables all IIC Multiplexer Channels.");
+
+  Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("                                                                                   CONTROL (MATRIX)");
   Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("set matrix switch enabled n 0             Disables specific matrix switch specified by n.");
@@ -21116,7 +21124,6 @@ static void PrintHelp() {
   Serial.println("                                          Set expression (0-4). 0=None  1=Under  2=Over  3=Equal  4=Range");
   Serial.println("                                          Set output port (-1=None).");
   Serial.println("                                          Set disabled/enabled (0-1).");
-
   Serial.println();
   Serial.println("set matrix xyz n n x y z                  Specify matrix n, function n and matrix function values.");
   Serial.println("set matrix entry n n function_name        Specify a function name for specified matrix n, function n.");
@@ -21170,14 +21177,6 @@ static void PrintHelp() {
   Serial.println("run track saturn                          Run Track Saturn Once.");
   Serial.println("run track uranus                          Run Track Uranus Once.");
   Serial.println("run track neptune                         Run Track Neptune Once.");
-
-  Serial.println();
-  Serial.println("---------------------------------------------------------------------------------------------------");
-  Serial.println("                                                                              CONTROL (MULIPLEXERS)");
-  Serial.println("---------------------------------------------------------------------------------------------------");
-  Serial.println("switch ad-plex chan n                     Enables/Disables Analog/Digital Multiplexer Channel (0-15) specified by n.");
-  Serial.println("switch iic-plex chan n                    Enables/Disables IIC Multiplexer Channel (0-7) specified by n.");
-  Serial.println("switch iic-plex chan all                  Enables/Disables all IIC Multiplexer Channels.");
 
   Serial.println();
   Serial.println("---------------------------------------------------------------------------------------------------");
