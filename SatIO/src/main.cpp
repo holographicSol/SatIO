@@ -15329,7 +15329,7 @@ int sun_radius=2;
 
 int mercury_orbit_radius=7;
 int mercury_sprite_size=3;
-int mercury_sprite_center=3;
+int mercury_sprite_center=1;
 int mercury_radius=1;
 
 int venus_orbit_radius=13;
