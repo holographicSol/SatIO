@@ -489,7 +489,7 @@ NanoCanvas<92,8,1> canvas92x8;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
-const uint8_t image_data_et_mode_on[] PROGMEM = {
+const uint8_t image_data_serial_command_enabled[] PROGMEM = {
     // ∙∙█████∙∙
     // ∙∙█∙█∙█∙∙
     // ∙∙█████∙∙
@@ -506,7 +506,7 @@ const uint8_t image_data_et_mode_on[] PROGMEM = {
     0x00, 0x00, 0x00, 0x00, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0x00, 0x00, 0x00, 0x00
 };
 
-const uint8_t image_data_et_mode_off[] PROGMEM = {
+const uint8_t image_data_serial_command_disabled[] PROGMEM = {
     // ∙∙░░░░░∙∙
     // ∙∙░∙░∙░∙∙
     // ∙∙░░░░░∙∙
@@ -1169,7 +1169,7 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   bool debug=false;   // print verbose information over serial
   bool t_bench=false; // prints bennchmark information for tuning
-  bool debug_bridge=false;  // allows commands to be received over serial (strongly recommend firmware default false unless you know what you are doing)
+  bool serial_command=false;  // allows commands to be received over serial (strongly recommend firmware default false unless you know what you are doing)
 
   // -----------------------------------------------------------------------------------------------------------------------
   // display
@@ -14278,9 +14278,9 @@ void menuEnter() {
     // ------------------------------------------------
     else if (menuSystem.selection()==3) {systemData.matrix_io_enabled^=true;}
     // ------------------------------------------------
-    // enable/disable debug bridge
+    // enable/disable serial command
     // ------------------------------------------------
-    else if (menuSystem.selection()==4) {systemData.debug_bridge^=true;}
+    else if (menuSystem.selection()==4) {systemData.serial_command^=true;}
     // ------------------------------------------------
     // enable/disable wt901
     // ------------------------------------------------
@@ -14926,11 +14926,11 @@ void DisplayRTCSync(int x1, int y1) {
 }
 
 // -------------------------------------------------------------------
-//                                                     UI DEBUG BRIDGE
+//                                                   UI SERIAL COMMAND
 // -------------------------------------------------------------------
 void DisplayDebugSymbol(int x1, int y1) {
-  if (systemData.debug_bridge==true) {display.drawBitmap16(x1, y1, 9, 7, image_data_et_mode_on);}
-  else                               {display.drawBitmap16(x1, y1, 9, 7, image_data_et_mode_off);}
+  if (systemData.serial_command==true) {display.drawBitmap16(x1, y1, 9, 7, image_data_serial_command_enabled);}
+  else                               {display.drawBitmap16(x1, y1, 9, 7, image_data_serial_command_disabled);}
 }
 
 // -------------------------------------------------------------------
@@ -15730,7 +15730,7 @@ void UpdateUI(void * pvParamters) {
 
   while (1) {
 
-  // systemData.debug_bridge=true; // temporary test
+  // systemData.serial_command=true; // temporary test
 
   // ----------------------------------------------------------------------------------------------------------------------
   // used to provide indicators enough time to be displayed while also not blocking requestControlPad() called in main loop
@@ -18253,10 +18253,10 @@ void UpdateUI(void * pvParamters) {
       if (systemData.matrix_io_enabled==true) {menuSystemItems[3]="IO ENABLED";}
       else {menuSystemItems[3]="IO DISABLED";}
       // ------------------------------------------------
-      // enable/disable debug bridge
+      // enable/disable serial command
       // ------------------------------------------------
-      if (systemData.debug_bridge==true) {menuSystemItems[4]="D.BRIDGE ENABLED";}
-      else {menuSystemItems[4]="D.BRIDGE DISABLED";}
+      if (systemData.serial_command==true) {menuSystemItems[4]="S.CMD ENABLED";}
+      else {menuSystemItems[4]="S.CMD DISABLED";}
       // ------------------------------------------------
       // enable/disable wt901
       // ------------------------------------------------
@@ -21742,9 +21742,9 @@ static void CmdProcess(void) {
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "bench\r")==0) {systemData.t_bench^=true;}
     // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                                   DEBUG BRIDGE
+    //                                                                                                                 SERIAL COMMAND
     // ------------------------------------------------------------------------------------------------------------------------------
-    else if (systemData.debug_bridge==true) {
+    else if (systemData.serial_command==true) {
 
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                MENU NAVIGATION
