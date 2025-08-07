@@ -15270,7 +15270,6 @@ float zenith=0;
 int zenith_direction[1][4] {
   {64,64,64,64}
 };
-
 // -------------------------------------------------------------
 // Normalize z_angle to [0, 360)
 // -------------------------------------------------------------
@@ -15281,7 +15280,6 @@ float normalizeAngle(float z_angle) {
     }
     return z_angle;
 }
-
 // -------------------------------------------------------------
 // Custom mapping function to reverse z_angle (360 to 0)
 // -------------------------------------------------------------
@@ -15290,7 +15288,6 @@ float reverseMap(float value, float inMin, float inMax, float outMin, float outM
     z_reverse_map = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     return normalizeAngle(z_reverse_map); // Ensure result is in [0, 360)
 }
-
 // -----------------------------------------------------------------------------------
 // Draw which direction zenith is pointing into space according to datetime & location
 // -----------------------------------------------------------------------------------
@@ -15398,6 +15395,9 @@ void drawOrbitalPaths() {
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
+
+    tft.drawCircle(earth_ui_x, earth_ui_y+1, moon_orbit_radius, TFT_BLACK);
+    tft.drawCircle(earth_ui_x, earth_ui_y+1, moon_orbit_radius, moon_color[1]);
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, mars_color[1]);
