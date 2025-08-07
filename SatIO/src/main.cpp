@@ -15373,14 +15373,14 @@ void drawEarthZenith() {
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
   zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
-  // // -----------------------------------------------------------
-  // // Draw colored line to convey attitude in space
-  // // -----------------------------------------------------------
+  // -----------------------------------------------------------
+  // Draw colored line to convey attitude in space
+  // -----------------------------------------------------------
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
-  zenith_direction[0][0]=earth_ui_x+1;
-  zenith_direction[0][1]=earth_ui_y+1;
-  zenith_direction[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 32);
-  zenith_direction[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 32);
+  zenith_direction[0][0]=earth_ui_x+2;
+  zenith_direction[0][1]=earth_ui_y+2;
+  zenith_direction[0][2]=earth_ui_x+2 + (int)(cos(zenith * PI / 180.0) * 12);
+  zenith_direction[0][3]=earth_ui_y+2 + (int)(sin(zenith * PI / 180.0) * 12);
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
 }
 
