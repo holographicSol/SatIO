@@ -15377,8 +15377,8 @@ void drawEarthZenith() {
   // Draw colored line to convey attitude in space
   // -----------------------------------------------------------
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
-  zenith_direction[0][0]=earth_ui_x+1;
-  zenith_direction[0][1]=earth_ui_y+1;
+  zenith_direction[0][0]=earth_ui_x+earth_radius;
+  zenith_direction[0][1]=earth_ui_y+earth_radius;
   zenith_direction[0][2]=earth_ui_x+6 + (int)(cos(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
   zenith_direction[0][3]=earth_ui_y+6 + (int)(sin(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
