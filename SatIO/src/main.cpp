@@ -15264,25 +15264,25 @@ void drawZodiac() {
     // Check intersection with left edge (x = z_left_edge)
     // -------------------------------------------------------------
     if (z_cos_angle < -0.0001) {
-        z_radius_1 = (z_left_edge - earth_ui_x+2) / z_cos_angle;
+        z_radius_1 = (z_left_edge - earth_ui_x+1) / z_cos_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with right edge (x = z_right_edge)
     // -------------------------------------------------------------
     if (z_cos_angle > 0.0001) {
-        z_radius_1 = (z_right_edge - earth_ui_x+2) / z_cos_angle;
+        z_radius_1 = (z_right_edge - earth_ui_x+1) / z_cos_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with top edge (y = z_top_edge)
     // -------------------------------------------------------------
     if (z_sin_angle < -0.0001) {
-        z_radius_1 = (z_top_edge - earth_ui_y+2) / z_sin_angle;
+        z_radius_1 = (z_top_edge - earth_ui_y+1) / z_sin_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with bottom edge (y = z_bottom_edge)
     // -------------------------------------------------------------
     if (z_sin_angle > 0.0001) {
-        z_radius_1 = (z_bottom_edge - earth_ui_y+2) / z_sin_angle;
+        z_radius_1 = (z_bottom_edge - earth_ui_y+1) / z_sin_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Calculate endpoint
