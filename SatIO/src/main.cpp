@@ -15387,32 +15387,32 @@ int neptune_radius=1;
 int astroclock_angle_offset=90;
 
 void drawOrbitalPaths() {
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, mercury_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, mercury_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, mercury_orbit_radius, mercury_color[1]);
 
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, venus_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, venus_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, venus_orbit_radius, venus_color[1]);
 
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, earth_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, earth_orbit_radius, earth_color[1]);
 
-    tft.drawCircle(earth_ui_x, earth_ui_y+1, moon_orbit_radius, TFT_BLACK);
-    tft.drawCircle(earth_ui_x, earth_ui_y+1, moon_orbit_radius, moon_color[1]);
+    tft.drawCircle(earth_ui_x+1, earth_ui_y+1, moon_orbit_radius, TFT_BLACK);
+    tft.drawCircle(earth_ui_x+1, earth_ui_y+1, moon_orbit_radius, moon_color[1]);
 
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, mars_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, mars_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, mars_orbit_radius, mars_color[1]);
 
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, jupiter_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, jupiter_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, jupiter_orbit_radius, jupiter_color[1]);
 
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, saturn_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, saturn_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, saturn_orbit_radius, saturn_color[1]);
 
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, uranus_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, uranus_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, uranus_orbit_radius, uranus_color[1]);
 
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, neptune_color[1]);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, neptune_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x+1, solar_system_center_y+1, neptune_orbit_radius, neptune_color[1]);
 }
 
 bool cleared_mercury=false;
