@@ -15264,31 +15264,31 @@ void drawZodiac() {
     // Check intersection with left edge (x = z_left_edge)
     // -------------------------------------------------------------
     if (z_cos_angle < -0.0001) {
-        z_radius_1 = (z_left_edge - earth_ui_x+1) / z_cos_angle;
+        z_radius_1 = (z_left_edge - earth_ui_x+earth_radius) / z_cos_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with right edge (x = z_right_edge)
     // -------------------------------------------------------------
     if (z_cos_angle > 0.0001) {
-        z_radius_1 = (z_right_edge - earth_ui_x+1) / z_cos_angle;
+        z_radius_1 = (z_right_edge - earth_ui_x+earth_radius) / z_cos_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with top edge (y = z_top_edge)
     // -------------------------------------------------------------
     if (z_sin_angle < -0.0001) {
-        z_radius_1 = (z_top_edge - earth_ui_y+1) / z_sin_angle;
+        z_radius_1 = (z_top_edge - earth_ui_y+earth_radius) / z_sin_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with bottom edge (y = z_bottom_edge)
     // -------------------------------------------------------------
     if (z_sin_angle > 0.0001) {
-        z_radius_1 = (z_bottom_edge - earth_ui_y+1) / z_sin_angle;
+        z_radius_1 = (z_bottom_edge - earth_ui_y+earth_radius) / z_sin_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Calculate endpoint
     // -------------------------------------------------------------
-    zodiac_seg_end_x = earth_ui_x+1 + (int16_t)(z_cos_angle * z_radius_0);
-    zodiac_seg_end_y = earth_ui_y+1 + (int16_t)(z_sin_angle * z_radius_0);
+    zodiac_seg_end_x = earth_ui_x+earth_radius + (int16_t)(z_cos_angle * z_radius_0);
+    zodiac_seg_end_y = earth_ui_y+earth_radius + (int16_t)(z_sin_angle * z_radius_0);
     // -------------------------------------------------------------
     // Clear line before updating elements
     // -------------------------------------------------------------
@@ -15296,8 +15296,8 @@ void drawZodiac() {
     // -------------------------------------------------------------
     // Store elements ready to clear next function call
     // -------------------------------------------------------------
-    zodiac_elements[i][0]=earth_ui_x+1;
-    zodiac_elements[i][1]=earth_ui_y+1;
+    zodiac_elements[i][0]=earth_ui_x+earth_radius;
+    zodiac_elements[i][1]=earth_ui_y+earth_radius;
     zodiac_elements[i][2]=zodiac_seg_end_x;
     zodiac_elements[i][3]=zodiac_seg_end_y;
     // -------------------------------------------------------------
