@@ -21249,6 +21249,8 @@ void PrintMatrixNData(int Mi) {
 // ----------------------------------------------------------------------------------------------------------------------------------
 /*
   The following commands are intended to allow SatIO to be controlled via other systems, embedded systems, scripts and humans.
+  To Do:
+    * Ensure all digits are printed for numbers with decimal places.
 */
 // ----------------------------------------------------------------------------------------------------------------------------------
 
