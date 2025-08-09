@@ -15361,32 +15361,32 @@ void drawEarthZenith() {
   // -----------------------------------------------------------
   // zenith=90;
   zenith = (float)siderealPlanetData.sun_az;
-  Serial.println("[sun az]                          " + String(siderealPlanetData.sun_az));
-  Serial.println("[earth ecliptic long]             " + String(siderealPlanetData.earth_ecliptic_long));
+  // Serial.println("[sun az]                          " + String(siderealPlanetData.sun_az));
+  // Serial.println("[earth ecliptic long]             " + String(siderealPlanetData.earth_ecliptic_long));
 
   // -----------------------------------------------------------
   // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
   zenith -= siderealPlanetData.earth_ecliptic_long;
-  Serial.println("[sun az - earth ecliptic long]    " + String(zenith));
+  // Serial.println("[sun az - earth ecliptic long]    " + String(zenith));
 
   // -----------------------------------------------------------
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
   zenith = normalizeAngle(zenith);
-  Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
+  // Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
 
   // -----------------------------------------------------------
   // Adjust 180
   // -----------------------------------------------------------
   zenith = (zenith+180) - zenith/3;
-  Serial.println("(zenith+180) - zenith/3           " + String(zenith));
+  // Serial.println("(zenith+180) - zenith/3           " + String(zenith));
 
   // -----------------------------------------------------------
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
   zenith = normalizeAngle(zenith);
-  Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
+  // Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
 
   // -----------------------------------------------------------
   // Reverse to go anticlockwise
