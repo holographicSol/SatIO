@@ -15366,8 +15366,8 @@ void drawEarthZenith() {
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
   zenith_direction[0][0]=earth_ui_x+earth_radius;
   zenith_direction[0][1]=earth_ui_y+earth_radius;
-  zenith_direction[0][2]=earth_ui_x+earth_radius + (int)(cos(zenith * PI / 180.0) * 12);
-  zenith_direction[0][3]=earth_ui_y+earth_radius + (int)(sin(zenith * PI / 180.0) * 12);
+  zenith_direction[0][2]=earth_ui_x+earth_radius + (int)(cos(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
+  zenith_direction[0][3]=earth_ui_y+earth_radius + (int)(sin(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
 }
 
