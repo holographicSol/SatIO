@@ -15357,42 +15357,8 @@ float reverseMap(float value, float inMin, float inMax, float outMin, float outM
 // Draw which direction zenith is pointing into space according to datetime & location (in development)
 // -----------------------------------------------------------------------------------
 void drawEarthZenith() {
-  Serial.println("--------------------------------------------");
-  // -----------------------------------------------------------
-  // zenith=90;
+
   zenith = (float)siderealPlanetData.sun_az;
-  // Serial.println("[sun az]                          " + String(siderealPlanetData.sun_az));
-  // Serial.println("[earth ecliptic long]             " + String(siderealPlanetData.earth_ecliptic_long));
-
-  // -----------------------------------------------------------
-  // Adjust by 90 degrees (same as planet adjustements)
-  // -----------------------------------------------------------
-  zenith -= siderealPlanetData.earth_ecliptic_long;
-  // Serial.println("[sun az - earth ecliptic long]    " + String(zenith));
-
-  // -----------------------------------------------------------
-  // Ensure positive and in [0, 360)
-  // -----------------------------------------------------------
-  zenith = normalizeAngle(zenith);
-  // Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
-
-  // -----------------------------------------------------------
-  // Adjust 180
-  // -----------------------------------------------------------
-  zenith = (zenith+180) - zenith/3;
-  // Serial.println("(zenith+180) - zenith/3           " + String(zenith));
-
-  // -----------------------------------------------------------
-  // Ensure positive and in [0, 360)
-  // -----------------------------------------------------------
-  zenith = normalizeAngle(zenith);
-  // Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
-
-  // -----------------------------------------------------------
-  // Reverse to go anticlockwise
-  // -----------------------------------------------------------
-  // zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
-  // Serial.println("[reverse map]                      " + String(zenith));
 
   // -----------------------------------------------------------
   // Draw colored line to convey attitude in space
