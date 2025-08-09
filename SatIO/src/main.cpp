@@ -15354,33 +15354,54 @@ float reverseMap(float value, float inMin, float inMax, float outMin, float outM
     return normalizeAngle(z_reverse_map); // Ensure result is in [0, 360)
 }
 // -----------------------------------------------------------------------------------
-// Draw which direction zenith is pointing into space according to datetime & location
+// Draw which direction zenith is pointing into space according to datetime & location (in development)
 // -----------------------------------------------------------------------------------
 void drawEarthZenith() {
+  Serial.println("--------------------------------------------");
   // -----------------------------------------------------------
-  // Map Sun altitude (-90-90 degrees)
-  // -----------------------------------------------------------
+  // zenith=90;
   zenith = (float)siderealPlanetData.sun_az;
+  Serial.println("[sun az]                          " + String(siderealPlanetData.sun_az));
+  Serial.println("[earth ecliptic long]             " + String(siderealPlanetData.earth_ecliptic_long));
+
   // -----------------------------------------------------------
-  // Adjust by 90 degrees (same as planet adjustements)`
+  // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
-  zenith -= 90.0f;
+  zenith -= siderealPlanetData.earth_ecliptic_long;
+  Serial.println("[sun az - earth ecliptic long]    " + String(zenith));
+
   // -----------------------------------------------------------
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
   zenith = normalizeAngle(zenith);
+  Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
+
+  // -----------------------------------------------------------
+  // Adjust 180
+  // -----------------------------------------------------------
+  zenith = (zenith+180) - zenith/3;
+  Serial.println("(zenith+180) - zenith/3           " + String(zenith));
+
+  // -----------------------------------------------------------
+  // Ensure positive and in [0, 360)
+  // -----------------------------------------------------------
+  zenith = normalizeAngle(zenith);
+  Serial.println("[Ensure positive and in [0, 360)] " + String(zenith));
+
   // -----------------------------------------------------------
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
-  zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
+  // zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
+  // Serial.println("[reverse map]                      " + String(zenith));
+
   // -----------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -----------------------------------------------------------
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
   zenith_direction[0][0]=earth_ui_x+earth_radius;
   zenith_direction[0][1]=earth_ui_y+earth_radius;
-  zenith_direction[0][2]=earth_ui_x+6 + (int)(cos(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
-  zenith_direction[0][3]=earth_ui_y+6 + (int)(sin(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
+  zenith_direction[0][2]=earth_ui_x+earth_radius + (int)(cos(zenith * PI / 180.0) * 12);
+  zenith_direction[0][3]=earth_ui_y+earth_radius + (int)(sin(zenith * PI / 180.0) * 12);
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
 }
 
