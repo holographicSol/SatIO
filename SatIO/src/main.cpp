@@ -15358,16 +15358,42 @@ float reverseMap(float value, float inMin, float inMax, float outMin, float outM
 // -----------------------------------------------------------------------------------
 void drawEarthZenith() {
 
-  zenith = (float)siderealPlanetData.sun_az;
+  // zenith = (float)siderealPlanetData.sun_az;
 
+  // // -----------------------------------------------------------
+  // // Draw colored line to convey attitude in space
+  // // -----------------------------------------------------------
+  // tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
+  // zenith_direction[0][0]=earth_ui_x+earth_radius;
+  // zenith_direction[0][1]=earth_ui_y+earth_radius;
+  // zenith_direction[0][2]=earth_ui_x+earth_radius + (int)(cos(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
+  // zenith_direction[0][3]=earth_ui_y+earth_radius + (int)(sin(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
+  // tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
+
+  // -----------------------------------------------------------
+  // Map Sun altitude (-90-90 degrees)
+  // -----------------------------------------------------------
+  zenith = (float)siderealPlanetData.sun_az;
+  // -----------------------------------------------------------
+  // Adjust by 90 degrees (same as planet adjustements)
+  // -----------------------------------------------------------
+  zenith -= 90.0f;
+  // -----------------------------------------------------------
+  // Ensure positive and in [0, 360)
+  // -----------------------------------------------------------
+  zenith = normalizeAngle(zenith);
+  // -----------------------------------------------------------
+  // Reverse to go anticlockwise
+  // -----------------------------------------------------------
+  zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
   // -----------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -----------------------------------------------------------
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
   zenith_direction[0][0]=earth_ui_x+earth_radius;
   zenith_direction[0][1]=earth_ui_y+earth_radius;
-  zenith_direction[0][2]=earth_ui_x+earth_radius + (int)(cos(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
-  zenith_direction[0][3]=earth_ui_y+earth_radius + (int)(sin(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
+  zenith_direction[0][2]=earth_ui_x+6 + (int)(cos(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
+  zenith_direction[0][3]=earth_ui_y+6 + (int)(sin(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
 }
 
