@@ -8636,7 +8636,7 @@ void setTrackPlanets(void * pvParamaters) {
           // Local time (RTC+-)
           // ----------------------------------------------------------------------------------
           myAstro.setLocalTime((int)satData.local_hour, (int)satData.local_minute, (float)satData.local_second);
-          myAstro.setElevationM(gnggaData.altitude);
+          myAstro.setElevationM(atol(gnggaData.altitude));
         }
         else {
           test_hour++;if (test_hour>23) {test_hour=0;}
