@@ -15091,7 +15091,7 @@ float test_moon_angle=90;
 int solar_system_center_x=64;
 int solar_system_center_y=68;
 
-int celestial_object_altitude_color[2]={RGB_COLOR16(32,0,0), RGB_COLOR16(0,32,0)};
+int celestial_object_altitude_color[2]={RGB_COLOR16(0,0,24), RGB_COLOR16(0,32,0)};
 
 int sun_sprite_size=5;
 int sun_sprite_center=2;
