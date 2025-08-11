@@ -15139,8 +15139,8 @@ int moon_orbit_radius=4;
 int moon_sprite_size=3;
 int moon_sprite_center=1;
 int moon_radius=1;
-int moon_ui_x = moon_orbit_radius;
-int moon_ui_y = 64;
+int moon_ui_x = earth_orbit_radius+moon_radius;
+int moon_ui_y = 61+moon_radius;
 
 int mars_color[1]={RGB_COLOR16(255,0,0)};
 int mars_orbit_radius=31;
@@ -15661,8 +15661,8 @@ void drawPlanets() {
     hud.fillCircle(moon_sprite_center, moon_sprite_center, moon_radius, moon_color[0]);
     // moon_ui_x = earth_ui_x + moon_orbit_radius * sin(radians(test_moon_angle+astroclock_angle_offset)); // (test)
     // moon_ui_y = earth_ui_y + moon_orbit_radius * cos(radians(test_moon_angle+astroclock_angle_offset)); // (test)
-    moon_ui_x = (earth_ui_x+earth_sprite_center + moon_orbit_radius * sin(radians(map(siderealPlanetData.moon_ra, 0, earth_orbit_radius+earth_sprite_size, 0, 360)+astroclock_angle_offset)));
-    moon_ui_y = (earth_ui_y+earth_sprite_center + moon_orbit_radius * cos(radians(map(siderealPlanetData.moon_ra, 0, earth_orbit_radius+earth_sprite_size, 0, 360)+astroclock_angle_offset)));
+    moon_ui_x = (earth_ui_x+earth_sprite_center + moon_orbit_radius * sin(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+astroclock_angle_offset)));
+    moon_ui_y = (earth_ui_y+earth_sprite_center + moon_orbit_radius * cos(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+astroclock_angle_offset)));
     hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
     yield();
     hud.deleteSprite();
