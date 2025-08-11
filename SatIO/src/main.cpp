@@ -15158,7 +15158,7 @@ int jupiter_radius=2;
 int jupiter_ui_x = jupiter_orbit_radius;
 int jupiter_ui_y = 64;
 
-int saturn_color[1]={RGB_COLOR16(128,128,128)};
+int saturn_color[1]={RGB_COLOR16(255,255,0)};
 int saturn_orbit_radius=45;
 int saturn_sprite_size=7;
 int saturn_sprite_center=3;
@@ -15175,7 +15175,7 @@ int uranus_radius=1;
 int uranus_ui_x = uranus_orbit_radius;
 int uranus_ui_y = 64;
 
-int neptune_color[1]={RGB_COLOR16(255,255,0)};
+int neptune_color[1]={RGB_COLOR16(255,0,255)};
 int neptune_orbit_radius=56;
 int neptune_sprite_size=3;
 int neptune_sprite_center=1;
