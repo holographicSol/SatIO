@@ -15091,7 +15091,7 @@ float test_moon_angle=90;
 int solar_system_center_x=64;
 int solar_system_center_y=68;
 
-int celestial_object_altitude_color[2]={RGB_COLOR16(24,0,0), RGB_COLOR16(0,24,0)};
+int celestial_object_altitude_color[2]={RGB_COLOR16(32,0,0), RGB_COLOR16(0,32,0)};
 
 int sun_sprite_size=5;
 int sun_sprite_center=2;
@@ -15115,7 +15115,7 @@ int venus_radius=1;
 int venus_ui_x = venus_orbit_radius;
 int venus_ui_y = 61;
 
-int earth_color[2]={RGB_COLOR16(0,0,255), RGB_COLOR16(0,0,24)};
+int earth_color[2]={RGB_COLOR16(0,0,255), RGB_COLOR16(0,0,32)};
 int earth_orbit_radius=21;
 int earth_sprite_size=3;
 int earth_sprite_center=1;
