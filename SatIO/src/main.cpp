@@ -15124,7 +15124,7 @@ int venus_sprite_size=3;
 int venus_sprite_center=1;
 int venus_radius=1;
 int venus_ui_x = venus_orbit_radius;
-int venus_ui_y = 61;
+int venus_ui_y = 64;
 
 int earth_color[2]={RGB_COLOR16(0,0,255), RGB_COLOR16(0,0,32)};
 int earth_orbit_radius=22;
@@ -15132,15 +15132,15 @@ int earth_sprite_size=3;
 int earth_sprite_center=1;
 int earth_radius=1;
 int earth_ui_x = earth_orbit_radius;
-int earth_ui_y = 61;
+int earth_ui_y = 64;
 
 int moon_color[1]={RGB_COLOR16(128,128,128)};
 int moon_orbit_radius=4;
 int moon_sprite_size=3;
 int moon_sprite_center=1;
 int moon_radius=1;
-int moon_ui_x = earth_orbit_radius+moon_radius;
-int moon_ui_y = 61+moon_radius;
+int moon_ui_x = moon_radius;
+int moon_ui_y = 64;
 
 int mars_color[1]={RGB_COLOR16(255,0,0)};
 int mars_orbit_radius=31;
@@ -15427,11 +15427,11 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     // Moon
     // --------------------------------------------------
-    // tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
-    // if (siderealPlanetData.moon_alt<=0) {
-    //   tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, earth_color[1]);
-    // }
-    // else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[1]);}
+    tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
+    if (siderealPlanetData.moon_alt<=0) {
+      tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, earth_color[1]);
+    }
+    else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Earth
     // --------------------------------------------------
