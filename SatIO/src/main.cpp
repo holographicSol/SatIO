@@ -8621,14 +8621,19 @@ void setTrackPlanets(void * pvParamaters) {
       if (systemData.satio_enabled) {
         if (test_planets==false) {
           myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
-          // myAstro.rejectDST();
           // ----------------------------------------------------------------------------------
           // RTC should be UTC (GMT)
           // ----------------------------------------------------------------------------------
           myAstro.setGMTdate((int)satData.rtc_year, (int)satData.rtc_month, (int)satData.rtc_day);
           myAstro.setGMTtime((int)satData.rtc_hour, (int)satData.rtc_minute, (float)satData.rtc_second);
           // ----------------------------------------------------------------------------------
-          // RTC (UTC) offset time
+          // Set/reject DST
+          // ----------------------------------------------------------------------------------
+          // myAstro.rejectDST();
+          // myAstro.setDST();
+          myAstro.useAutoDST();
+          // ----------------------------------------------------------------------------------
+          // Offset time / Local time (RTC+-)
           // ----------------------------------------------------------------------------------
           myAstro.setLocalTime((int)satData.local_hour, (int)satData.local_minute, (float)satData.local_second);
         }
@@ -15890,6 +15895,7 @@ void UpdateUI(void * pvParamters) {
           display.drawCanvas(34, 12, canvas76x8);
         }
       }
+
       // ------------------------------------------------
       // feature astronarium
       // ------------------------------------------------
@@ -15903,6 +15909,22 @@ void UpdateUI(void * pvParamters) {
           // todo: possibly add asteroid/meteors and other calculatable/'predictable' celestial information
         }
       }
+
+      // canvas56x8.clear();
+      // display.setColor(systemData.color_title);
+      // canvas56x8.printFixed(0, 0, String(siderealPlanetData.saturn_r).c_str(), STYLE_BOLD);
+      // display.drawCanvas(0, 12, canvas56x8);
+
+      // canvas56x8.clear();
+      // display.setColor(systemData.color_title);
+      // canvas56x8.printFixed(0, 0, String(siderealPlanetData.saturn_alt).c_str(), STYLE_BOLD);
+      // display.drawCanvas(0, 22, canvas56x8);
+
+      // canvas56x8.clear();
+      // display.setColor(systemData.color_title);
+      // canvas56x8.printFixed(0, 0, String(siderealPlanetData.saturn_az).c_str(), STYLE_BOLD);
+      // display.drawCanvas(0, 32, canvas56x8);
+
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
