@@ -15355,6 +15355,8 @@ float reverseMap(float value, float inMin, float inMax, float outMin, float outM
 }
 // -----------------------------------------------------------------------------------
 // Draw which direction zenith is pointing into space according to datetime & location (in development)
+// This may be removed from this astro 'view' due to accuracy problems in 2 dimensions in this view.
+// One solution may be to convey altitude of celestial objects in relation to zenith direction in space.
 // -----------------------------------------------------------------------------------
 void drawEarthZenith() {
 
@@ -15402,32 +15404,66 @@ void drawEarthZenith() {
 // ----------------------------------------------------------------------------------------------------------------
 
 void drawOrbitalPaths() {
-    // tft.drawCircle(earth_ui_x+1, earth_ui_y+1, moon_orbit_radius, TFT_BLACK);
-    // tft.drawCircle(earth_ui_x+1, earth_ui_y+1, moon_orbit_radius, moon_color[1]);
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, mercury_color[1]);
+    if (siderealPlanetData.mercury_alt<=0) {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, RGB_COLOR16(24,0,0));
+    }
+    else {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, RGB_COLOR16(0,24,0));
+    }
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, venus_color[1]);
+    if (siderealPlanetData.venus_alt<=0) {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, RGB_COLOR16(24,0,0));
+    }
+    else {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, RGB_COLOR16(0,24,0));
+    }
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, mars_color[1]);
+    if (siderealPlanetData.mars_alt=0) {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, RGB_COLOR16(24,0,0));
+    }
+    else {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, RGB_COLOR16(0,24,0));
+    }
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, jupiter_color[1]);
+    if (siderealPlanetData.jupiter_alt<=0) {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, RGB_COLOR16(24,0,0));
+    }
+    else {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, RGB_COLOR16(0,24,0));
+    }
+
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, saturn_color[1]);
+    if (siderealPlanetData.saturn_alt<=0) {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, RGB_COLOR16(24,0,0));
+    }
+    else {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, RGB_COLOR16(0,24,0));
+    }
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, uranus_color[1]);
+    if (siderealPlanetData.uranus_alt<=0) {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, RGB_COLOR16(24,0,0));
+    }
+    else {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, RGB_COLOR16(0,24,0));
+    }
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, neptune_color[1]);
+    if (siderealPlanetData.neptune_alt<=0) {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, RGB_COLOR16(24,0,0));
+    }
+    else {
+      tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, RGB_COLOR16(0,24,0));
+    }
 }
 
 bool cleared_mercury=false;
