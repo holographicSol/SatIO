@@ -8636,6 +8636,7 @@ void setTrackPlanets(void * pvParamaters) {
           // Local time (RTC+-)
           // ----------------------------------------------------------------------------------
           myAstro.setLocalTime((int)satData.local_hour, (int)satData.local_minute, (float)satData.local_second);
+          myAstro.setElevationM(gnggaData.altitude);
         }
         else {
           test_hour++;if (test_hour>23) {test_hour=0;}
@@ -15914,6 +15915,7 @@ void UpdateUI(void * pvParamters) {
           ui_track_planet_period=false;
           // ---------------------------------------------------------------------------------------------------------
           // gather initial ui x,y information on startup (temporary until a draw sequence has been fully ascertained)
+          // this prevents initial moon orbit circle persisting after x,y have been properly set.
           // ---------------------------------------------------------------------------------------------------------
           if (startup_draw_planets==true) {
           drawZodiac();       // behind everything
