@@ -15428,6 +15428,14 @@ void drawOrbitalPaths() {
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
 
+    // tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
+    // if (siderealPlanetData.moon_alt<=0) {
+    //   tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, earth_color[1]);
+    // }
+    // else {
+    //   tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[1]);
+    // }
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mars_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[0]);
@@ -15654,8 +15662,8 @@ void drawPlanets() {
     hud.fillCircle(moon_sprite_center, moon_sprite_center, moon_radius, moon_color[0]);
     // moon_ui_x = earth_ui_x + moon_orbit_radius * sin(radians(test_moon_angle+astroclock_angle_offset)); // (test)
     // moon_ui_y = earth_ui_y + moon_orbit_radius * cos(radians(test_moon_angle+astroclock_angle_offset)); // (test)
-    moon_ui_x = (earth_ui_x + moon_orbit_radius * sin(radians(map(siderealPlanetData.moon_ra, 0, earth_orbit_radius+earth_sprite_size, 0, 360)+astroclock_angle_offset))) + moon_sprite_center;
-    moon_ui_y = (earth_ui_y + moon_orbit_radius * cos(radians(map(siderealPlanetData.moon_ra, 0, earth_orbit_radius+earth_sprite_size, 0, 360)+astroclock_angle_offset))) + moon_sprite_center;
+    moon_ui_x = (earth_ui_x+earth_sprite_center + moon_orbit_radius * sin(radians(map(siderealPlanetData.moon_ra, 0, earth_orbit_radius+earth_sprite_size, 0, 360)+astroclock_angle_offset)));
+    moon_ui_y = (earth_ui_y+earth_sprite_center + moon_orbit_radius * cos(radians(map(siderealPlanetData.moon_ra, 0, earth_orbit_radius+earth_sprite_size, 0, 360)+astroclock_angle_offset)));
     hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
     yield();
     hud.deleteSprite();
