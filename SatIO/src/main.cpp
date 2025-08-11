@@ -15400,7 +15400,7 @@ void drawEarthZenith() {
 }
 
 // ----------------------------------------------------------------------------------------------------------------
-//                                                                                                     DRAW PLANETS
+//                                                                                               DRAW ORBITAL PATHS
 // ----------------------------------------------------------------------------------------------------------------
 
 void drawOrbitalPaths() {
@@ -15425,7 +15425,7 @@ void drawOrbitalPaths() {
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.mars_alt=0) {
+    if (siderealPlanetData.mars_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, RGB_COLOR16(24,0,0));
     }
     else {
@@ -15547,6 +15547,10 @@ void ClearAstroClockNeptune() {
   yield();
   hud.deleteSprite();
 }
+
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                                     DRAW PLANETS
+// ----------------------------------------------------------------------------------------------------------------
 
 void drawPlanets() {
   // -----------------------------------------------------------------
