@@ -8631,7 +8631,7 @@ void setTrackPlanets(void * pvParamaters) {
           // ----------------------------------------------------------------------------------
           // myAstro.rejectDST();
           // myAstro.setDST();
-          myAstro.useAutoDST();
+          myAstro.useAutoDST(); // make optional and or use user defined UTC offset time
           // ----------------------------------------------------------------------------------
           // Local time (RTC+-)
           // ----------------------------------------------------------------------------------
