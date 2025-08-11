@@ -15906,14 +15906,15 @@ void UpdateUI(void * pvParamters) {
           display.drawCanvas(34, 12, canvas76x8);
         }
       }
-
       // ------------------------------------------------
       // feature astronarium
       // ------------------------------------------------
       else if (systemData.index_home_page_feature==1) {
         if (ui_track_planet_period==true) {
           ui_track_planet_period=false;
+          // ---------------------------------------------------------------------------------------------------------
           // gather initial ui x,y information on startup (temporary until a draw sequence has been fully ascertained)
+          // ---------------------------------------------------------------------------------------------------------
           if (startup_draw_planets==true) {
           drawZodiac();       // behind everything
           drawOrbitalPaths(); // behind zenith and planets
