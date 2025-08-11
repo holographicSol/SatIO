@@ -15376,11 +15376,12 @@ void drawEarthZenith() {
   // -----------------------------------------------------------
   // Store zenith seperately from sun azimuth
   // -----------------------------------------------------------
-  zenith = (float)siderealPlanetData.sun_az;
+  // zenith = (float)siderealPlanetData.earth_ecliptic_long - siderealPlanetData.sun_az;
+  zenith = (float)siderealPlanetData.sun_az - siderealPlanetData.earth_ecliptic_long;
   // -----------------------------------------------------------
   // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
-  zenith -= 90.0f;
+  zenith += 90.0f;
   // -----------------------------------------------------------
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
