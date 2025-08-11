@@ -15408,74 +15408,73 @@ void drawEarthZenith() {
 // ----------------------------------------------------------------------------------------------------------------
 
 void drawOrbitalPaths() {
-
+    // --------------------------------------------------
+    // Mercury
+    // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mercury_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[0]);
     }
-    else {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[1]);
-    }
-
+    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[1]);}
+    // --------------------------------------------------
+    // Venus
+    // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.venus_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[0]);
     }
-    else {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[1]);
-    }
-
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
-
+    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[1]);}
+    // --------------------------------------------------
+    // Moon
+    // --------------------------------------------------
     // tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
     // if (siderealPlanetData.moon_alt<=0) {
     //   tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, earth_color[1]);
     // }
-    // else {
-    //   tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[1]);
-    // }
+    // else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[1]);}
+    // --------------------------------------------------
+    // Earth
+    // --------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
 
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mars_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[0]);
     }
-    else {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[1]);
-    }
-
+    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[1]);}
+    // --------------------------------------------------
+    // Jupiter
+    // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.jupiter_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[0]);
     }
-    else {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[1]);
-    }
-
-
+    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[1]);}
+    // --------------------------------------------------
+    // Saturn
+    // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.saturn_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[0]);
     }
-    else {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[1]);
-    }
-
+    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[1]);}
+    // --------------------------------------------------
+    // Uranus
+    // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.uranus_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[0]);
     }
-    else {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[1]);
-    }
-
+    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[1]);}
+    // --------------------------------------------------
+    // Neptune
+    // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.neptune_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[0]);
     }
-    else {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[1]);
-    }
+    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[1]);}
 }
 
 bool cleared_mercury=false;
