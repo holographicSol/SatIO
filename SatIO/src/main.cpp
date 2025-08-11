@@ -8633,7 +8633,7 @@ void setTrackPlanets(void * pvParamaters) {
           // myAstro.setDST();
           myAstro.useAutoDST();
           // ----------------------------------------------------------------------------------
-          // Offset time / Local time (RTC+-)
+          // Local time (RTC+-)
           // ----------------------------------------------------------------------------------
           myAstro.setLocalTime((int)satData.local_hour, (int)satData.local_minute, (float)satData.local_second);
         }
