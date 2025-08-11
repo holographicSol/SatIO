@@ -15116,7 +15116,7 @@ int mercury_sprite_size=3;
 int mercury_sprite_center=1;
 int mercury_radius=1;
 int mercury_ui_x = mercury_orbit_radius;
-int mercury_ui_y = 64;
+int mercury_ui_y = solar_system_center_y;
 
 int venus_color[1]={RGB_COLOR16(255,255,0)};
 int venus_orbit_radius=13;
@@ -15124,7 +15124,7 @@ int venus_sprite_size=3;
 int venus_sprite_center=1;
 int venus_radius=1;
 int venus_ui_x = venus_orbit_radius;
-int venus_ui_y = 64;
+int venus_ui_y = solar_system_center_y;
 
 int earth_color[2]={RGB_COLOR16(0,0,255), RGB_COLOR16(0,0,32)};
 int earth_orbit_radius=22;
@@ -15132,15 +15132,15 @@ int earth_sprite_size=3;
 int earth_sprite_center=1;
 int earth_radius=1;
 int earth_ui_x = earth_orbit_radius;
-int earth_ui_y = 64;
+int earth_ui_y = solar_system_center_y;
 
 int moon_color[1]={RGB_COLOR16(128,128,128)};
 int moon_orbit_radius=4;
 int moon_sprite_size=3;
 int moon_sprite_center=1;
 int moon_radius=1;
-int moon_ui_x = moon_radius;
-int moon_ui_y = 64;
+int moon_ui_x = earth_orbit_radius+earth_sprite_center;
+int moon_ui_y = solar_system_center_y;
 
 int mars_color[1]={RGB_COLOR16(255,0,0)};
 int mars_orbit_radius=31;
@@ -15148,7 +15148,7 @@ int mars_sprite_size=3;
 int mars_sprite_center=1;
 int mars_radius=1;
 int mars_ui_x = mars_orbit_radius;
-int mars_ui_y = 64;
+int mars_ui_y = solar_system_center_y;
 
 int jupiter_color[1]={RGB_COLOR16(128,128,128)};
 int jupiter_orbit_radius=37;
@@ -15156,7 +15156,7 @@ int jupiter_sprite_size=5;
 int jupiter_sprite_center=2;
 int jupiter_radius=2;
 int jupiter_ui_x = jupiter_orbit_radius;
-int jupiter_ui_y = 64;
+int jupiter_ui_y = solar_system_center_y;
 
 int saturn_color[1]={RGB_COLOR16(255,255,0)};
 int saturn_orbit_radius=45;
@@ -15165,7 +15165,7 @@ int saturn_sprite_center=3;
 int saturn_rings_radius=3;
 int saturn_radius=1;
 int saturn_ui_x = saturn_orbit_radius;
-int saturn_ui_y = 64;
+int saturn_ui_y = solar_system_center_y;
 
 int uranus_color[1]={RGB_COLOR16(0,255,255)};
 int uranus_orbit_radius=51;
@@ -15173,7 +15173,7 @@ int uranus_sprite_size=3;
 int uranus_sprite_center=1;
 int uranus_radius=1;
 int uranus_ui_x = uranus_orbit_radius;
-int uranus_ui_y = 64;
+int uranus_ui_y = solar_system_center_y;
 
 int neptune_color[1]={RGB_COLOR16(255,0,255)};
 int neptune_orbit_radius=56;
@@ -15181,7 +15181,7 @@ int neptune_sprite_size=3;
 int neptune_sprite_center=1;
 int neptune_radius=1;
 int neptune_ui_x = neptune_orbit_radius;
-int neptune_ui_y = 64;
+int neptune_ui_y = solar_system_center_y;
 
 int astroclock_angle_offset=90;
 
@@ -15797,6 +15797,9 @@ with more detail and a larger scale. For example Planets are represented by pixe
 use, and could be represented any other way with much higher detail on higher performance hardware, using the same
 math.
 */
+
+bool startup_draw_planets=false;
+
 void UpdateUI(void * pvParamters) {
 
   while (1) {
@@ -15910,10 +15913,14 @@ void UpdateUI(void * pvParamters) {
       else if (systemData.index_home_page_feature==1) {
         if (ui_track_planet_period==true) {
           ui_track_planet_period=false;
+          // gather initial ui x,y information on startup (temporary until a draw sequence has been fully ascertained)
+          if (startup_draw_planets==true) {
           drawZodiac();       // behind everything
           drawOrbitalPaths(); // behind zenith and planets
           drawEarthZenith();  // behind planets
+          }
           drawPlanets();      // on top
+          startup_draw_planets=true;
           // todo: possibly add asteroid/meteors and other calculatable/'predictable' celestial information
         }
       }
