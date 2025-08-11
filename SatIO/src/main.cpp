@@ -15159,7 +15159,7 @@ int jupiter_ui_x = jupiter_orbit_radius;
 int jupiter_ui_y = 64;
 
 int saturn_color[1]={RGB_COLOR16(128,128,128)};
-int saturn_orbit_radius=44;
+int saturn_orbit_radius=45;
 int saturn_sprite_size=7;
 int saturn_sprite_center=3;
 int saturn_rings_radius=3;
@@ -15340,7 +15340,7 @@ void drawZodiac() {
 //                                                                                                DRAW EARTH ZENITH
 // ----------------------------------------------------------------------------------------------------------------
 
-float zenith=0;
+float zenith_ui=0;
 
 // ---------------------------------------------------------------
 // Zenith direction in space. Updated dynamically.
@@ -15374,22 +15374,22 @@ float reverseMap(float value, float inMin, float inMax, float outMin, float outM
 void drawEarthZenith() {
 
   // -----------------------------------------------------------
-  // Store zenith seperately from sun azimuth
+  // Find zenith degrees
   // -----------------------------------------------------------
   // zenith = (float)siderealPlanetData.earth_ecliptic_long - siderealPlanetData.sun_az;
-  zenith = (float)siderealPlanetData.sun_az - siderealPlanetData.earth_ecliptic_long;
+  zenith_ui = (float)siderealPlanetData.sun_az - siderealPlanetData.earth_ecliptic_long;
   // -----------------------------------------------------------
   // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
-  zenith += 90.0f;
+  zenith_ui += 90.0f;
   // -----------------------------------------------------------
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
-  zenith = normalizeAngle(zenith);
+  zenith_ui = normalizeAngle(zenith_ui);
   // -----------------------------------------------------------
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
-  zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
+  zenith_ui = reverseMap(zenith_ui, 0.0f, 360.0f, 360.0f, 0.0f);
   // -----------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -----------------------------------------------------------
@@ -15397,8 +15397,8 @@ void drawEarthZenith() {
   zenith_direction[0][0]=earth_ui_x+earth_radius;
   zenith_direction[0][1]=earth_ui_y+earth_radius;
 
-  zenith_direction[0][2]=earth_ui_x+0 + (int)(cos(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
-  zenith_direction[0][3]=earth_ui_y+0 + (int)(sin(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
+  zenith_direction[0][2]=earth_ui_x+0 + (int)(cos(zenith_ui * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
+  zenith_direction[0][3]=earth_ui_y+0 + (int)(sin(zenith_ui * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
 
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
 }
@@ -15698,8 +15698,8 @@ void drawPlanets() {
     hud.fillCircle(jupiter_sprite_center, jupiter_sprite_center, jupiter_radius, jupiter_color[0]);
     // jupiter_ui_x = solar_system_center_x + jupiter_orbit_radius * sin(radians(test_angle+astroclock_angle_offset)); // (test)
     // jupiter_ui_y = solar_system_center_y + jupiter_orbit_radius * cos(radians(test_angle+astroclock_angle_offset)); // (test)
-    jupiter_ui_x = solar_system_center_x + jupiter_orbit_radius * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+astroclock_angle_offset));
-    jupiter_ui_y = solar_system_center_y + jupiter_orbit_radius * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+astroclock_angle_offset));
+    jupiter_ui_x = (solar_system_center_x + jupiter_orbit_radius * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+astroclock_angle_offset))) - jupiter_sprite_center;
+    jupiter_ui_y = (solar_system_center_y + jupiter_orbit_radius * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+astroclock_angle_offset))) - jupiter_sprite_center;
     hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
     yield();
     hud.deleteSprite();
@@ -15722,8 +15722,8 @@ void drawPlanets() {
     hud.fillCircle(saturn_sprite_center, saturn_sprite_center, saturn_radius, saturn_color[0]); // saturn
     // saturn_ui_x = solar_system_center_x + saturn_orbit_radius * sin(radians(test_angle+astroclock_angle_offset)); // (test)
     // saturn_ui_y = solar_system_center_y + saturn_orbit_radius * cos(radians(test_angle+astroclock_angle_offset)); // (test)
-    saturn_ui_x = solar_system_center_x + saturn_orbit_radius * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+astroclock_angle_offset));
-    saturn_ui_y = solar_system_center_y + saturn_orbit_radius * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+astroclock_angle_offset));
+    saturn_ui_x = (solar_system_center_x + saturn_orbit_radius * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+astroclock_angle_offset))) - saturn_sprite_center;
+    saturn_ui_y = (solar_system_center_y + saturn_orbit_radius * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+astroclock_angle_offset))) - saturn_sprite_center;
     hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
     yield();
     hud.deleteSprite();
