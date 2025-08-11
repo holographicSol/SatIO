@@ -8621,10 +8621,16 @@ void setTrackPlanets(void * pvParamaters) {
       if (systemData.satio_enabled) {
         if (test_planets==false) {
           myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
-          myAstro.rejectDST();
-          myAstro.setGMTdate(satData.local_year, satData.local_month, satData.local_day);
-          myAstro.setGMTtime(satData.local_hour, satData.local_minute, satData.local_second);
-          myAstro.setLocalTime(satData.local_hour, satData.local_minute, satData.local_second);
+          // myAstro.rejectDST();
+          // ----------------------------------------------------------------------------------
+          // RTC should be UTC (GMT)
+          // ----------------------------------------------------------------------------------
+          myAstro.setGMTdate((int)satData.rtc_year, (int)satData.rtc_month, (int)satData.rtc_day);
+          myAstro.setGMTtime((int)satData.rtc_hour, (int)satData.rtc_minute, (float)satData.rtc_second);
+          // ----------------------------------------------------------------------------------
+          // RTC (UTC) offset time
+          // ----------------------------------------------------------------------------------
+          myAstro.setLocalTime((int)satData.local_hour, (int)satData.local_minute, (float)satData.local_second);
         }
         else {
           test_hour++;if (test_hour>23) {test_hour=0;}
@@ -15362,20 +15368,8 @@ float reverseMap(float value, float inMin, float inMax, float outMin, float outM
 // -----------------------------------------------------------------------------------
 void drawEarthZenith() {
 
-  // zenith = (float)siderealPlanetData.sun_az;
-
-  // // -----------------------------------------------------------
-  // // Draw colored line to convey attitude in space
-  // // -----------------------------------------------------------
-  // tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
-  // zenith_direction[0][0]=earth_ui_x+earth_radius;
-  // zenith_direction[0][1]=earth_ui_y+earth_radius;
-  // zenith_direction[0][2]=earth_ui_x+earth_radius + (int)(cos(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
-  // zenith_direction[0][3]=earth_ui_y+earth_radius + (int)(sin(zenith * PI / 180.0) * (earth_orbit_radius+sun_radius));
-  // tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
-
   // -----------------------------------------------------------
-  // Map Sun altitude (-90-90 degrees)
+  // Store zenith seperately from sun azimuth
   // -----------------------------------------------------------
   zenith = (float)siderealPlanetData.sun_az;
   // -----------------------------------------------------------
@@ -15396,8 +15390,10 @@ void drawEarthZenith() {
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
   zenith_direction[0][0]=earth_ui_x+earth_radius;
   zenith_direction[0][1]=earth_ui_y+earth_radius;
-  zenith_direction[0][2]=earth_ui_x+6 + (int)(cos(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
-  zenith_direction[0][3]=earth_ui_y+6 + (int)(sin(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
+
+  zenith_direction[0][2]=earth_ui_x+0 + (int)(cos(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
+  zenith_direction[0][3]=earth_ui_y+0 + (int)(sin(zenith * PI / 180.0) * 12); // experiemntal: offset value (6) = half length of line (12)
+
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
 }
 
