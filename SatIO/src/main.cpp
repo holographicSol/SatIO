@@ -15848,7 +15848,7 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
   // --------------------------------------------
   // utilize free screen space or simply clear
   // --------------------------------------------
-  if (astroclock_key==0) {
+  if (astroclock_key==0 || astroclock_key==4) {
     tft.drawRect(2, 11, 36, 13, TFT_BLACK);
     tft.drawRect(tft.width()-38, 11, 36, 13, TFT_BLACK);
     tft.drawRect(2, tft.height()-15, 42, 13, TFT_BLACK);
