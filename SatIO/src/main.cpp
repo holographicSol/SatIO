@@ -15915,12 +15915,12 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
 
       canvas32x8.clear();
       display.setColor(astro_stats);
-      canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsZero(rise)) ).c_str(), STYLE_BOLD);
+      canvas32x8.printFixed(0, 0, String( String("") + String(rise) ).c_str(), STYLE_BOLD);
       display.drawCanvas(4, 14, canvas32x8);
 
       canvas32x8.clear();
       display.setColor(astro_stats);
-      canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsZero(set)) ).c_str(), STYLE_BOLD);
+      canvas32x8.printFixed(0, 0, String( String("") + String(set) ).c_str(), STYLE_BOLD);
       display.drawCanvas(tft.width()-36, 14, canvas32x8);
 
       canvas38x8.clear();
