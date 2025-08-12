@@ -755,6 +755,8 @@ char input_data[1024];
 char tmp_input_data[1024];
 char allow_input_data=false;
 signed int enter_digits_key=-1;
+int astroclock_key=0;
+int max_astroclock_key=10;
 
 // ----------------------------------------------------
 // HOME
@@ -13489,7 +13491,7 @@ void menuDown() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void menuRight() {
-  if (menu_page==page_home) {}
+  if (menu_page==page_home) {astroclock_key++; if (astroclock_key>max_astroclock_key) {astroclock_key=0;};}
   else if (menu_page==page_main_menu) {}
   else if (menu_page==page_matrix_logic_main) {menu_column_selection++; if (menu_column_selection>4) {menu_column_selection=0;}}
   // debug("[menu_column_selection] " + String(menu_column_selection));
@@ -13500,7 +13502,7 @@ void menuRight() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void menuLeft() {
-  if (menu_page==page_home) {}
+  if (menu_page==page_home) {astroclock_key--; if (astroclock_key<0) {astroclock_key=max_astroclock_key-1;};}
   else if (menu_page==page_main_menu) {}
   else if (menu_page==page_matrix_logic_main) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=4;}}
   // debug("[menu_column_selection] " + String(menu_column_selection));
@@ -15826,7 +15828,6 @@ void drawPlanets() {
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
-int astroclock_key=0;
 int astro_stats = RGB_COLOR16(0,128,0);
 
 void drawAstroclockStats(double rise, double set, double az, double alt) {
