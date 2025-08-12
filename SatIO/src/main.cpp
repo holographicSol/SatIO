@@ -15878,40 +15878,52 @@ void clearAstroStats() {
   display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
 }
 
+bool clear_astro_stats=false;
+bool clear_sun_target=false;
+bool clear_mercury_target=false;
+bool clear_venus_target=false;
+bool clear_earth_target=false;
+bool clear_moon_target=false;
+bool clear_mars_target=false;
+bool clear_jupiter_target=false;
+bool clear_saturn_target=false;
+bool clear_uranus_target=false;
+bool clear_neptune_target=false;
+
 void drawAstroclockStats(double rise, double set, double az, double alt) {
   // --------------------------------------------
   // de-emphasize target
   // --------------------------------------------
-  tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_BLACK);
-  tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_BLACK);
-  tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_BLACK);
-  tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_BLACK);
-  tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_BLACK);
-  tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_BLACK);
-  tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_BLACK);
-  tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_BLACK);
-  tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_BLACK);
-  tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_BLACK);
+  if (clear_sun_target==true)     {tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_BLACK); clear_sun_target=false;}
+  if (clear_mercury_target==true) {tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_BLACK); clear_mercury_target=false;}
+  if (clear_venus_target==true)   {tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_BLACK); clear_venus_target=false;}
+  if (clear_earth_target==true)   {tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_BLACK); clear_earth_target=false;}
+  if (clear_moon_target==true)    {tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_BLACK); clear_moon_target=false;}
+  if (clear_mars_target==true)    {tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_BLACK); clear_mars_target=false;}
+  if (clear_jupiter_target==true) {tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_BLACK); clear_jupiter_target=false;}
+  if (clear_saturn_target==true)  {tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_BLACK); clear_saturn_target=false;}
+  if (clear_uranus_target==true)  {tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_BLACK); clear_uranus_target=false;}
+  if (clear_neptune_target==true) {tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_BLACK); clear_neptune_target=false;}
   // --------------------------------------------
   // utilize free screen space or simply clear
   // --------------------------------------------
-  if (astroclock_key==0) {clearAstroStats();}
-  if (astroclock_key==4) {clearAstroStats();}
+  if (astroclock_key==0) {if (clear_astro_stats==true) {clearAstroStats(); clear_astro_stats=false;}}
+  if (astroclock_key==4) {if (clear_astro_stats==true) {clearAstroStats(); clear_astro_stats=false;}}
 
   if (astroclock_key!=0) {
     // --------------------------------------------
     // emphasize target
     // --------------------------------------------
-         if (astroclock_key==1) {tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==2) {tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==3) {tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==4) {tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==5) {tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==6) {tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==7) {tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==8) {tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==9) {tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_RED);}
-    else if (astroclock_key==10) {tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_RED);}
+    if      (astroclock_key==1)  {clear_sun_target=true;     clear_astro_stats=true; tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==2)  {clear_mercury_target=true; clear_astro_stats=true; tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==3)  {clear_venus_target=true;   clear_astro_stats=true; tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==4)  {clear_earth_target=true;                           tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==5)  {clear_moon_target=true;    clear_astro_stats=true; tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==6)  {clear_mars_target=true;    clear_astro_stats=true; tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==7)  {clear_jupiter_target=true; clear_astro_stats=true; tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==8)  {clear_saturn_target=true;  clear_astro_stats=true; tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==9)  {clear_uranus_target=true;  clear_astro_stats=true; tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==10) {clear_neptune_target=true; clear_astro_stats=true; tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_RED);}
     // --------------------------------------------
     // draw stats
     // --------------------------------------------
