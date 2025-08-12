@@ -15107,7 +15107,8 @@ float test_moon_angle=90;
 int solar_system_center_x=64;
 int solar_system_center_y=68;
 
-int celestial_object_altitude_color[2]={RGB_COLOR16(0,0,24), RGB_COLOR16(0,32,0)};
+//                                      0-1: low                                  2-3: high
+int celestial_object_altitude_color[4]={RGB_COLOR16(0,0,24), RGB_COLOR16(0,32,0), RGB_COLOR16(0,0,42), RGB_COLOR16(0,52,0)};
 
 int sun_sprite_size=5;
 int sun_sprite_center=2;
@@ -15131,7 +15132,7 @@ int venus_radius=1;
 int venus_ui_x = venus_orbit_radius;
 int venus_ui_y = solar_system_center_y;
 
-int earth_color[2]={RGB_COLOR16(0,0,255), RGB_COLOR16(0,0,32)};
+int earth_color[1]={RGB_COLOR16(0,0,255)};
 int earth_orbit_radius=22;
 int earth_sprite_size=3;
 int earth_sprite_center=1;
@@ -15139,7 +15140,7 @@ int earth_radius=1;
 int earth_ui_x = earth_orbit_radius;
 int earth_ui_y = solar_system_center_y;
 
-int moon_color[1]={RGB_COLOR16(128,128,128)};
+int moon_color[2]={RGB_COLOR16(128,128,128)};
 int moon_orbit_radius=4;
 int moon_sprite_size=3;
 int moon_sprite_center=1;
@@ -15434,15 +15435,17 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.moon_alt<=0) {
-      tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, earth_color[1]);
+      tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[2]);
     }
-    else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[1]);}
+    else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[3]);}
     // --------------------------------------------------
     // Earth
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, earth_color[1]);
-
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, celestial_object_altitude_color[2]);
+    // --------------------------------------------------
+    // Mars
+    // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mars_alt<=0) {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[0]);
