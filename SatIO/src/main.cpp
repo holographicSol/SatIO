@@ -15830,8 +15830,34 @@ void drawPlanets() {
 
 int astro_stats = RGB_COLOR16(0,128,0);
 
+void clearAstroStats() {
+  tft.drawRect(2, 11, 36, 13, TFT_BLACK);
+  tft.drawRect(tft.width()-38, 11, 36, 13, TFT_BLACK);
+  tft.drawRect(2, tft.height()-15, 42, 13, TFT_BLACK);
+  tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, TFT_BLACK);
+
+  canvas32x8.clear();
+  display.setColor(astro_stats);
+  canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
+  display.drawCanvas(4, 14, canvas32x8);
+
+  canvas32x8.clear();
+  display.setColor(astro_stats);
+  canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
+  display.drawCanvas(tft.width()-36, 14, canvas32x8);
+
+  canvas38x8.clear();
+  display.setColor(astro_stats);
+  canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
+  display.drawCanvas(4, tft.height()-12, canvas38x8);
+
+  canvas38x8.clear();
+  display.setColor(astro_stats);
+  canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
+  display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
+}
+
 void drawAstroclockStats(double rise, double set, double az, double alt) {
-  // Serial.println(astroclock_key);
   // --------------------------------------------
   // de-emphasize target
   // --------------------------------------------
@@ -15848,37 +15874,14 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
   // --------------------------------------------
   // utilize free screen space or simply clear
   // --------------------------------------------
-  if (astroclock_key==0 || astroclock_key==4) {
-    tft.drawRect(2, 11, 36, 13, TFT_BLACK);
-    tft.drawRect(tft.width()-38, 11, 36, 13, TFT_BLACK);
-    tft.drawRect(2, tft.height()-15, 42, 13, TFT_BLACK);
-    tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, TFT_BLACK);
+  if (astroclock_key==0) {clearAstroStats();}
+  if (astroclock_key==4) {clearAstroStats();}
 
-    canvas32x8.clear();
-    display.setColor(astro_stats);
-    canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
-    display.drawCanvas(4, 14, canvas32x8);
-
-    canvas32x8.clear();
-    display.setColor(astro_stats);
-    canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
-    display.drawCanvas(tft.width()-36, 14, canvas32x8);
-
-    canvas38x8.clear();
-    display.setColor(astro_stats);
-    canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
-    display.drawCanvas(4, tft.height()-12, canvas38x8);
-
-    canvas38x8.clear();
-    display.setColor(astro_stats);
-    canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
-    display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
-  }
-  else {
+  if (astroclock_key!=0) {
     // --------------------------------------------
     // emphasize target
     // --------------------------------------------
-    if      (astroclock_key==1) {tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_RED);}
+         if (astroclock_key==1) {tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_RED);}
     else if (astroclock_key==2) {tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_RED);}
     else if (astroclock_key==3) {tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_RED);}
     else if (astroclock_key==4) {tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_RED);}
@@ -15892,6 +15895,7 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
     // draw stats
     // --------------------------------------------
     if (astroclock_key==4) {}
+
     else {
       tft.drawRect(2, 11, 36, 13, astro_stats);
       tft.drawRect(tft.width()-38, 11, 36, 13, astro_stats);
