@@ -15845,22 +15845,6 @@ void drawPlanets() {
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
-// style 0
-// int astro_stat_text = RGB_COLOR16(0,128,0);
-// int astro_stat_border = RGB_COLOR16(128,0,0);
-
-// style 1
-// int astro_stat_text = RGB_COLOR16(128,0,0);
-// int astro_stat_border = RGB_COLOR16(0,128,0);
-
-// style 2
-// int astro_stat_text = RGB_COLOR16(0,0,128);
-// int astro_stat_border = RGB_COLOR16(0,128,0);
-
-// style 3
-// int astro_stat_text = RGB_COLOR16(0,128,0);
-// int astro_stat_border = RGB_COLOR16(0,0,128);
-
 int astro_stat_text_0 = RGB_COLOR16(128,0,0);
 int astro_stat_border_0 = RGB_COLOR16(0,128,0);
 int astro_stat_target_0 = RGB_COLOR16(255,0,0);
@@ -15944,28 +15928,35 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
     // draw stats
     // --------------------------------------------
     if (astroclock_key==4) {}
-
     else {
+      // --------------------------------------------
+      // top left
+      // --------------------------------------------
       tft.drawRect(2, 11, 36, 13, astro_stat_border_0);
-      tft.drawRect(tft.width()-38, 11, 36, 13, astro_stat_border_0);
-      tft.drawRect(2, tft.height()-15, 42, 13, astro_stat_border_0);
-      tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, astro_stat_border_0);
-
       canvas32x8.clear();
       display.setColor(astro_stat_text_0);
       canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(rise)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(4, 14, canvas32x8);
-
+      // --------------------------------------------
+      // top right
+      // --------------------------------------------
+      tft.drawRect(tft.width()-38, 11, 36, 13, astro_stat_border_0);
       canvas32x8.clear();
       display.setColor(astro_stat_text_0);
       canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(set)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(tft.width()-36, 14, canvas32x8);
-
+      // --------------------------------------------
+      // bottom left
+      // --------------------------------------------
+      tft.drawRect(2, tft.height()-15, 42, 13, astro_stat_border_0);
       canvas38x8.clear();
       display.setColor(astro_stat_text_0);
       canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(az)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(4, tft.height()-12, canvas38x8);
-
+      // --------------------------------------------
+      // bottom right
+      // --------------------------------------------
+      tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, astro_stat_border_0);
       canvas38x8.clear();
       display.setColor(astro_stat_text_0);
       canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(alt)) ).c_str(), STYLE_BOLD);
