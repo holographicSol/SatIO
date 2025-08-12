@@ -8073,7 +8073,7 @@ void trackSun() {
   siderealPlanetData.sun_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.sun_az =myAstro.getAzimuth();
-  siderealPlanetData.sun_alt=myAstro.getAltitude();
+  siderealPlanetData.sun_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.sun_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.sun_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.sun_radius_vector=myAstro.getRadiusVec();
@@ -8109,7 +8109,7 @@ void trackMoon() {
   siderealPlanetData.moon_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.moon_az =myAstro.getAzimuth();
-  siderealPlanetData.moon_alt=myAstro.getAltitude();
+  siderealPlanetData.moon_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   myAstro.doMoonRiseSetTimes();
   siderealPlanetData.moon_r =myAstro.getMoonriseTime();
   siderealPlanetData.moon_s =myAstro.getMoonsetTime();
@@ -8143,7 +8143,7 @@ void trackMercury() {
   siderealPlanetData.mercury_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.mercury_az =myAstro.getAzimuth();
-  siderealPlanetData.mercury_alt=myAstro.getAltitude();
+  siderealPlanetData.mercury_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.mercury_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.mercury_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.mercury_radius_vector=myAstro.getRadiusVec();
@@ -8184,7 +8184,7 @@ void trackVenus() {
   siderealPlanetData.venus_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.venus_az =myAstro.getAzimuth();
-  siderealPlanetData.venus_alt=myAstro.getAltitude();
+  siderealPlanetData.venus_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.venus_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.venus_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.venus_radius_vector=myAstro.getRadiusVec();
@@ -8225,7 +8225,7 @@ void trackMars() {
   siderealPlanetData.mars_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.mars_az =myAstro.getAzimuth();
-  siderealPlanetData.mars_alt=myAstro.getAltitude();
+  siderealPlanetData.mars_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.mars_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.mars_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.mars_radius_vector=myAstro.getRadiusVec();
@@ -8266,7 +8266,7 @@ void trackJupiter() {
   siderealPlanetData.jupiter_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.jupiter_az =myAstro.getAzimuth();
-  siderealPlanetData.jupiter_alt=myAstro.getAltitude();
+  siderealPlanetData.jupiter_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.jupiter_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.jupiter_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.jupiter_radius_vector=myAstro.getRadiusVec();
@@ -8307,7 +8307,7 @@ void trackSaturn() {
   siderealPlanetData.saturn_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.saturn_az =myAstro.getAzimuth();
-  siderealPlanetData.saturn_alt=myAstro.getAltitude();
+  siderealPlanetData.saturn_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.saturn_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.saturn_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.saturn_radius_vector=myAstro.getRadiusVec();
@@ -8348,7 +8348,7 @@ void trackUranus() {
   siderealPlanetData.uranus_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.uranus_az =myAstro.getAzimuth();
-  siderealPlanetData.uranus_alt=myAstro.getAltitude();
+  siderealPlanetData.uranus_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.uranus_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.uranus_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.uranus_radius_vector=myAstro.getRadiusVec();
@@ -8389,7 +8389,7 @@ void trackNeptune() {
   siderealPlanetData.neptune_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
   siderealPlanetData.neptune_az =myAstro.getAzimuth();
-  siderealPlanetData.neptune_alt=myAstro.getAltitude();
+  siderealPlanetData.neptune_alt=myAstro.getAltitude()+myAstro.spData.DegreesOffsetByElevationM;
   siderealPlanetData.neptune_helio_ecliptic_lat=myAstro.getHelioLat();
   siderealPlanetData.neptune_helio_ecliptic_long=myAstro.getHelioLong();
   siderealPlanetData.neptune_radius_vector=myAstro.getRadiusVec();
