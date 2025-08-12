@@ -15470,10 +15470,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mercury_alt<0) {
-    // if (siderealPlanetData.mercury_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.mercury_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.mercury_s))
-    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[0]);
       }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[1]);}
@@ -15482,10 +15478,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.venus_alt<0) {
-    // if (siderealPlanetData.venus_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.venus_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.venus_s))
-    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[0]);
       }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[1]);}
@@ -15494,10 +15486,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.moon_alt<0) {
-    // if (siderealPlanetData.moon_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.moon_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.moon_s))
-    //   {
       tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[2]);
       }
     else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[3]);}
@@ -15511,10 +15499,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mars_alt<0) {
-    // if (siderealPlanetData.mars_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.mars_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.mars_s))
-    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[0]);
       }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[1]);}
@@ -15523,10 +15507,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.jupiter_alt<0) {
-    // if (siderealPlanetData.jupiter_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.jupiter_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.jupiter_s))
-    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[0]);
       }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[1]);}
@@ -15535,10 +15515,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.saturn_alt<0) {
-    // if (siderealPlanetData.saturn_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.saturn_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.saturn_s))
-    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[0]);
       }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[1]);}
@@ -15547,10 +15523,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.uranus_alt<0) {
-    // if (siderealPlanetData.uranus_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.uranus_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.uranus_s))
-    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[0]);
       }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[1]);}
@@ -15559,10 +15531,6 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.neptune_alt<0) {
-    // if (siderealPlanetData.neptune_alt<=0 &&
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.neptune_r) ||
-    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.neptune_s))
-      // {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[0]);
       }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[1]);}
