@@ -15835,6 +15835,8 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
   tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_BLACK);
   tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_BLACK);
   tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_BLACK);
+  tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_BLACK);
+  tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_BLACK);
   tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_BLACK);
   tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_BLACK);
   tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_BLACK);
