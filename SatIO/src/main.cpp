@@ -15108,7 +15108,7 @@ int solar_system_center_x=64;
 int solar_system_center_y=68;
 
 //                                      0-1: low                                  2-3: high
-int celestial_object_altitude_color[4]={RGB_COLOR16(0,0,24), RGB_COLOR16(0,32,0), RGB_COLOR16(0,0,36), RGB_COLOR16(0,64,0)};
+int celestial_object_altitude_color[4]={RGB_COLOR16(0,0,24), RGB_COLOR16(0,28,0), RGB_COLOR16(0,0,36), RGB_COLOR16(0,64,0)};
 
 int sun_sprite_size=5;
 int sun_sprite_center=2;
@@ -15419,24 +15419,36 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mercury_alt<=0) {
+    // if (siderealPlanetData.mercury_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.mercury_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.mercury_s))
+    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[0]);
-    }
+      }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Venus
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.venus_alt<=0) {
+    // if (siderealPlanetData.venus_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.venus_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.venus_s))
+    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[0]);
-    }
+      }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Moon
     // --------------------------------------------------
     tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.moon_alt<=0) {
+    // if (siderealPlanetData.moon_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.moon_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.moon_s))
+    //   {
       tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[2]);
-    }
+      }
     else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[3]);}
     // --------------------------------------------------
     // Earth
@@ -15448,40 +15460,60 @@ void drawOrbitalPaths() {
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.mars_alt<=0) {
+    // if (siderealPlanetData.mars_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.mars_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.mars_s))
+    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[0]);
-    }
+      }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Jupiter
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.jupiter_alt<=0) {
+    // if (siderealPlanetData.jupiter_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.jupiter_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.jupiter_s))
+    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[0]);
-    }
+      }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Saturn
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.saturn_alt<=0) {
+    // if (siderealPlanetData.saturn_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.saturn_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.saturn_s))
+    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[0]);
-    }
+      }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Uranus
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.uranus_alt<=0) {
+    // if (siderealPlanetData.uranus_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.uranus_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.uranus_s))
+    //   {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[0]);
-    }
+      }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Neptune
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
     if (siderealPlanetData.neptune_alt<=0) {
+    // if (siderealPlanetData.neptune_alt<=0 &&
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) >= siderealPlanetData.neptune_r) ||
+    //   (atoi(String( String(satData.local_hour) + String(satData.local_minute) + String(satData.local_second) ).c_str() ) <= siderealPlanetData.neptune_s))
+      // {
       tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[0]);
-    }
+      }
     else {tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[1]);}
 }
 
@@ -15794,6 +15826,57 @@ void drawPlanets() {
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
+int astroclock_key=0;
+int astro_stats = RGB_COLOR16(0,128,0);
+
+void drawAstroclockStats(double rise, double set, double az, double alt) {
+
+  tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_BLACK);
+  tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_BLACK);
+  tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_BLACK);
+  tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_BLACK);
+  tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_BLACK);
+  tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_BLACK);
+  tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_BLACK);
+  tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_BLACK);
+
+  if      (astroclock_key==1) {tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==2) {tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==3) {tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==4) {tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==5) {tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==6) {tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==7) {tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==8) {tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==9) {tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_RED);}
+  else if (astroclock_key==10) {tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_RED);}
+
+  // Earth seperately
+  if (astroclock_key==4) {}
+
+  else {
+    canvas32x8.clear();
+    display.setColor(astro_stats);
+    canvas32x8.printFixed(0, 0, String( String("") + String(rise) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(3, 13, canvas32x8);
+
+    canvas32x8.clear();
+    display.setColor(astro_stats);
+    canvas32x8.printFixed(0, 0, String( String("") + String(set) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(tft.width()-35, 13, canvas32x8);
+
+    canvas38x8.clear();
+    display.setColor(astro_stats);
+    canvas38x8.printFixed(0, 0, String( String("") + String(az) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(3, tft.height()-11, canvas38x8);
+
+    canvas38x8.clear();
+    display.setColor(astro_stats);
+    canvas38x8.printFixed(0, 0, String( String("") + String(alt) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(tft.width()-41, tft.height()-11, canvas38x8);
+  }
+}
+
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                        UPDATE UI
 // ----------------------------------------------------------------------------------------------------------------
@@ -15920,16 +16003,35 @@ void UpdateUI(void * pvParamters) {
       else if (systemData.index_home_page_feature==1) {
         if (ui_track_planet_period==true) {
           ui_track_planet_period=false;
+
           // ---------------------------------------------------------------------------------------------------------
           // gather initial ui x,y information on startup (temporary until a draw sequence has been fully ascertained)
           // this prevents initial moon orbit circle persisting after x,y have been properly set.
           // ---------------------------------------------------------------------------------------------------------
           if (startup_draw_planets==true) {
-          drawZodiac();       // behind everything
-          drawOrbitalPaths(); // behind zenith and planets
-          drawEarthZenith();  // behind planets
+            drawZodiac();       // behind everything
+            drawOrbitalPaths(); // behind zenith and planets
+            drawEarthZenith();  // behind planets
+            // ------------------------------------------------
+            // astro stat
+            // ------------------------------------------------
+            if (astroclock_key==1)       {drawAstroclockStats(siderealPlanetData.sun_r,siderealPlanetData.sun_s,siderealPlanetData.sun_az,siderealPlanetData.sun_alt);}
+            else if (astroclock_key==2)  {drawAstroclockStats(siderealPlanetData.mercury_r,siderealPlanetData.mercury_s,siderealPlanetData.mercury_az,siderealPlanetData.mercury_alt);}
+            else if (astroclock_key==3)  {drawAstroclockStats(siderealPlanetData.venus_r,siderealPlanetData.venus_s,siderealPlanetData.venus_az,siderealPlanetData.venus_alt);}
+
+            else if (astroclock_key==4)  {drawAstroclockStats(0,0,0,0);}
+            else if (astroclock_key==5)  {drawAstroclockStats(siderealPlanetData.moon_r,siderealPlanetData.moon_s,siderealPlanetData.moon_az,siderealPlanetData.moon_alt);}
+
+            else if (astroclock_key==6)  {drawAstroclockStats(siderealPlanetData.mars_r,siderealPlanetData.mars_s,siderealPlanetData.mars_az,siderealPlanetData.mars_alt);}
+            else if (astroclock_key==7)  {drawAstroclockStats(siderealPlanetData.jupiter_r,siderealPlanetData.jupiter_s,siderealPlanetData.jupiter_az,siderealPlanetData.jupiter_alt);}
+            else if (astroclock_key==8)  {drawAstroclockStats(siderealPlanetData.saturn_r,siderealPlanetData.saturn_s,siderealPlanetData.saturn_az,siderealPlanetData.saturn_alt);}
+            else if (astroclock_key==9)  {drawAstroclockStats(siderealPlanetData.uranus_r,siderealPlanetData.uranus_s,siderealPlanetData.uranus_az,siderealPlanetData.uranus_alt);}
+            else if (astroclock_key==10) {drawAstroclockStats(siderealPlanetData.neptune_r,siderealPlanetData.neptune_s,siderealPlanetData.neptune_az,siderealPlanetData.neptune_alt);}
           }
-          drawPlanets();      // on top
+          // ------------------------------------------------
+          // draw planets on top
+          // ------------------------------------------------
+          drawPlanets();
           startup_draw_planets=true;
           // todo: possibly add asteroid/meteors and other calculatable/'predictable' celestial information
         }
