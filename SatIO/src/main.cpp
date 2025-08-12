@@ -15938,7 +15938,7 @@ bool clear_neptune_target=false;
 
 void drawAstroclockStats(double rise, double set, double az, double alt) {
   if (alt>=0) {astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
-  else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
+  else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,128,0);}
   // --------------------------------------------
   // de-emphasize target
   // --------------------------------------------
