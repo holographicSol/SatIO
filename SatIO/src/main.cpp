@@ -15108,7 +15108,7 @@ int solar_system_center_x=64;
 int solar_system_center_y=68;
 
 //                                      0-1: low                                  2-3: high
-int celestial_object_altitude_color[4]={RGB_COLOR16(0,0,24), RGB_COLOR16(0,32,0), RGB_COLOR16(0,0,42), RGB_COLOR16(0,52,0)};
+int celestial_object_altitude_color[4]={RGB_COLOR16(0,0,24), RGB_COLOR16(0,32,0), RGB_COLOR16(0,0,36), RGB_COLOR16(0,64,0)};
 
 int sun_sprite_size=5;
 int sun_sprite_center=2;
