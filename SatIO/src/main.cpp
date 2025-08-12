@@ -13515,7 +13515,8 @@ void menuBack() {
   // ---------------------------------------------------------------
   /* specify explicity which page to go from each given page */
   // ---------------------------------------------------------------
-  if (menu_page==page_main_menu) {menu_page=page_home;}
+  if (menu_page==page_home) {astroclock_key=0;}
+  else if (menu_page==page_main_menu) {menu_page=page_home;}
   else if (menu_page==page_matrix_logic_main) {menu_page=page_main_menu;}
   // ---------------------------------------------------------------
   // ENTER DIGITS
@@ -13848,7 +13849,17 @@ void menuEnter() {
     // ------------------------------------------------
     // go to main menu
     // ------------------------------------------------
-    menu_page=page_main_menu;
+    if      (astroclock_key==0) {menu_page=page_main_menu;}
+    else if (astroclock_key==1) {menu_page=page_universe_view_sun;}
+    else if (astroclock_key==2) {menu_page=page_universe_view_mercury;}
+    else if (astroclock_key==3) {menu_page=page_universe_view_venus;}
+    // else if (astroclock_key==4) {menu_page=page_universe_view_earth;}
+    else if (astroclock_key==5) {menu_page=page_universe_view_moon;}
+    else if (astroclock_key==6) {menu_page=page_universe_view_mars;}
+    else if (astroclock_key==7) {menu_page=page_universe_view_jupiter;}
+    else if (astroclock_key==8) {menu_page=page_universe_view_saturn;}
+    else if (astroclock_key==9) {menu_page=page_universe_view_uranus;}
+    else if (astroclock_key==10) {menu_page=page_universe_view_neptune;}
   }
 
   // ----------------------------------------------------------------
@@ -20497,7 +20508,7 @@ void requestControlPad() {
       // ------------------------------------------------
       // parse navigation buttons
       // ------------------------------------------------
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,12")==0) {Serial.println("[button] 12: home"); menu_page=page_home;}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,12")==0) {Serial.println("[button] 12: home"); menu_page=page_home; astroclock_key=0;}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,14")==0) {Serial.println("[button] 14: right"); menuRight();}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
@@ -21925,7 +21936,7 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight();}
       else if (strcmp(CMD_BUFFER, "menu back\r")==0)  {Serial.println("[menu back]");  menuBack();}
       else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter();}
-      else if (strcmp(CMD_BUFFER, "menu home\r")==0)  {Serial.println("[menu home]");  menu_page=page_home;}
+      else if (strcmp(CMD_BUFFER, "menu home\r")==0)  {Serial.println("[menu home]");  menu_page=page_home; astroclock_key=0;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                              MENU ENTER DIGITS
       // ------------------------------------------------------------------------------------------------------------------------------
