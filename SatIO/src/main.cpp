@@ -1372,6 +1372,16 @@ struct systemStruct {
     RGB_COLOR16(255,255,255), // white
   };
 
+  int display_low_color[7]={
+    RGB_COLOR16(128,0,0),     // red
+    RGB_COLOR16(128,128,0),   // yellow
+    RGB_COLOR16(0,128,0),     // green
+    RGB_COLOR16(0,0,128),     // blue
+    RGB_COLOR16(0,128,128),   // light blue
+    RGB_COLOR16(128,0,128),   // purple
+    RGB_COLOR16(128,128,128), // white
+  };
+
   // ----------------------------------------------------------------
   // border color
   // ----------------------------------------------------------------
@@ -1386,6 +1396,7 @@ struct systemStruct {
   };
   int index_display_border_color=3;
   int color_border=display_color[index_display_border_color];
+  int low_color_border=display_low_color[index_display_border_color];
 
   // ----------------------------------------------------------------
   // color is used to assist with emphasis to importance and clarity.
@@ -1406,6 +1417,7 @@ struct systemStruct {
   };
   int index_display_content_color=4;
   int color_content=display_color[index_display_content_color];
+  int low_color_content=display_low_color[index_display_content_color];
 
   // ----------------------------------------------------------------
   // menu border color
@@ -1421,6 +1433,7 @@ struct systemStruct {
   };
   int index_display_menu_border_color=2;
   int color_menu_border=display_color[index_display_menu_border_color];
+  int low_color_menu_border=display_low_color[index_display_menu_border_color];
 
   // ----------------------------------------------------------------
   // menu content color
@@ -1436,6 +1449,7 @@ struct systemStruct {
   };
   int index_display_menu_content_color=2;
   int color_menu_content=display_color[index_display_menu_content_color];
+  int low_color_menu_content=display_low_color[index_display_menu_content_color];
 
   // ----------------------------------------------------------------
   // title color
@@ -1451,6 +1465,7 @@ struct systemStruct {
   };
   int index_display_title_color=2;
   int color_title=display_color[index_display_title_color];
+  int low_color_title=display_low_color[index_display_title_color];
   
   // ----------------------------------------------------------------
   // sub-title color
@@ -1466,6 +1481,7 @@ struct systemStruct {
   };
   int index_display_color_subtitle=2;
   int color_subtitle=display_color[index_display_color_subtitle];
+  int low_color_subtitle=display_low_color[index_display_color_subtitle];
 
   // ----------------------------------------------------------------
   // indicator colors
@@ -6367,7 +6383,8 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_display_border_color=atoi(sdcardData.token);
-          systemData.color_border=systemData.display_color[systemData.index_display_border_color];
+          systemData.color_border    =systemData.display_color[systemData.index_display_border_color];
+          systemData.low_color_border=systemData.display_low_color[systemData.index_display_border_color];
         }
       }
 
@@ -6381,7 +6398,8 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_display_content_color=atoi(sdcardData.token);
-          systemData.color_content=systemData.display_color[systemData.index_display_content_color];
+          systemData.color_content    =systemData.display_color[systemData.index_display_content_color];
+          systemData.low_color_content=systemData.display_low_color[systemData.index_display_content_color];
         }
       }
 
@@ -6395,7 +6413,8 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_display_menu_border_color= atoi(sdcardData.token);
-          systemData.color_menu_border=systemData.display_color[systemData.index_display_menu_border_color];
+          systemData.color_menu_border    =systemData.display_color[systemData.index_display_menu_border_color];
+          systemData.low_color_menu_border=systemData.display_low_color[systemData.index_display_menu_border_color];
         }
       }
 
@@ -6409,7 +6428,8 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_display_menu_content_color=atoi(sdcardData.token);
-          systemData.color_menu_content=systemData.display_color[systemData.index_display_menu_content_color];
+          systemData.color_menu_content    =systemData.display_color[systemData.index_display_menu_content_color];
+          systemData.low_color_menu_content=systemData.display_low_color[systemData.index_display_menu_content_color];
         }
       }
 
@@ -6423,7 +6443,8 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_display_title_color=atoi(sdcardData.token);
-          systemData.color_title=systemData.display_color[systemData.index_display_title_color];
+          systemData.color_title    =systemData.display_color[systemData.index_display_title_color];
+          systemData.low_color_title=systemData.display_low_color[systemData.index_display_title_color];
         }
       }
 
@@ -6437,7 +6458,8 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_display_color_subtitle=atoi(sdcardData.token);
-          systemData.color_subtitle=systemData.display_color[systemData.index_display_color_subtitle];
+          systemData.color_subtitle    =systemData.display_color[systemData.index_display_color_subtitle];
+          systemData.low_color_subtitle=systemData.display_low_color[systemData.index_display_color_subtitle];
         }
       }
 
@@ -14253,42 +14275,48 @@ void menuEnter() {
     // ------------------------------------------------
     if (menuDisplay.selection()==2) {systemData.index_display_border_color++;
       if (systemData.index_display_border_color>systemData.max_color_index) {systemData.index_display_border_color=0;}
-      systemData.color_border=systemData.display_color[systemData.index_display_border_color];
+      systemData.color_border    =systemData.display_color[systemData.index_display_border_color];
+      systemData.low_color_border=systemData.display_low_color[systemData.index_display_border_color];
     }
     // ------------------------------------------------
     // iter display border color
     // ------------------------------------------------
     if (menuDisplay.selection()==3) {systemData.index_display_content_color++;
       if (systemData.index_display_content_color>systemData.max_color_index) {systemData.index_display_content_color=0;}
-      systemData.color_content=systemData.display_color[systemData.index_display_content_color];
+      systemData.color_content    =systemData.display_color[systemData.index_display_content_color];
+      systemData.low_color_content=systemData.display_low_color[systemData.index_display_content_color];
     }
     // ------------------------------------------------
     // iter display menu border color
     // ------------------------------------------------
     if (menuDisplay.selection()==4) {systemData.index_display_menu_border_color++;
       if (systemData.index_display_menu_border_color>systemData.max_color_index) {systemData.index_display_menu_border_color=0;}
-      systemData.color_menu_border=systemData.display_color[systemData.index_display_menu_border_color];
+      systemData.color_menu_border    =systemData.display_color[systemData.index_display_menu_border_color];
+      systemData.low_color_menu_border=systemData.display_low_color[systemData.index_display_menu_border_color];
     }
     // ------------------------------------------------
     // iter display menu content color
     // ------------------------------------------------
     if (menuDisplay.selection()==5) {systemData.index_display_menu_content_color++;
       if (systemData.index_display_menu_content_color>systemData.max_color_index) {systemData.index_display_menu_content_color=0;}
-      systemData.color_menu_content=systemData.display_color[systemData.index_display_menu_content_color];
+      systemData.color_menu_content    =systemData.display_color[systemData.index_display_menu_content_color];
+      systemData.low_color_menu_content=systemData.display_low_color[systemData.index_display_menu_content_color];
     }
     // ------------------------------------------------
     // iter display title color
     // ------------------------------------------------
     if (menuDisplay.selection()==6) {systemData.index_display_title_color++;
       if (systemData.index_display_title_color>systemData.max_color_index) {systemData.index_display_title_color=0;}
-      systemData.color_title=systemData.display_color[systemData.index_display_title_color];
+      systemData.color_title    =systemData.display_color[systemData.index_display_title_color];
+      systemData.low_color_title=systemData.display_low_color[systemData.index_display_title_color];
     }
     // ------------------------------------------------
     // iter display subtitle color
     // ------------------------------------------------
     if (menuDisplay.selection()==7) {systemData.index_display_color_subtitle++;
       if (systemData.index_display_color_subtitle>systemData.max_color_index) {systemData.index_display_color_subtitle=0;}
-      systemData.color_subtitle=systemData.display_color[systemData.index_display_color_subtitle];
+      systemData.color_subtitle    =systemData.display_color[systemData.index_display_color_subtitle];
+      systemData.low_color_subtitle=systemData.display_low_color[systemData.index_display_color_subtitle];
     }
     // ------------------------------------------------
     // iter home page feature
@@ -15862,8 +15890,8 @@ void drawPlanets() {
 // int astro_stat_border = RGB_COLOR16(0,128,0);
 
 // style 3
-int astro_stat_text = RGB_COLOR16(0,128,0);
-int astro_stat_border = RGB_COLOR16(0,0,128);
+// int astro_stat_text = RGB_COLOR16(0,128,0);
+// int astro_stat_border = RGB_COLOR16(0,0,128);
 
 void clearAstroStats() {
   tft.drawRect(2, 11, 36, 13, TFT_BLACK);
@@ -15872,22 +15900,22 @@ void clearAstroStats() {
   tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, TFT_BLACK);
 
   canvas32x8.clear();
-  display.setColor(astro_stat_text);
+  display.setColor(systemData.low_color_subtitle);
   canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
   display.drawCanvas(4, 14, canvas32x8);
 
   canvas32x8.clear();
-  display.setColor(astro_stat_text);
+  display.setColor(systemData.low_color_subtitle);
   canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
   display.drawCanvas(tft.width()-36, 14, canvas32x8);
 
   canvas38x8.clear();
-  display.setColor(astro_stat_text);
+  display.setColor(systemData.low_color_subtitle);
   canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
   display.drawCanvas(4, tft.height()-12, canvas38x8);
 
   canvas38x8.clear();
-  display.setColor(astro_stat_text);
+  display.setColor(systemData.low_color_subtitle);
   canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
   display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
 }
@@ -15944,28 +15972,28 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
     if (astroclock_key==4) {}
 
     else {
-      tft.drawRect(2, 11, 36, 13, astro_stat_border);
-      tft.drawRect(tft.width()-38, 11, 36, 13, astro_stat_border);
-      tft.drawRect(2, tft.height()-15, 42, 13, astro_stat_border);
-      tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, astro_stat_border);
+      tft.drawRect(2, 11, 36, 13, systemData.low_color_border);
+      tft.drawRect(tft.width()-38, 11, 36, 13, systemData.low_color_border);
+      tft.drawRect(2, tft.height()-15, 42, 13, systemData.low_color_border);
+      tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, systemData.low_color_border);
 
       canvas32x8.clear();
-      display.setColor(astro_stat_text);
+      display.setColor(systemData.low_color_subtitle);
       canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(rise)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(4, 14, canvas32x8);
 
       canvas32x8.clear();
-      display.setColor(astro_stat_text);
+      display.setColor(systemData.low_color_subtitle);
       canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(set)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(tft.width()-36, 14, canvas32x8);
 
       canvas38x8.clear();
-      display.setColor(astro_stat_text);
+      display.setColor(systemData.low_color_subtitle);
       canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(az)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(4, tft.height()-12, canvas38x8);
 
       canvas38x8.clear();
-      display.setColor(astro_stat_text);
+      display.setColor(systemData.low_color_subtitle);
       canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(alt)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
     }
