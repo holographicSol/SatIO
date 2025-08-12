@@ -8612,6 +8612,7 @@ bool track_planet_period=false;
 bool test_planets=false;
 int test_hour=0;
 int test_month=0;
+double DegreesOffsetByelevationM=0;
 
 void setTrackPlanets(void * pvParamaters) {
   while (1) {
@@ -8637,6 +8638,9 @@ void setTrackPlanets(void * pvParamaters) {
           // ----------------------------------------------------------------------------------
           myAstro.setLocalTime((int)satData.local_hour, (int)satData.local_minute, (float)satData.local_second);
           myAstro.setElevationM(atol(gnggaData.altitude));
+          // DegreesOffsetByelevationM = myAstro.inRange90(myAstro.getDegreesOffsetByelevationM(atol(gnggaData.altitude)));
+          // Serial.println("mars 0: " + String(siderealPlanetData.mars_alt, 20));
+          // Serial.println("mars 1: " + String(siderealPlanetData.mars_alt + DegreesOffsetByelevationM, 20));
         }
         else {
           test_hour++;if (test_hour>23) {test_hour=0;}
