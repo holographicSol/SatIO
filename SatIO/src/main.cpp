@@ -13502,7 +13502,7 @@ void menuRight() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void menuLeft() {
-  if (menu_page==page_home) {astroclock_key--; if (astroclock_key<0) {astroclock_key=max_astroclock_key-1;};}
+  if (menu_page==page_home) {astroclock_key--; if (astroclock_key<0) {astroclock_key=max_astroclock_key;};}
   else if (menu_page==page_main_menu) {}
   else if (menu_page==page_matrix_logic_main) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=4;}}
   // debug("[menu_column_selection] " + String(menu_column_selection));
