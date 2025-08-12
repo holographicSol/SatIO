@@ -15854,8 +15854,16 @@ void drawPlanets() {
 // int astro_stat_border = RGB_COLOR16(128,0,0);
 
 // style 1
-int astro_stat_text = RGB_COLOR16(128,0,0);
-int astro_stat_border = RGB_COLOR16(0,128,0);
+// int astro_stat_text = RGB_COLOR16(128,0,0);
+// int astro_stat_border = RGB_COLOR16(0,128,0);
+
+// style 2
+// int astro_stat_text = RGB_COLOR16(0,0,128);
+// int astro_stat_border = RGB_COLOR16(0,128,0);
+
+// style 3
+int astro_stat_text = RGB_COLOR16(0,128,0);
+int astro_stat_border = RGB_COLOR16(0,0,128);
 
 void clearAstroStats() {
   tft.drawRect(2, 11, 36, 13, TFT_BLACK);
