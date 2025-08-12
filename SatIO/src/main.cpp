@@ -15831,6 +15831,7 @@ void drawPlanets() {
 int astro_stats = RGB_COLOR16(0,128,0);
 
 void drawAstroclockStats(double rise, double set, double az, double alt) {
+  // Serial.println(astroclock_key);
   // --------------------------------------------
   // de-emphasize target
   // --------------------------------------------
@@ -15845,42 +15846,68 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
   tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_BLACK);
   tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_BLACK);
   // --------------------------------------------
-  // emphasize target
+  // utilize free screen space or simply clear
   // --------------------------------------------
-  if      (astroclock_key==1) {tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==2) {tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==3) {tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==4) {tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==5) {tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==6) {tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==7) {tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==8) {tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==9) {tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_RED);}
-  else if (astroclock_key==10) {tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_RED);}
-  // --------------------------------------------
-  // draw stats
-  // --------------------------------------------
-  if (astroclock_key==4) {}
-  else {
+  if (astroclock_key==0) {
     canvas32x8.clear();
     display.setColor(astro_stats);
-    canvas32x8.printFixed(0, 0, String( String("") + String(rise) ).c_str(), STYLE_BOLD);
+    canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
     display.drawCanvas(3, 13, canvas32x8);
 
     canvas32x8.clear();
     display.setColor(astro_stats);
-    canvas32x8.printFixed(0, 0, String( String("") + String(set) ).c_str(), STYLE_BOLD);
+    canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
     display.drawCanvas(tft.width()-35, 13, canvas32x8);
 
     canvas38x8.clear();
     display.setColor(astro_stats);
-    canvas38x8.printFixed(0, 0, String( String("") + String(az) ).c_str(), STYLE_BOLD);
+    canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
     display.drawCanvas(3, tft.height()-11, canvas38x8);
 
     canvas38x8.clear();
     display.setColor(astro_stats);
-    canvas38x8.printFixed(0, 0, String( String("") + String(alt) ).c_str(), STYLE_BOLD);
+    canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
     display.drawCanvas(tft.width()-41, tft.height()-11, canvas38x8);
+  }
+  else {
+    // --------------------------------------------
+    // emphasize target
+    // --------------------------------------------
+    if      (astroclock_key==1) {tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==2) {tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==3) {tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==4) {tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==5) {tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==6) {tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==7) {tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==8) {tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==9) {tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_RED);}
+    else if (astroclock_key==10) {tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_RED);}
+    // --------------------------------------------
+    // draw stats
+    // --------------------------------------------
+    if (astroclock_key==4) {}
+    else {
+      canvas32x8.clear();
+      display.setColor(astro_stats);
+      canvas32x8.printFixed(0, 0, String( String("") + String(rise) ).c_str(), STYLE_BOLD);
+      display.drawCanvas(3, 13, canvas32x8);
+
+      canvas32x8.clear();
+      display.setColor(astro_stats);
+      canvas32x8.printFixed(0, 0, String( String("") + String(set) ).c_str(), STYLE_BOLD);
+      display.drawCanvas(tft.width()-35, 13, canvas32x8);
+
+      canvas38x8.clear();
+      display.setColor(astro_stats);
+      canvas38x8.printFixed(0, 0, String( String("") + String(az) ).c_str(), STYLE_BOLD);
+      display.drawCanvas(3, tft.height()-11, canvas38x8);
+
+      canvas38x8.clear();
+      display.setColor(astro_stats);
+      canvas38x8.printFixed(0, 0, String( String("") + String(alt) ).c_str(), STYLE_BOLD);
+      display.drawCanvas(tft.width()-41, tft.height()-11, canvas38x8);
+    }
   }
 }
 
@@ -16022,7 +16049,8 @@ void UpdateUI(void * pvParamters) {
             // ------------------------------------------------
             // astro stat
             // ------------------------------------------------
-            if (astroclock_key==1)       {drawAstroclockStats(siderealPlanetData.sun_r,siderealPlanetData.sun_s,siderealPlanetData.sun_az,siderealPlanetData.sun_alt);}
+            if (astroclock_key==0)       {drawAstroclockStats(0,0,0,0);}
+            else if (astroclock_key==1)  {drawAstroclockStats(siderealPlanetData.sun_r,siderealPlanetData.sun_s,siderealPlanetData.sun_az,siderealPlanetData.sun_alt);}
             else if (astroclock_key==2)  {drawAstroclockStats(siderealPlanetData.mercury_r,siderealPlanetData.mercury_s,siderealPlanetData.mercury_az,siderealPlanetData.mercury_alt);}
             else if (astroclock_key==3)  {drawAstroclockStats(siderealPlanetData.venus_r,siderealPlanetData.venus_s,siderealPlanetData.venus_az,siderealPlanetData.venus_alt);}
             else if (astroclock_key==4)  {drawAstroclockStats(0,0,0,0);}
