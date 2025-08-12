@@ -14212,24 +14212,24 @@ void menuEnter() {
   // universe page
   // ----------------------------------------------------------------
   else if (menu_page==page_universe_main) {
-    if (menuUniverse.selection()==0) {systemData.sidereal_track_sun^=true;}
-    else if (menuUniverse.selection()==1) {systemData.sidereal_track_mercury^=true;}
-    else if (menuUniverse.selection()==2) {systemData.sidereal_track_moon^=true;}
-    else if (menuUniverse.selection()==3) {systemData.sidereal_track_venus^=true;}
-    else if (menuUniverse.selection()==4) {systemData.sidereal_track_mars^=true;}
-    else if (menuUniverse.selection()==5) {systemData.sidereal_track_jupiter^=true;}
-    else if (menuUniverse.selection()==6) {systemData.sidereal_track_saturn^=true;}
-    else if (menuUniverse.selection()==7) {systemData.sidereal_track_uranus^=true;}
-    else if (menuUniverse.selection()==8) {systemData.sidereal_track_neptune^=true;}
-    else if (menuUniverse.selection()==9) {menu_page=page_universe_view_sun;}
-    else if (menuUniverse.selection()==10) {menu_page=page_universe_view_moon;}
-    else if (menuUniverse.selection()==11) {menu_page=page_universe_view_mercury;}
-    else if (menuUniverse.selection()==12) {menu_page=page_universe_view_venus;}
-    else if (menuUniverse.selection()==13) {menu_page=page_universe_view_mars;}
-    else if (menuUniverse.selection()==14) {menu_page=page_universe_view_jupiter;}
-    else if (menuUniverse.selection()==15) {menu_page=page_universe_view_saturn;}
-    else if (menuUniverse.selection()==16) {menu_page=page_universe_view_uranus;}
-    else if (menuUniverse.selection()==17) {menu_page=page_universe_view_neptune;}
+    if      (menuUniverse.selection()==0) {menu_page=page_universe_view_sun;}
+    else if (menuUniverse.selection()==1) {menu_page=page_universe_view_moon;}
+    else if (menuUniverse.selection()==2) {menu_page=page_universe_view_mercury;}
+    else if (menuUniverse.selection()==3) {menu_page=page_universe_view_venus;}
+    else if (menuUniverse.selection()==4) {menu_page=page_universe_view_mars;}
+    else if (menuUniverse.selection()==5) {menu_page=page_universe_view_jupiter;}
+    else if (menuUniverse.selection()==6) {menu_page=page_universe_view_saturn;}
+    else if (menuUniverse.selection()==7) {menu_page=page_universe_view_uranus;}
+    else if (menuUniverse.selection()==8) {menu_page=page_universe_view_neptune;}
+    else if (menuUniverse.selection()==9) {systemData.sidereal_track_sun^=true;}
+    else if (menuUniverse.selection()==10) {systemData.sidereal_track_mercury^=true;}
+    else if (menuUniverse.selection()==11) {systemData.sidereal_track_moon^=true;}
+    else if (menuUniverse.selection()==12) {systemData.sidereal_track_venus^=true;}
+    else if (menuUniverse.selection()==13) {systemData.sidereal_track_mars^=true;}
+    else if (menuUniverse.selection()==14) {systemData.sidereal_track_jupiter^=true;}
+    else if (menuUniverse.selection()==15) {systemData.sidereal_track_saturn^=true;}
+    else if (menuUniverse.selection()==16) {systemData.sidereal_track_uranus^=true;}
+    else if (menuUniverse.selection()==17) {systemData.sidereal_track_neptune^=true;}
   }
 
   // ----------------------------------------------------------------
@@ -18334,33 +18334,33 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
-      if (systemData.sidereal_track_sun==true) {menuUniverseItems[0]     ="SUN     ENABLED";} 
-      else {menuUniverseItems[0]                                         ="SUN     DISABLED";}
-      if (systemData.sidereal_track_mercury==true) {menuUniverseItems[1] ="MERCURY ENABLED";}
-      else {menuUniverseItems[1]                                         ="MERCURY DISABLED";}
-      if (systemData.sidereal_track_moon==true) {menuUniverseItems[2]    ="MOON    ENABLED";}
-      else {menuUniverseItems[2]                                         ="MOON    DISABLED";}
-      if (systemData.sidereal_track_venus==true) {menuUniverseItems[3]   ="VENUS   ENABLED";}
-      else {menuUniverseItems[3]                                         ="VENUS   DISABLED";}
-      if (systemData.sidereal_track_mars==true) {menuUniverseItems[4]    ="MARS    ENABLED";}
-      else {menuUniverseItems[4]                                         ="MARS    DISABLED";}
-      if (systemData.sidereal_track_jupiter==true) {menuUniverseItems[5] ="JUPITER ENABLED";}
-      else {menuUniverseItems[5]                                         ="JUPITER DISABLED";}
-      if (systemData.sidereal_track_saturn==true) {menuUniverseItems[6]  ="SATURN  ENABLED";}
-      else {menuUniverseItems[6]                                         ="SATURN  DISABLED";}
-      if (systemData.sidereal_track_uranus==true) {menuUniverseItems[7]  ="URANUS  ENABLED";}
-      else {menuUniverseItems[7]                                         ="URANUS  DISABLED";}
-      if (systemData.sidereal_track_neptune==true) {menuUniverseItems[8] ="NEPTUNE ENABLED";}
-      else {menuUniverseItems[8]                                         ="NEPTUNE DISABLED";}
-      menuUniverseItems[9]                                               ="VIEW    SUN";
-      menuUniverseItems[10]                                              ="VIEW    MOON";
-      menuUniverseItems[11]                                              ="VIEW    MERCURY";
-      menuUniverseItems[12]                                              ="VIEW    VENUS";
-      menuUniverseItems[13]                                              ="VIEW    MARS";
-      menuUniverseItems[14]                                              ="VIEW    JUPITER";
-      menuUniverseItems[15]                                              ="VIEW    SATURN";
-      menuUniverseItems[16]                                              ="VIEW    URANUS";
-      menuUniverseItems[17]                                              ="VIEW    NEPTUNE";
+      menuUniverseItems[0]                                                ="VIEW    SUN";
+      menuUniverseItems[1]                                                ="VIEW    MOON";
+      menuUniverseItems[2]                                                ="VIEW    MERCURY";
+      menuUniverseItems[3]                                                ="VIEW    VENUS";
+      menuUniverseItems[4]                                                ="VIEW    MARS";
+      menuUniverseItems[5]                                                ="VIEW    JUPITER";
+      menuUniverseItems[6]                                                ="VIEW    SATURN";
+      menuUniverseItems[7]                                                ="VIEW    URANUS";
+      menuUniverseItems[8]                                                ="VIEW    NEPTUNE";
+      if (systemData.sidereal_track_sun==true) {menuUniverseItems[9]      ="SUN     ENABLED";} 
+      else {menuUniverseItems[9]                                          ="SUN     DISABLED";}
+      if (systemData.sidereal_track_mercury==true) {menuUniverseItems[10] ="MERCURY ENABLED";}
+      else {menuUniverseItems[10]                                         ="MERCURY DISABLED";}
+      if (systemData.sidereal_track_moon==true) {menuUniverseItems[11]    ="MOON    ENABLED";}
+      else {menuUniverseItems[11]                                         ="MOON    DISABLED";}
+      if (systemData.sidereal_track_venus==true) {menuUniverseItems[12]   ="VENUS   ENABLED";}
+      else {menuUniverseItems[12]                                         ="VENUS   DISABLED";}
+      if (systemData.sidereal_track_mars==true) {menuUniverseItems[13]    ="MARS    ENABLED";}
+      else {menuUniverseItems[13]                                         ="MARS    DISABLED";}
+      if (systemData.sidereal_track_jupiter==true) {menuUniverseItems[14] ="JUPITER ENABLED";}
+      else {menuUniverseItems[14]                                         ="JUPITER DISABLED";}
+      if (systemData.sidereal_track_saturn==true) {menuUniverseItems[15]  ="SATURN  ENABLED";}
+      else {menuUniverseItems[15]                                         ="SATURN  DISABLED";}
+      if (systemData.sidereal_track_uranus==true) {menuUniverseItems[16]  ="URANUS  ENABLED";}
+      else {menuUniverseItems[16]                                         ="URANUS  DISABLED";}
+      if (systemData.sidereal_track_neptune==true) {menuUniverseItems[17] ="NEPTUNE ENABLED";}
+      else {menuUniverseItems[17]                                         ="NEPTUNE DISABLED";}
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
