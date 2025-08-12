@@ -4662,6 +4662,16 @@ String padDigitsZero(int digits) {
   return pad_digits_new;
 }
 
+String padDigitsDoubleZero(double digits) {
+  // ------------------------------------------------
+  // preappends char 0 to pad string of digits evenly
+  // ------------------------------------------------
+  memset(pad_digits_new, 0, sizeof(pad_digits_new));
+  if(digits < 10 && digits >=0) {strcat(pad_digits_new, "0");}
+  strcat(pad_digits_new, String(digits).c_str());
+  return pad_digits_new;
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    FORMAT DATE
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -15915,22 +15925,22 @@ void drawAstroclockStats(double rise, double set, double az, double alt) {
 
       canvas32x8.clear();
       display.setColor(astro_stats);
-      canvas32x8.printFixed(0, 0, String( String("") + String(rise) ).c_str(), STYLE_BOLD);
+      canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(rise)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(4, 14, canvas32x8);
 
       canvas32x8.clear();
       display.setColor(astro_stats);
-      canvas32x8.printFixed(0, 0, String( String("") + String(set) ).c_str(), STYLE_BOLD);
+      canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(set)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(tft.width()-36, 14, canvas32x8);
 
       canvas38x8.clear();
       display.setColor(astro_stats);
-      canvas38x8.printFixed(0, 0, String( String("") + String(az) ).c_str(), STYLE_BOLD);
+      canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(az)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(4, tft.height()-12, canvas38x8);
 
       canvas38x8.clear();
       display.setColor(astro_stats);
-      canvas38x8.printFixed(0, 0, String( String("") + String(alt) ).c_str(), STYLE_BOLD);
+      canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(alt)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
     }
   }
