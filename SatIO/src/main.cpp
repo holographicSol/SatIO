@@ -1293,6 +1293,7 @@ struct systemStruct {
   bool output_saturn_enabled=false;  // enables/disables output sentence over serial
   bool output_uranus_enabled=false;  // enables/disables output sentence over serial
   bool output_neptune_enabled=false; // enables/disables output sentence over serial
+  bool output_meteors_enabled=false; // enables/disables output sentence over serial
 
   // -----------------------------------------------------------------------------------------------------------------------
   // enable/disable CD74HC4067 channel
@@ -5683,6 +5684,19 @@ void sdcardSaveSystemConfig(char * file) {
     exfile.println("");
 
     // -----------------------------------------------
+    // OUTPUT_METEORS
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_METEORS,");
+    itoa(systemData.output_meteors_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
     // INDEX_OVERLOAD_MAX
     // -----------------------------------------------
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
@@ -6865,6 +6879,19 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           if (atoi(sdcardData.token)==0) {systemData.output_neptune_enabled=false;} else {systemData.output_neptune_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+      // OUTPUT_METEORS
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_METEORS", strlen("OUTPUT_METEORS"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_meteors_enabled=false;} else {systemData.output_meteors_enabled=true;}
         }
       }
 
@@ -8139,6 +8166,23 @@ void setMeteorShowerWarning() {
         meteor_shower_peaks[i],
         meteor_shower_datetime[i][6]);
     }
+  }
+  // create and ouptput information
+  if (systemData.output_meteors_enabled==true) {
+    memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
+    strcat(siderealPlanetData.sentence, "$METEORS,");
+    for (int i; i<max_meteor_showers; i++) {
+      // in datetime range
+      strcat(siderealPlanetData.sentence, String(meteor_shower_warning_system[i][0] + String(",")).c_str());
+      // in peak datetiem range
+      strcat(siderealPlanetData.sentence, String(meteor_shower_warning_system[i][1] + String(",")).c_str());
+    }
+    // append checksum
+    createChecksum(siderealPlanetData.sentence);
+    strcat(siderealPlanetData.sentence, "*");
+    strcat(siderealPlanetData.sentence, SerialLink.checksum);
+    Serial.println(siderealPlanetData.sentence);
+    // debug(siderealPlanetData.sentence);
   }
 }
 
@@ -14431,7 +14475,7 @@ void menuEnter() {
     else if (menuSerial.selection()==12) {systemData.output_saturn_enabled^=true;}
     else if (menuSerial.selection()==13) {systemData.output_uranus_enabled^=true;}
     else if (menuSerial.selection()==14) {systemData.output_neptune_enabled^=true;}
-    else if (menuSerial.selection()==15) {systemData.debug^=true;}
+    else if (menuSerial.selection()==15) {systemData.output_meteors_enabled^=true;}
   }
 
   // ----------------------------------------------------------------
@@ -18538,8 +18582,8 @@ void UpdateUI(void * pvParamters) {
       else {menuSerialItems[13]                                         ="URANUS  DISABLED";}
       if (systemData.output_neptune_enabled) {menuSerialItems[14]       ="NEPTUNE ENABLED";}
       else {menuSerialItems[14]                                         ="NEPTUNE DISABLED";}
-      if (systemData.debug==true) {menuSerialItems[15]                  ="DEBUG   ENABLED";}
-      else {menuSerialItems[15]                                         ="DEBUG   DISABLED";}
+      if (systemData.output_meteors_enabled==true) {menuSerialItems[15] ="METEORS ENABLED";}
+      else {menuSerialItems[15]                                         ="METEORS DISABLED";}
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
