@@ -2035,12 +2035,7 @@ struct SiderealObjectStruct {
     "Herschel 400 Table",  // 6
   };
 };
-SiderealObjectStruct siderealObjectData;
-
-struct MeteorStruct {
-
-};
-MeteorStruct meteorData;
+SiderealObjectStruct siderealObjectData;s
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DATA: VALIDATION
@@ -8020,9 +8015,7 @@ bool checkMeteorShowerWarning(int month_0, int month_0_start, int month_0_end, i
 bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
   meteor_peak_warning=false;
   for (int i; i<max_peak_days; i++) {
-    if (peak_days[i]==satData.local_day) {
-      meteor_peak_warning=true;
-    }
+    if (peak_days[i]==satData.local_day) {meteor_peak_warning=true;}
   }
   return meteor_peak_warning;
 }
