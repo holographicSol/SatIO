@@ -321,6 +321,7 @@ void writePortControllerSwitchState();
 String groundHeadingDegreesToNESW(float num);
 String getRelatedX(char * data);
 String getRelatedY(char * data);
+void setMeteorShowerWarning();
 
 char CMD_BUFFER[1024];
 
@@ -8634,6 +8635,10 @@ void trackPlanets() {
   else {clearUranus();}
   if (systemData.sidereal_track_neptune==true) {trackNeptune();}
   else {clearNeptune();}
+  // -------------------------------------------------------
+  // meteor showers
+  // -------------------------------------------------------
+  setMeteorShowerWarning();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -15892,6 +15897,10 @@ void clearAstroStats() {
   display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                            DRAW ASTROCLOCK STATS
+// ----------------------------------------------------------------------------------------------------------------
+
 bool clear_astro_stats=false;
 bool clear_sun_target=false;
 bool clear_mercury_target=false;
@@ -15986,6 +15995,260 @@ void drawAstroclockStats(double rise, double set, double az, double alt, bool en
       canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(alt)) ).c_str(), STYLE_BOLD);
       display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
     }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                      CHECK METEOR SHOWER WARNING
+// ----------------------------------------------------------------------------------------------------------------
+
+bool meteor_warning=false;
+bool meteor_peak_warning=false;
+int key=0; // 0=same month   1=spead months
+
+bool checkMeteorShowerWarning(int month_0, int month_0_start, int month_0_end, int month_1, int month_1_start, int month_1_end) {
+  meteor_warning=false;
+  // --------------------------------------
+  // meteor shower start
+  // --------------------------------------
+  if (satData.local_month==month_0) {
+    if (satData.local_day>=month_0_start) {
+      meteor_warning=true;
+    }
+  }
+  // --------------------------------------
+  // meteor shower end
+  // --------------------------------------
+  if (satData.local_month==month_1) {
+    if (satData.local_day<=month_1_end) {
+      meteor_warning=true;
+    }
+  }
+  return meteor_warning;
+}
+
+bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
+  meteor_peak_warning=false;
+  // --------------------------------------
+  // meteor shower peak
+  // --------------------------------------
+  for (int i; i<max_peak_days; i++) {if (i==peak_days[i]) {meteor_peak_warning=true; break;}}
+  return meteor_peak_warning;
+}
+
+// -----------------------------------------------
+// Quadrantids
+// -----------------------------------------------
+bool meteor_shower_quadrantids_warning=false;
+bool meteor_shower_quadrantids_peak_warning=false;
+int meteor_shower_quadrantids_month_0=12;
+int meteor_shower_quadrantids_month_0_start=26;
+int meteor_shower_quadrantids_month_0_end=31;
+int meteor_shower_quadrantids_month_1=1;
+int meteor_shower_quadrantids_month_1_start=1;
+int meteor_shower_quadrantids_month_1_end=15;
+int max_meteor_shower_quadrantids_peak_days=2;
+int meteor_shower_quadrantids_peak_days[2] {3,4};
+// -----------------------------------------------
+// Lyrids
+// -----------------------------------------------
+bool meteor_shower_lyrids_warning=false;
+bool meteor_shower_lyrids_peak_warning=false;
+int meteor_shower_lyrids_month_0=4;
+int meteor_shower_lyrids_month_0_start=15;
+int meteor_shower_lyrids_month_0_end=31;
+int meteor_shower_lyrids_month_1=4;
+int meteor_shower_lyrids_month_1_start=15;
+int meteor_shower_lyrids_month_1_end=25;
+int max_meteor_shower_lyrids_peak_days=2;
+int meteor_shower_lyrids_peak_days[2] {22,23};
+// -----------------------------------------------
+// Eta Aquariids
+// -----------------------------------------------
+bool meteor_shower_etaaquariids_warning=false;
+bool meteor_shower_etaaquariids_peak_warning=false;
+int meteor_shower_etaaquariids_month_0=4;
+int meteor_shower_etaaquariids_month_0_start=19;
+int meteor_shower_etaaquariids_month_0_end=31;
+int meteor_shower_etaaquariids_month_1=5;
+int meteor_shower_etaaquariids_month_1_start=1;
+int meteor_shower_etaaquariids_month_1_end=28;
+int max_meteor_shower_etaaquariids_peak_days=2;
+int meteor_shower_etaaquariids_peak_days[2] {5,6};
+// -----------------------------------------------
+// Perseids
+// -----------------------------------------------
+bool meteor_shower_perseids_warning=false;
+bool meteor_shower_perseids_peak_warning=false;
+int meteor_shower_perseids_month_0=7;
+int meteor_shower_perseids_month_0_start=17;
+int meteor_shower_perseids_month_0_end=31;
+int meteor_shower_perseids_month_1=8;
+int meteor_shower_perseids_month_1_start=1;
+int meteor_shower_perseids_month_1_end=23;
+int max_meteor_shower_perseids_peak_days=2;
+int meteor_shower_perseids_peak_days[2] {12,13};
+// -----------------------------------------------
+// Orionids
+// -----------------------------------------------
+bool meteor_shower_orionids_warning=false;
+bool meteor_shower_orionids_peak_warning=false;
+int meteor_shower_orionids_month_0=10;
+int meteor_shower_orionids_month_0_start=2;
+int meteor_shower_orionids_month_0_end=31;
+int meteor_shower_orionids_month_1=11;
+int meteor_shower_orionids_month_1_start=1;
+int meteor_shower_orionids_month_1_end=7;
+int max_meteor_shower_orionids_peak_days=2;
+int meteor_shower_orionids_peak_days[2] {21,22};
+// -----------------------------------------------
+// Leonids
+// -----------------------------------------------
+bool meteor_shower_leonids_warning=false;
+bool meteor_shower_leonids_peak_warning=false;
+int meteor_shower_leonids_month_0=11;
+int meteor_shower_leonids_month_0_start=6;
+int meteor_shower_leonids_month_0_end=17;
+int meteor_shower_leonids_month_1=11;
+int meteor_shower_leonids_month_1_start=6;
+int meteor_shower_leonids_month_1_end=17;
+int max_meteor_shower_leonids_peak_days=2;
+int meteor_shower_leonids_peak_days[2] {17,18};
+// -----------------------------------------------
+// Geminids
+// -----------------------------------------------
+bool meteor_shower_geminids_warning=false;
+bool meteor_shower_geminids_peak_warning=false;
+int meteor_shower_geminids_month_0=11;
+int meteor_shower_geminids_month_0_start=19;
+int meteor_shower_geminids_month_0_end=31;
+int meteor_shower_geminids_month_1=12;
+int meteor_shower_geminids_month_1_start=1;
+int meteor_shower_geminids_month_1_end=24;
+int max_meteor_shower_geminids_peak_days=2;
+int meteor_shower_geminids_peak_days[2] {13,14};
+// -----------------------------------------------
+// Ursids
+// -----------------------------------------------
+bool meteor_shower_ursids_warning=false;
+bool meteor_shower_ursids_peak_warning=false;
+int meteor_shower_ursids_month_0=12;
+int meteor_shower_ursids_month_0_start=17;
+int meteor_shower_ursids_month_0_end=31;
+int meteor_shower_ursids_month_1=12;
+int meteor_shower_ursids_month_1_start=17;
+int meteor_shower_ursids_month_1_end=26;
+int max_meteor_shower_ursids_peak_days=2;
+int meteor_shower_ursids_peak_days[2] {21,22};
+
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                        SET METEOR SHOWER WARNING
+// ----------------------------------------------------------------------------------------------------------------
+
+void setMeteorShowerWarning() {
+  // --------------------------------------------------------------------------------
+  // Quadrantids
+  // --------------------------------------------------------------------------------
+  meteor_shower_quadrantids_warning=checkMeteorShowerWarning(
+    meteor_shower_quadrantids_month_0,
+    meteor_shower_quadrantids_month_0_start, meteor_shower_quadrantids_month_0_end,
+    meteor_shower_quadrantids_month_1,
+    meteor_shower_quadrantids_month_1_start, meteor_shower_quadrantids_month_1_end);
+  if (meteor_shower_quadrantids_warning==true) {
+    meteor_shower_quadrantids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_quadrantids_peak_days,
+      max_meteor_shower_quadrantids_peak_days);
+  }
+  // --------------------------------------------------------------------------------
+  // Lyrids
+  // --------------------------------------------------------------------------------
+  meteor_shower_lyrids_warning=checkMeteorShowerWarning(
+    meteor_shower_lyrids_month_0,
+    meteor_shower_lyrids_month_0_start, meteor_shower_lyrids_month_0_end,
+    meteor_shower_lyrids_month_1,
+    meteor_shower_lyrids_month_1_start, meteor_shower_lyrids_month_1_end);
+  if (meteor_shower_lyrids_warning==true) {
+    meteor_shower_lyrids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_lyrids_peak_days,
+      max_meteor_shower_lyrids_peak_days);
+  }
+  // --------------------------------------------------------------------------------
+  // Eta Aquariids
+  // --------------------------------------------------------------------------------
+  meteor_shower_etaaquariids_warning=checkMeteorShowerWarning(
+    meteor_shower_etaaquariids_month_0,
+    meteor_shower_etaaquariids_month_0_start, meteor_shower_etaaquariids_month_0_end,
+    meteor_shower_etaaquariids_month_1,
+    meteor_shower_etaaquariids_month_1_start, meteor_shower_etaaquariids_month_1_end);
+  if (meteor_shower_etaaquariids_warning==true) {
+    meteor_shower_etaaquariids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_etaaquariids_peak_days,
+      max_meteor_shower_etaaquariids_peak_days);
+  }
+  // --------------------------------------------------------------------------------
+  // Perseids
+  // --------------------------------------------------------------------------------
+  meteor_shower_perseids_warning=checkMeteorShowerWarning(
+    meteor_shower_perseids_month_0,
+    meteor_shower_perseids_month_0_start, meteor_shower_perseids_month_0_end,
+    meteor_shower_perseids_month_1,
+    meteor_shower_perseids_month_1_start, meteor_shower_perseids_month_1_end);
+  if (meteor_shower_perseids_warning==true) {
+    meteor_shower_perseids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_perseids_peak_days,
+      max_meteor_shower_perseids_peak_days);
+  }
+  // --------------------------------------------------------------------------------
+  // Orionids
+  // --------------------------------------------------------------------------------
+  meteor_shower_orionids_warning=checkMeteorShowerWarning(
+    meteor_shower_orionids_month_0,
+    meteor_shower_orionids_month_0_start, meteor_shower_orionids_month_0_end,
+    meteor_shower_orionids_month_1,
+    meteor_shower_orionids_month_1_start, meteor_shower_orionids_month_1_end);
+  if (meteor_shower_orionids_warning==true) {
+    meteor_shower_orionids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_orionids_peak_days,
+      max_meteor_shower_orionids_peak_days);
+  }
+  // --------------------------------------------------------------------------------
+  // Leonids
+  // --------------------------------------------------------------------------------
+  meteor_shower_leonids_warning=checkMeteorShowerWarning(
+    meteor_shower_leonids_month_0,
+    meteor_shower_leonids_month_0_start, meteor_shower_leonids_month_0_end,
+    meteor_shower_leonids_month_1,
+    meteor_shower_leonids_month_1_start, meteor_shower_leonids_month_1_end);
+  if (meteor_shower_leonids_warning==true) {
+    meteor_shower_leonids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_leonids_peak_days,
+      max_meteor_shower_leonids_peak_days);
+  }
+  // --------------------------------------------------------------------------------
+  // Geminids
+  // --------------------------------------------------------------------------------
+  meteor_shower_geminids_warning=checkMeteorShowerWarning(
+    meteor_shower_geminids_month_0,
+    meteor_shower_geminids_month_0_start, meteor_shower_geminids_month_0_end,
+    meteor_shower_geminids_month_1,
+    meteor_shower_geminids_month_1_start, meteor_shower_geminids_month_1_end);
+  if (meteor_shower_geminids_warning==true) {
+    meteor_shower_geminids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_geminids_peak_days,
+      max_meteor_shower_geminids_peak_days);
+  }
+  // --------------------------------------------------------------------------------
+  // Ursids
+  // --------------------------------------------------------------------------------
+  meteor_shower_ursids_warning=checkMeteorShowerWarning(
+    meteor_shower_ursids_month_0,
+    meteor_shower_ursids_month_0_start, meteor_shower_ursids_month_0_end,
+    meteor_shower_ursids_month_1,
+    meteor_shower_ursids_month_1_start, meteor_shower_ursids_month_1_end);
+  if (meteor_shower_ursids_warning==true) {
+    meteor_shower_ursids_peak_warning=checkMeteorShowerPeakWarning(
+      meteor_shower_ursids_peak_days,
+      max_meteor_shower_ursids_peak_days);
   }
 }
 
