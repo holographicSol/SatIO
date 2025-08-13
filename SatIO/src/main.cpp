@@ -16359,11 +16359,11 @@ void UpdateUI(void * pvParamters) {
           // ------------------------------------------------
           canvas8x8.clear();
           display.setColor(TFT_BLACK);
-          tft.drawRect(2, 25, 23, 13, TFT_BLACK);
-          if (summarize_MeteorShowerWarning()==true) {display.setColor(RGB_COLOR16(255,255,0)); tft.drawRect(2, 25, 12, 12, RGB_COLOR16(255,255,0));}
-          if (summarize_MeteorShowerPeakWarning()==true) {display.setColor(RGB_COLOR16(255,0,0)); tft.drawRect(2, 25, 12, 12, RGB_COLOR16(255,0,0));}
+          tft.drawRect(3, 26, 23, 13, TFT_BLACK);
+          if (summarize_MeteorShowerWarning()==true) {display.setColor(RGB_COLOR16(255,255,0)); tft.drawRect(3, 26, 12, 12, RGB_COLOR16(255,255,0));}
+          if (summarize_MeteorShowerPeakWarning()==true) {display.setColor(RGB_COLOR16(255,0,0)); tft.drawRect(3, 26, 12, 12, RGB_COLOR16(255,0,0));}
           canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
-          display.drawCanvas(4, 27, canvas8x8);
+          display.drawCanvas(5, 28, canvas8x8);
         }
       }
       // ------------------------------------------------
