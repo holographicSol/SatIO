@@ -480,6 +480,19 @@ https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sha
     SFlagGPATTRange: Returns bool, Requires X (SFlagGPATT) to Y (SFlagGPATT).
 
 
+    [Meteors]
+    Meteors: Returns bool. Requires X (0-8). Requires Y (0: in datetime range, 1: in peak datetime range).
+    X 0-8 (Meteors selection):
+    0: Quadrantids
+    1: Lyrids
+    2: Eta Aquariids
+    3: Perseids
+    4: Orionids
+    5: Leonids
+    6: Geminids
+    7: Ursids
+
+
     [Sun]
     SunAzRange: Returns bool, Requires X (SunAz) to Y (SunAz).
     SunAltRange: Returns bool, Requires X (SunAlt) to Y (SunAlt).
