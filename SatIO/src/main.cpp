@@ -16004,8 +16004,9 @@ void drawAstroclockStats(double rise, double set, double az, double alt, bool en
 
 bool meteor_warning=false;
 bool meteor_peak_warning=false;
-int key=0; // 0=same month   1=spead months
-
+// -----------------------------------------------
+// meteor shower range
+// -----------------------------------------------
 bool checkMeteorShowerWarning(int month_0, int month_0_start, int month_0_end, int month_1, int month_1_start, int month_1_end) {
   meteor_warning=false;
   // --------------------------------------
@@ -16026,12 +16027,11 @@ bool checkMeteorShowerWarning(int month_0, int month_0_start, int month_0_end, i
   }
   return meteor_warning;
 }
-
+// -----------------------------------------------
+// meteor shower peak
+// -----------------------------------------------
 bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
   meteor_peak_warning=false;
-  // --------------------------------------
-  // meteor shower peak
-  // --------------------------------------
   for (int i; i<max_peak_days; i++) {if (i==peak_days[i]) {meteor_peak_warning=true; break;}}
   return meteor_peak_warning;
 }
