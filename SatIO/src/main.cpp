@@ -8120,8 +8120,8 @@ int meteor_shower_peaks[max_meteor_showers][2]={
   1: in peak datetime range
 */
 bool meteor_shower_warning_system[max_meteor_showers][2]={
-  {false,false}, {false,false}, {false,false}, {false,false},
-  {false,false}, {false,false}, {false,false}, {false,false}
+  {false,false}, {false,false}, {false,false}, {false,false}, // 0-3
+  {false,false}, {false,false}, {false,false}, {false,false}  // 4-7
 };
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                        SET METEOR SHOWER WARNING
