@@ -8640,9 +8640,9 @@ void trackPlanets() {
   else {clearUranus();}
   if (systemData.sidereal_track_neptune==true) {trackNeptune();}
   else {clearNeptune();}
-  // -------------------------------------------------------
-  // meteor showers
-  // -------------------------------------------------------
+  // ------------------------------------------------------------
+  // meteor showers (move to new function or rename trackPlanets)
+  // ------------------------------------------------------------
   setMeteorShowerWarning();
 }
 
@@ -16004,13 +16004,14 @@ void drawAstroclockStats(double rise, double set, double az, double alt, bool en
 }
 
 // ----------------------------------------------------------------------------------------------------------------
-//                                                                                      CHECK METEOR SHOWER WARNING
+//                                                                                     METEOR SHOWER WARNING SYSTEM
 // ----------------------------------------------------------------------------------------------------------------
 
 bool meteor_warning=false;
 bool meteor_peak_warning=false;
+
 // -----------------------------------------------
-// meteor shower range
+//                 METEOR SHOWER IN DATETIME RANGE
 // -----------------------------------------------
 bool checkMeteorShowerWarning(int month_0, int month_0_start, int month_0_end, int month_1, int month_1_start, int month_1_end) {
   meteor_warning=false;
@@ -16032,8 +16033,9 @@ bool checkMeteorShowerWarning(int month_0, int month_0_start, int month_0_end, i
   }
   return meteor_warning;
 }
+
 // -----------------------------------------------
-// meteor shower peak
+//            METEOR SHOWER IN PEAK DATETIME RANGE
 // -----------------------------------------------
 bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
   meteor_peak_warning=false;
@@ -16137,7 +16139,6 @@ bool meteorshower_warning[max_meteorshowers][2]={
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                        SET METEOR SHOWER WARNING
 // ----------------------------------------------------------------------------------------------------------------
-
 void setMeteorShowerWarning() {
   for (int i; i<max_meteorshowers; i++) {
     meteorshower_warning[i][0]=checkMeteorShowerWarning(
