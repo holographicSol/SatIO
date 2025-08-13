@@ -8026,14 +8026,14 @@ bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
 #define max_meteor_showers 8
 
 char meteor_shower_names[max_meteor_showers][56]={
-  "Quadrantids",
-  "Lyrids",
-  "Eta Aquariids",
-  "Perseids",
-  "Orionids",
-  "Leonids",
-  "Geminids",
-  "Ursids"
+  "Quadrantids",   // 0
+  "Lyrids",        // 1
+  "Eta Aquariids", // 2
+  "Perseids",      // 3
+  "Orionids",      // 4
+  "Leonids",       // 5
+  "Geminids",      // 6
+  "Ursids"         // 7
 };
 /*
   0: month_0
@@ -8047,35 +8047,35 @@ char meteor_shower_names[max_meteor_showers][56]={
 int meteor_shower_datetime[max_meteor_showers][7]={
   // {0, 0, 0, 0, 0, 0, 0},
   // ----------------------------
-  // Quadrantids
+  // Quadrantids                0
   // ----------------------------
   {12, 26, 31, 1, 1, 15, 2},
   // ----------------------------
-  // Lyrids
+  // Lyrids                     1
   // ----------------------------
   {4, 15, 31, 4, 15, 25, 2},
   // ----------------------------
-  // Eta Aquariids
+  // Eta Aquariids              2
   // ----------------------------
   {4, 19, 31, 5, 1, 28, 2},
   // ----------------------------
-  // Perseids
+  // Perseids                   3
   // ----------------------------
   {7, 17, 31, 8, 1, 23, 2},
   // ----------------------------
-  // Orionids
+  // Orionids                   4
   // ----------------------------
   {10, 2, 31, 11, 1, 7, 2},
   // ----------------------------
-  // Leonids
+  // Leonids                    5
   // ----------------------------
   {11, 6, 17, 11, 6, 17, 2},
   // ----------------------------
-  // Geminids
+  // Geminids                   6
   // ----------------------------
   {11, 19, 31, 12, 1, 24, 2},
   // ----------------------------
-  // Ursids
+  // Ursids                     7
   // ----------------------------
   {12, 17, 31, 12, 17, 26, 2},
 };
@@ -8084,35 +8084,35 @@ int meteor_shower_datetime[max_meteor_showers][7]={
 */
 int meteor_shower_peaks[max_meteor_showers][2]={
   // ----------------------------
-  // Quadrantids
+  // Quadrantids                0
   // ----------------------------
   {3, 4},
   // ----------------------------
-  // Lyrids
+  // Lyrids                     1
   // ----------------------------
   {22, 23},
   // ----------------------------
-  // Eta Aquariids
+  // Eta Aquariids              2
   // ----------------------------
   {5, 6},
   // ----------------------------
-  // Perseids
+  // Perseids                   3
   // ----------------------------
   {12, 13},
   // ----------------------------
-  // Orionids
+  // Orionids                   4
   // ----------------------------
   {21, 22},
   // ----------------------------
-  // Leonids
+  // Leonids                    5
   // ----------------------------
   {17, 18},
   // ----------------------------
-  // Geminids
+  // Geminids                   6
   // ----------------------------
   {13, 14},
   // ----------------------------
-  // Ursids
+  // Ursids                     7
   // ----------------------------
   {21, 22},
 };
