@@ -2035,7 +2035,7 @@ struct SiderealObjectStruct {
     "Herschel 400 Table",  // 6
   };
 };
-SiderealObjectStruct siderealObjectData;s
+SiderealObjectStruct siderealObjectData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DATA: VALIDATION
