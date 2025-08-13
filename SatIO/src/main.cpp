@@ -8045,7 +8045,6 @@ char meteor_shower_names[max_meteor_showers][56]={
   6: max_peak_days
 */
 int meteor_shower_datetime[max_meteor_showers][7]={
-  // {0, 0, 0, 0, 0, 0, 0},
   // ----------------------------
   // Quadrantids                0
   // ----------------------------
