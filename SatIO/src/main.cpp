@@ -15888,9 +15888,18 @@ bool clear_saturn_target=false;
 bool clear_uranus_target=false;
 bool clear_neptune_target=false;
 
-void drawAstroclockStats(double rise, double set, double az, double alt) {
-  if (alt>=0) {astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
-  else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,128,0);}
+void drawAstroclockStats(double rise, double set, double az, double alt, bool enabled) {
+  // --------------------------------------------
+  // tracking enabled
+  // --------------------------------------------
+  if (enabled==true) {
+    if (alt>=0) {astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
+    else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,128,0);}
+  }
+  // --------------------------------------------
+  // tracking disabled
+  // --------------------------------------------
+  else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(128,128,0);}
   // --------------------------------------------
   // de-emphasize target
   // --------------------------------------------
@@ -16103,17 +16112,17 @@ void UpdateUI(void * pvParamters) {
             // ------------------------------------------------
             // astro stat
             // ------------------------------------------------
-            if (astroclock_key==0)       {drawAstroclockStats(0,0,0,0);}
-            else if (astroclock_key==1)  {drawAstroclockStats(siderealPlanetData.sun_r,siderealPlanetData.sun_s,siderealPlanetData.sun_az,siderealPlanetData.sun_alt);}
-            else if (astroclock_key==2)  {drawAstroclockStats(siderealPlanetData.mercury_r,siderealPlanetData.mercury_s,siderealPlanetData.mercury_az,siderealPlanetData.mercury_alt);}
-            else if (astroclock_key==3)  {drawAstroclockStats(siderealPlanetData.venus_r,siderealPlanetData.venus_s,siderealPlanetData.venus_az,siderealPlanetData.venus_alt);}
-            else if (astroclock_key==4)  {drawAstroclockStats(0,0,0,0);}
-            else if (astroclock_key==5)  {drawAstroclockStats(siderealPlanetData.moon_r,siderealPlanetData.moon_s,siderealPlanetData.moon_az,siderealPlanetData.moon_alt);}
-            else if (astroclock_key==6)  {drawAstroclockStats(siderealPlanetData.mars_r,siderealPlanetData.mars_s,siderealPlanetData.mars_az,siderealPlanetData.mars_alt);}
-            else if (astroclock_key==7)  {drawAstroclockStats(siderealPlanetData.jupiter_r,siderealPlanetData.jupiter_s,siderealPlanetData.jupiter_az,siderealPlanetData.jupiter_alt);}
-            else if (astroclock_key==8)  {drawAstroclockStats(siderealPlanetData.saturn_r,siderealPlanetData.saturn_s,siderealPlanetData.saturn_az,siderealPlanetData.saturn_alt);}
-            else if (astroclock_key==9)  {drawAstroclockStats(siderealPlanetData.uranus_r,siderealPlanetData.uranus_s,siderealPlanetData.uranus_az,siderealPlanetData.uranus_alt);}
-            else if (astroclock_key==10) {drawAstroclockStats(siderealPlanetData.neptune_r,siderealPlanetData.neptune_s,siderealPlanetData.neptune_az,siderealPlanetData.neptune_alt);}
+            if (astroclock_key==0)       {drawAstroclockStats(0,0,0,0,true);}
+            else if (astroclock_key==1)  {drawAstroclockStats(siderealPlanetData.sun_r,siderealPlanetData.sun_s,siderealPlanetData.sun_az,siderealPlanetData.sun_alt,systemData.sidereal_track_sun);}
+            else if (astroclock_key==2)  {drawAstroclockStats(siderealPlanetData.mercury_r,siderealPlanetData.mercury_s,siderealPlanetData.mercury_az,siderealPlanetData.mercury_alt,systemData.sidereal_track_mercury);}
+            else if (astroclock_key==3)  {drawAstroclockStats(siderealPlanetData.venus_r,siderealPlanetData.venus_s,siderealPlanetData.venus_az,siderealPlanetData.venus_alt,systemData.sidereal_track_venus);}
+            else if (astroclock_key==4)  {drawAstroclockStats(0,0,0,0,true);}
+            else if (astroclock_key==5)  {drawAstroclockStats(siderealPlanetData.moon_r,siderealPlanetData.moon_s,siderealPlanetData.moon_az,siderealPlanetData.moon_alt,systemData.sidereal_track_moon);}
+            else if (astroclock_key==6)  {drawAstroclockStats(siderealPlanetData.mars_r,siderealPlanetData.mars_s,siderealPlanetData.mars_az,siderealPlanetData.mars_alt,systemData.sidereal_track_mars);}
+            else if (astroclock_key==7)  {drawAstroclockStats(siderealPlanetData.jupiter_r,siderealPlanetData.jupiter_s,siderealPlanetData.jupiter_az,siderealPlanetData.jupiter_alt,systemData.sidereal_track_jupiter);}
+            else if (astroclock_key==8)  {drawAstroclockStats(siderealPlanetData.saturn_r,siderealPlanetData.saturn_s,siderealPlanetData.saturn_az,siderealPlanetData.saturn_alt,systemData.sidereal_track_saturn);}
+            else if (astroclock_key==9)  {drawAstroclockStats(siderealPlanetData.uranus_r,siderealPlanetData.uranus_s,siderealPlanetData.uranus_az,siderealPlanetData.uranus_alt,systemData.sidereal_track_uranus);}
+            else if (astroclock_key==10) {drawAstroclockStats(siderealPlanetData.neptune_r,siderealPlanetData.neptune_s,siderealPlanetData.neptune_az,siderealPlanetData.neptune_alt,systemData.sidereal_track_neptune);}
           }
           // ------------------------------------------------
           // draw planets on top
