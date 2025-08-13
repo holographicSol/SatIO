@@ -21296,6 +21296,7 @@ static void PrintHelp() {
   Serial.println("switch output saturn                      Return Saturn Sentence With Checksum.");
   Serial.println("switch output uranus                      Return Uranus Sentence With Checksum.");
   Serial.println("switch output neptune                     Return Neptune Sentence With Checksum.");
+  Serial.println("switch output meteors                     Return Meteors Sentence With Checksum.");
 
   Serial.println();
   Serial.println("---------------------------------------------------------------------------------------------------");
@@ -21439,7 +21440,7 @@ static void PrintHelp() {
 
   Serial.println("");
   Serial.println("---------------------------------------------------------------------------------------------------");
-  Serial.println  ("                                                                                INFORMATION (SUN)");
+  Serial.println("                                                                                  INFORMATION (SUN)");
   Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print sun ra                              Return Sun Right Ascension.");
   Serial.println("print sun dec                             Return Sun Declination.");
@@ -21844,6 +21845,7 @@ static void CmdProcess(void) {
     else if (strcmp(CMD_BUFFER, "switch output saturn\r")==0) {systemData.output_saturn_enabled^=true;}
     else if (strcmp(CMD_BUFFER, "switch output uranus\r")==0) {systemData.output_uranus_enabled^=true;}
     else if (strcmp(CMD_BUFFER, "switch output neptune\r")==0) {systemData.output_neptune_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output meteors\r")==0) {systemData.output_meteors_enabled^=true;}
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: SATIO
     // ------------------------------------------------------------------------------------------------------------------------------
