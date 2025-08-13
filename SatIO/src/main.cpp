@@ -15172,7 +15172,7 @@ int mercury_orbit_radius=7;
 int mercury_sprite_size=3;
 int mercury_sprite_center=1;
 int mercury_radius=1;
-int mercury_ui_x = mercury_orbit_radius;
+int mercury_ui_x = solar_system_center_x+mercury_orbit_radius;
 int mercury_ui_y = solar_system_center_y;
 
 int venus_color[1]={RGB_COLOR16(255,255,0)};
@@ -15180,7 +15180,7 @@ int venus_orbit_radius=13;
 int venus_sprite_size=3;
 int venus_sprite_center=1;
 int venus_radius=1;
-int venus_ui_x = venus_orbit_radius;
+int venus_ui_x = solar_system_center_x+venus_orbit_radius;
 int venus_ui_y = solar_system_center_y;
 
 int earth_color[1]={RGB_COLOR16(0,0,255)};
@@ -15188,7 +15188,7 @@ int earth_orbit_radius=22;
 int earth_sprite_size=3;
 int earth_sprite_center=1;
 int earth_radius=1;
-int earth_ui_x = earth_orbit_radius;
+int earth_ui_x = solar_system_center_x+earth_orbit_radius;
 int earth_ui_y = solar_system_center_y;
 
 int moon_color[2]={RGB_COLOR16(128,128,128)};
@@ -15204,7 +15204,7 @@ int mars_orbit_radius=31;
 int mars_sprite_size=3;
 int mars_sprite_center=1;
 int mars_radius=1;
-int mars_ui_x = mars_orbit_radius;
+int mars_ui_x = solar_system_center_x+mars_orbit_radius;
 int mars_ui_y = solar_system_center_y;
 
 int jupiter_color[1]={RGB_COLOR16(128,128,128)};
@@ -15212,7 +15212,7 @@ int jupiter_orbit_radius=37;
 int jupiter_sprite_size=5;
 int jupiter_sprite_center=2;
 int jupiter_radius=2;
-int jupiter_ui_x = jupiter_orbit_radius;
+int jupiter_ui_x = solar_system_center_x+jupiter_orbit_radius;
 int jupiter_ui_y = solar_system_center_y;
 
 int saturn_color[1]={RGB_COLOR16(255,255,0)};
@@ -15221,7 +15221,7 @@ int saturn_sprite_size=7;
 int saturn_sprite_center=3;
 int saturn_rings_radius=3;
 int saturn_radius=1;
-int saturn_ui_x = saturn_orbit_radius;
+int saturn_ui_x = solar_system_center_x+saturn_orbit_radius;
 int saturn_ui_y = solar_system_center_y;
 
 int uranus_color[1]={RGB_COLOR16(0,255,255)};
@@ -15229,7 +15229,7 @@ int uranus_orbit_radius=51;
 int uranus_sprite_size=3;
 int uranus_sprite_center=1;
 int uranus_radius=1;
-int uranus_ui_x = uranus_orbit_radius;
+int uranus_ui_x = solar_system_center_x+uranus_orbit_radius;
 int uranus_ui_y = solar_system_center_y;
 
 int neptune_color[1]={RGB_COLOR16(255,0,255)};
@@ -15237,7 +15237,7 @@ int neptune_orbit_radius=56;
 int neptune_sprite_size=3;
 int neptune_sprite_center=1;
 int neptune_radius=1;
-int neptune_ui_x = neptune_orbit_radius;
+int neptune_ui_x = solar_system_center_x+neptune_orbit_radius;
 int neptune_ui_y = solar_system_center_y;
 
 int astroclock_angle_offset=90;
@@ -15469,26 +15469,33 @@ void drawOrbitalPaths() {
     // Mercury
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.mercury_alt<0) {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[0]);
-      }
-    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[1]);}
+    if (systemData.sidereal_track_mercury==true) {
+      if (siderealPlanetData.mercury_alt<0) {
+        tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[0]);
+        }
+      else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[1]);}
+    }
+    // else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, celestial_object_altitude_color[1]);}
     // --------------------------------------------------
     // Venus
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.venus_alt<0) {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[0]);
-      }
-    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[1]);}
+    if (systemData.sidereal_track_venus==true) {
+      if (siderealPlanetData.venus_alt<0) {
+        tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[0]);
+        }
+      else {tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, celestial_object_altitude_color[1]);}
+    }
     // --------------------------------------------------
     // Moon
     // --------------------------------------------------
     tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.moon_alt<0) {
-      tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[2]);
-      }
-    else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[3]);}
+    if (systemData.sidereal_track_moon==true) {
+      if (siderealPlanetData.moon_alt<0) {
+        tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[2]);
+        }
+      else {tft.drawCircle(earth_ui_x+earth_sprite_center, earth_ui_y+earth_sprite_center, moon_orbit_radius, celestial_object_altitude_color[3]);}
+    }
     // --------------------------------------------------
     // Earth
     // --------------------------------------------------
@@ -15498,42 +15505,52 @@ void drawOrbitalPaths() {
     // Mars
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.mars_alt<0) {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[0]);
-      }
-    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[1]);}
+    if (systemData.sidereal_track_mars==true) {
+      if (siderealPlanetData.mars_alt<0) {
+        tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[0]);
+        }
+      else {tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, celestial_object_altitude_color[1]);}
+    }
     // --------------------------------------------------
     // Jupiter
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.jupiter_alt<0) {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[0]);
-      }
-    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[1]);}
+    if (systemData.sidereal_track_jupiter==true) {
+      if (siderealPlanetData.jupiter_alt<0) {
+        tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[0]);
+        }
+      else {tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, celestial_object_altitude_color[1]);}
+    }
     // --------------------------------------------------
     // Saturn
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.saturn_alt<0) {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[0]);
-      }
-    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[1]);}
+    if (systemData.sidereal_track_venus==true) {
+      if (siderealPlanetData.saturn_alt<0) {
+        tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[0]);
+        }
+      else {tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, celestial_object_altitude_color[1]);}
+    }
     // --------------------------------------------------
     // Uranus
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.uranus_alt<0) {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[0]);
-      }
-    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[1]);}
+    if (systemData.sidereal_track_uranus==true) {
+      if (siderealPlanetData.uranus_alt<0) {
+        tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[0]);
+        }
+      else {tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, celestial_object_altitude_color[1]);}
+    }
     // --------------------------------------------------
     // Neptune
     // --------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
-    if (siderealPlanetData.neptune_alt<0) {
-      tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[0]);
-      }
-    else {tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[1]);}
+    if (systemData.sidereal_track_neptune==true) {
+      if (siderealPlanetData.neptune_alt<0) {
+        tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[0]);
+        }
+      else {tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, celestial_object_altitude_color[1]);}
+    }
 }
 
 bool cleared_mercury=false;
@@ -15770,7 +15787,6 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  // else {if (cleared_jupiter==false) {ClearAstroClockJupiter(); cleared_jupiter=true;}}
   // -----------------------------------------------------------------
   //                                                            SATURN
   // -----------------------------------------------------------------
@@ -15896,10 +15912,9 @@ void drawAstroclockStats(double rise, double set, double az, double alt, bool en
     if (alt>=0) {astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
     else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,128,0);}
   }
-  // --------------------------------------------
-  // tracking disabled
-  // --------------------------------------------
-  else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(128,128,0);}
+  else {
+    astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);
+  }
   // --------------------------------------------
   // de-emphasize target
   // --------------------------------------------
