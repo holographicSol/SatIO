@@ -16006,8 +16006,6 @@ void drawAstroclockStats(double rise, double set, double az, double alt, bool en
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                      CHECK METEOR SHOWER WARNING
 // ----------------------------------------------------------------------------------------------------------------
-// the following values are approximate and may be subject to change
-// -----------------------------------------------------------------
 
 bool meteor_warning=false;
 bool meteor_peak_warning=false;
@@ -16043,7 +16041,10 @@ bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
   return meteor_peak_warning;
 }
 
-int max_meteorshowers=8;
+// ----------------------------------------------------------------------------------------
+// the following values are not exhaustive, are approximate, and may be subject to change
+// ----------------------------------------------------------------------------------------
+#define max_meteorshowers 8
 /*
   0: month_0
   1: month_0_start
@@ -16053,7 +16054,7 @@ int max_meteorshowers=8;
   5: month_1_end
   6: max_peak_days
 */
-int meteorshower_datetime[8][7]={
+int meteorshower_datetime[max_meteorshowers][7]={
   // {0, 0, 0, 0, 0, 0, 0},
   // ----------------------------
   // Quadrantids
@@ -16091,7 +16092,7 @@ int meteorshower_datetime[8][7]={
 /*
   0-N: date days
 */
-int meteorshower_peaks[8][2]={
+int meteorshower_peaks[max_meteorshowers][2]={
   // ----------------------------
   // Quadrantids
   // ----------------------------
@@ -16129,7 +16130,7 @@ int meteorshower_peaks[8][2]={
   0: in datetime range
   1: in peak datetime range
 */
-bool meteorshower_warning[8][2]={
+bool meteorshower_warning[max_meteorshowers][2]={
   {false,false}, {false,false}, {false,false}, {false,false},
   {false,false}, {false,false}, {false,false}, {false,false}
 };
