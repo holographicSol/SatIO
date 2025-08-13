@@ -8126,6 +8126,7 @@ bool meteor_shower_warning_system[max_meteor_showers][2]={
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                        SET METEOR SHOWER WARNING
 // ----------------------------------------------------------------------------------------------------------------
+
 void setMeteorShowerWarning() {
   for (int i; i<max_meteor_showers; i++) {
     meteor_shower_warning_system[i][0]=checkMeteorShowerWarning(
@@ -8139,6 +8140,20 @@ void setMeteorShowerWarning() {
         meteor_shower_datetime[i][6]);
     }
   }
+}
+
+bool meteor_shower_sum=false;
+bool summarize_MeteorShowerWarning() {
+  meteor_shower_sum=false;
+  for (int i; i<max_meteor_showers; i++) {if (meteor_shower_warning_system[i][0]==true) {meteor_shower_sum=true;}}
+  return meteor_shower_sum;
+}
+
+bool meteor_shower_peak_sum=false;
+bool summarize_MeteorShowerPeakWarning() {
+  meteor_shower_peak_sum=false;
+  for (int i; i<max_meteor_showers; i++) {if (meteor_shower_warning_system[i][1]==true) {meteor_shower_peak_sum=true;}}
+  return meteor_shower_peak_sum;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -16339,24 +16354,18 @@ void UpdateUI(void * pvParamters) {
           // ------------------------------------------------
           drawPlanets();
           startup_draw_planets=true;
+          // ------------------------------------------------
+          // draw meteor data
+          // ------------------------------------------------
+          canvas8x8.clear();
+          display.setColor(TFT_BLACK);
+          tft.drawRect(2, 25, 23, 13, TFT_BLACK);
+          if (summarize_MeteorShowerWarning()==true) {display.setColor(RGB_COLOR16(255,255,0)); tft.drawRect(2, 25, 12, 12, RGB_COLOR16(255,255,0));}
+          if (summarize_MeteorShowerPeakWarning()==true) {display.setColor(RGB_COLOR16(255,0,0)); tft.drawRect(2, 25, 12, 12, RGB_COLOR16(255,0,0));}
+          canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
+          display.drawCanvas(4, 27, canvas8x8);
         }
       }
-
-      // canvas56x8.clear();
-      // display.setColor(systemData.color_title);
-      // canvas56x8.printFixed(0, 0, String(siderealPlanetData.saturn_r).c_str(), STYLE_BOLD);
-      // display.drawCanvas(0, 12, canvas56x8);
-
-      // canvas56x8.clear();
-      // display.setColor(systemData.color_title);
-      // canvas56x8.printFixed(0, 0, String(siderealPlanetData.saturn_alt).c_str(), STYLE_BOLD);
-      // display.drawCanvas(0, 22, canvas56x8);
-
-      // canvas56x8.clear();
-      // display.setColor(systemData.color_title);
-      // canvas56x8.printFixed(0, 0, String(siderealPlanetData.saturn_az).c_str(), STYLE_BOLD);
-      // display.drawCanvas(0, 32, canvas56x8);
-
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
