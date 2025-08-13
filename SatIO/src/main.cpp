@@ -8024,6 +8024,17 @@ bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
 // the following values are not exhaustive, are approximate, and may be subject to change
 // ----------------------------------------------------------------------------------------
 #define max_meteor_showers 8
+
+char meteor_shower_names[max_meteor_showers][56]={
+  "Quadrantids",
+  "Lyrids",
+  "Eta Aquariids",
+  "Perseids",
+  "Orionids",
+  "Leonids",
+  "Geminids",
+  "Ursids"
+};
 /*
   0: month_0
   1: month_0_start
