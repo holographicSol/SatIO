@@ -15673,7 +15673,7 @@ void drawPlanets() {
     hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_mercury==false) ClearAstroClockMercury(); cleared_mercury=true;}
   // -----------------------------------------------------------------
   //                                                             VENUS
   // -----------------------------------------------------------------
@@ -15695,7 +15695,7 @@ void drawPlanets() {
     hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_venus==false) ClearAstroClockVenus(); cleared_venus=true;}
   // -----------------------------------------------------------------
   //                                                             EARTH
   // -----------------------------------------------------------------
@@ -15720,7 +15720,7 @@ void drawPlanets() {
     hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_earth==false) ClearAstroClockEarth(); cleared_earth=true;}
   // -----------------------------------------------------------------
   //                                                              MOON
   // -----------------------------------------------------------------
@@ -15742,7 +15742,7 @@ void drawPlanets() {
     hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_moon==false) ClearAstroClockMoon(); cleared_moon=true;}
   // -----------------------------------------------------------------
   //                                                              MARS
   // -----------------------------------------------------------------
@@ -15764,7 +15764,7 @@ void drawPlanets() {
     hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_mars==false) ClearAstroClockMars(); cleared_mars=true;}
   // -----------------------------------------------------------------
   //                                                           JUPITER
   // -----------------------------------------------------------------
@@ -15786,7 +15786,7 @@ void drawPlanets() {
     hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_jupiter==false) ClearAstroClockJupiter(); cleared_jupiter=true;}
   // -----------------------------------------------------------------
   //                                                            SATURN
   // -----------------------------------------------------------------
@@ -15809,7 +15809,7 @@ void drawPlanets() {
     hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_saturn==false) ClearAstroClockSaturn(); cleared_saturn=true;}
   // -----------------------------------------------------------------
   //                                                           URANUS
   // -----------------------------------------------------------------
@@ -15831,7 +15831,7 @@ void drawPlanets() {
     hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_uranus==false) ClearAstroClockUranus(); cleared_uranus=true;}
   // -----------------------------------------------------------------
   //                                                           NEPTUNE
   // -----------------------------------------------------------------
@@ -15853,7 +15853,7 @@ void drawPlanets() {
     hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
     yield();
     hud.deleteSprite();
-  }
+  } else {if (cleared_neptune==false) ClearAstroClockNeptune(); cleared_neptune=true;}
   // -----------------------------------------------------------------
   //                                                              TEST
   // -----------------------------------------------------------------
@@ -16120,6 +16120,7 @@ void UpdateUI(void * pvParamters) {
           // gather initial ui x,y information on startup (temporary until a draw sequence has been fully ascertained)
           // this prevents initial moon orbit circle persisting after x,y have been properly set.
           // ---------------------------------------------------------------------------------------------------------
+          systemData.serial_command=true;
           if (startup_draw_planets==true) {
             drawZodiac();       // behind everything
             drawOrbitalPaths(); // behind zenith and planets
