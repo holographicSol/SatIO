@@ -16354,9 +16354,9 @@ void UpdateUI(void * pvParamters) {
           // ------------------------------------------------
           drawPlanets();
           startup_draw_planets=true;
-          // ------------------------------------------------
-          // draw meteor data
-          // ------------------------------------------------
+          // ---------------------------------------------------------------------------
+          // draw meteor warning. yellow: in datetime range. red: in peak datetime range
+          // ---------------------------------------------------------------------------
           canvas8x8.clear();
           display.setColor(TFT_BLACK);
           tft.drawRect(3, 26, 12, 12, TFT_BLACK);
