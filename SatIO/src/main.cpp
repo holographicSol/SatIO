@@ -1889,6 +1889,7 @@ Astronomy: Ra:  Right Ascension (ranges from 0 to 24 hours)
 ------------------------------------------------------------- */
 
 struct SiderealPlantetsStruct {
+  double earth_ecliptic_lat;
   double earth_ecliptic_long;
   double sun_ra;
   double sun_dec;
@@ -8338,6 +8339,7 @@ void trackSun() {
   siderealPlanetData.sun_distance=myAstro.getDistance();
   siderealPlanetData.sun_ecliptic_lat=myAstro.getEclipticLatitude();
   siderealPlanetData.sun_ecliptic_long=myAstro.getEclipticLongitude();
+  siderealPlanetData.earth_ecliptic_lat=myAstro.getEclipticLatitude();
   siderealPlanetData.earth_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doSunRiseSetTimes();
   siderealPlanetData.sun_r =myAstro.getSunriseTime();
@@ -16116,20 +16118,21 @@ int astro_stat_border_0 = RGB_COLOR16(0,128,0);
 int astro_stat_target_0 = RGB_COLOR16(255,0,0);
 
 void clearAstroStats() {
-  tft.drawRect(2, 11, 36, 13, TFT_BLACK);
-  tft.drawRect(tft.width()-38, 11, 36, 13, TFT_BLACK);
+
+  tft.drawRect(2, 11, 42, 13, TFT_BLACK);
+  tft.drawRect(tft.width()-44, 11, 42, 13, TFT_BLACK);
   tft.drawRect(2, tft.height()-15, 42, 13, TFT_BLACK);
-  tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, TFT_BLACK);
+  tft.drawRect(tft.width()-44, tft.height()-15, 42, 13, TFT_BLACK);
 
-  canvas32x8.clear();
+  canvas38x8.clear();
   display.setColor(astro_stat_text_0);
-  canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
-  display.drawCanvas(4, 14, canvas32x8);
+  canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
+  display.drawCanvas(4, 14, canvas38x8);
 
-  canvas32x8.clear();
+  canvas38x8.clear();
   display.setColor(astro_stat_text_0);
-  canvas32x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
-  display.drawCanvas(tft.width()-36, 14, canvas32x8);
+  canvas38x8.printFixed(0, 0, String( String("")).c_str(), STYLE_BOLD);
+  display.drawCanvas(tft.width()-42, 14, canvas38x8);
 
   canvas38x8.clear();
   display.setColor(astro_stat_text_0);
@@ -16159,16 +16162,7 @@ bool clear_uranus_target=false;
 bool clear_neptune_target=false;
 
 void drawAstroclockStats(double rise, double set, double az, double alt, bool enabled) {
-  // --------------------------------------------
-  // tracking enabled
-  // --------------------------------------------
-  if (enabled==true) {
-    if (alt>=0) {astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
-    else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,128,0);}
-  }
-  else {
-    astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);
-  }
+
   // --------------------------------------------
   // de-emphasize target
   // --------------------------------------------
@@ -16182,64 +16176,156 @@ void drawAstroclockStats(double rise, double set, double az, double alt, bool en
   if (clear_saturn_target==true)  {tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, TFT_BLACK); clear_saturn_target=false;}
   if (clear_uranus_target==true)  {tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, TFT_BLACK); clear_uranus_target=false;}
   if (clear_neptune_target==true) {tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, TFT_BLACK); clear_neptune_target=false;}
-  // --------------------------------------------
-  // utilize free screen space or simply clear
-  // --------------------------------------------
-  if (astroclock_key==0) {if (clear_astro_stats==true) {clearAstroStats(); clear_astro_stats=false;}}
-  if (astroclock_key==4) {if (clear_astro_stats==true) {clearAstroStats(); clear_astro_stats=false;}}
 
-  if (astroclock_key!=0) {
+  // --------------------------------------------
+  // clear stats
+  // --------------------------------------------
+  if      (astroclock_key==0) {if (clear_astro_stats==true) {clearAstroStats(); clear_astro_stats=false;}}
+  else if (astroclock_key==4) {if (clear_astro_stats==true) {clearAstroStats(); clear_astro_stats=false;}}
+  else                        {}
+
+  // --------------------------------------------
+  // emphasize target
+  // --------------------------------------------
+  if      (astroclock_key==1)  {clear_sun_target=true;     clear_astro_stats=true; tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==2)  {clear_mercury_target=true; clear_astro_stats=true; tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==3)  {clear_venus_target=true;   clear_astro_stats=true; tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==4)  {clear_earth_target=true;                           tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==5)  {clear_moon_target=true;    clear_astro_stats=true; tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==6)  {clear_mars_target=true;    clear_astro_stats=true; tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==7)  {clear_jupiter_target=true; clear_astro_stats=true; tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==8)  {clear_saturn_target=true;  clear_astro_stats=true; tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==9)  {clear_uranus_target=true;  clear_astro_stats=true; tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, astro_stat_target_0);}
+  else if (astroclock_key==10) {clear_neptune_target=true; clear_astro_stats=true; tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, astro_stat_target_0);}
+
+  // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // main stats
+  // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  if (astroclock_key==0) {
+    // astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);
+    // // --------------------------------------------
+    // // borders
+    // // --------------------------------------------
+    // tft.drawRect(2, 11, 42, 13, astro_stat_border_0);
+    // tft.drawRect(tft.width()-44, 11, 42, 13, astro_stat_border_0);
+    // tft.drawRect(2, tft.height()-15, 42, 13, astro_stat_border_0);
+    // tft.drawRect(tft.width()-44, tft.height()-15, 42, 13, astro_stat_border_0);
+    // // --------------------------------------------
+    // // top left 
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(4, 14, canvas38x8);
+    // // --------------------------------------------
+    // // top right
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(tft.width()-42, 14, canvas38x8);
+    // // --------------------------------------------
+    // // bottom left
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(4, tft.height()-12, canvas38x8);
+    // // --------------------------------------------
+    // // bottom right
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
+  }
+  // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // earth stats
+  // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  else if (astroclock_key==4) {
+    // astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);
+    // // --------------------------------------------
+    // // borders
+    // // --------------------------------------------
+    // tft.drawRect(2, 11, 42, 13, astro_stat_border_0);
+    // tft.drawRect(tft.width()-44, 11, 42, 13, astro_stat_border_0);
+    // tft.drawRect(2, tft.height()-15, 42, 13, astro_stat_border_0);
+    // tft.drawRect(tft.width()-44, tft.height()-15, 42, 13, astro_stat_border_0);
+    // // --------------------------------------------
+    // // top left 
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(4, 14, canvas38x8);
+    // // --------------------------------------------
+    // // top right
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(tft.width()-42, 14, canvas38x8);
+    // // --------------------------------------------
+    // // bottom left
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(4, tft.height()-12, canvas38x8);
+    // // --------------------------------------------
+    // // bottom right
+    // // --------------------------------------------
+    // canvas38x8.clear();
+    // display.setColor(astro_stat_text_0);
+    // canvas38x8.printFixed(0, 0, String( String("") + String() ).c_str(), STYLE_BOLD);
+    // display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
+  }
+  // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // other stats
+  // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  else {
     // --------------------------------------------
-    // emphasize target
+    // tracking enabled
     // --------------------------------------------
-    if      (astroclock_key==1)  {clear_sun_target=true;     clear_astro_stats=true; tft.drawRect(sun_ui_x-2, sun_ui_y-2, sun_sprite_size+5, sun_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==2)  {clear_mercury_target=true; clear_astro_stats=true; tft.drawRect(mercury_ui_x-2, mercury_ui_y-2, mercury_sprite_size+5, mercury_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==3)  {clear_venus_target=true;   clear_astro_stats=true; tft.drawRect(venus_ui_x-2, venus_ui_y-2, venus_sprite_size+5, venus_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==4)  {clear_earth_target=true;                           tft.drawRect(earth_ui_x-2, earth_ui_y-2, earth_sprite_size+5, earth_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==5)  {clear_moon_target=true;    clear_astro_stats=true; tft.drawRect(moon_ui_x-2, moon_ui_y-2, moon_sprite_size+5, moon_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==6)  {clear_mars_target=true;    clear_astro_stats=true; tft.drawRect(mars_ui_x-2, mars_ui_y-2, mars_sprite_size+5, mars_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==7)  {clear_jupiter_target=true; clear_astro_stats=true; tft.drawRect(jupiter_ui_x-2, jupiter_ui_y-2, jupiter_sprite_size+5, jupiter_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==8)  {clear_saturn_target=true;  clear_astro_stats=true; tft.drawRect(saturn_ui_x-2, saturn_ui_y-2, saturn_sprite_size+5, saturn_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==9)  {clear_uranus_target=true;  clear_astro_stats=true; tft.drawRect(uranus_ui_x-2, uranus_ui_y-2, uranus_sprite_size+5, uranus_sprite_size+5, astro_stat_target_0);}
-    else if (astroclock_key==10) {clear_neptune_target=true; clear_astro_stats=true; tft.drawRect(neptune_ui_x-2, neptune_ui_y-2, neptune_sprite_size+5, neptune_sprite_size+5, astro_stat_target_0);}
+    if (enabled==true) {
+      if (alt>=0) {astro_stat_text_0 = RGB_COLOR16(0,128,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
+      else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,128,0);}}
+    else {astro_stat_text_0 = RGB_COLOR16(128,0,0); astro_stat_border_0 = RGB_COLOR16(0,0,128);}
     // --------------------------------------------
-    // draw stats
+    // borders
     // --------------------------------------------
-    if (astroclock_key==4) {}
-    else {
-      // --------------------------------------------
-      // top left
-      // --------------------------------------------
-      tft.drawRect(2, 11, 36, 13, astro_stat_border_0);
-      canvas32x8.clear();
-      display.setColor(astro_stat_text_0);
-      canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(rise)) ).c_str(), STYLE_BOLD);
-      display.drawCanvas(4, 14, canvas32x8);
-      // --------------------------------------------
-      // top right
-      // --------------------------------------------
-      tft.drawRect(tft.width()-38, 11, 36, 13, astro_stat_border_0);
-      canvas32x8.clear();
-      display.setColor(astro_stat_text_0);
-      canvas32x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(set)) ).c_str(), STYLE_BOLD);
-      display.drawCanvas(tft.width()-36, 14, canvas32x8);
-      // --------------------------------------------
-      // bottom left
-      // --------------------------------------------
-      tft.drawRect(2, tft.height()-15, 42, 13, astro_stat_border_0);
-      canvas38x8.clear();
-      display.setColor(astro_stat_text_0);
-      canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(az)) ).c_str(), STYLE_BOLD);
-      display.drawCanvas(4, tft.height()-12, canvas38x8);
-      // --------------------------------------------
-      // bottom right
-      // --------------------------------------------
-      tft.drawRect(tft.height()-44, tft.height()-15, 42, 13, astro_stat_border_0);
-      canvas38x8.clear();
-      display.setColor(astro_stat_text_0);
-      canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(alt)) ).c_str(), STYLE_BOLD);
-      display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
-    }
+    tft.drawRect(2, 11, 42, 13, astro_stat_border_0);
+    tft.drawRect(tft.width()-44, 11, 42, 13, astro_stat_border_0);
+    tft.drawRect(2, tft.height()-15, 42, 13, astro_stat_border_0);
+    tft.drawRect(tft.width()-44, tft.height()-15, 42, 13, astro_stat_border_0);
+    // --------------------------------------------
+    // top left 
+    // --------------------------------------------
+    canvas38x8.clear();
+    display.setColor(astro_stat_text_0);
+    canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(rise)) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(4, 14, canvas38x8);
+    // --------------------------------------------
+    // top right
+    // --------------------------------------------
+    canvas38x8.clear();
+    display.setColor(astro_stat_text_0);
+    canvas38x8.printFixed(0, 0, String( String("") + String(padDigitsDoubleZero(set)) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(tft.width()-42, 14, canvas38x8);
+    // --------------------------------------------
+    // bottom left
+    // --------------------------------------------
+    canvas38x8.clear();
+    display.setColor(astro_stat_text_0);
+    canvas38x8.printFixed(0, 0, String( String("") + String(az) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(4, tft.height()-12, canvas38x8);
+    // --------------------------------------------
+    // bottom right
+    // --------------------------------------------
+    canvas38x8.clear();
+    display.setColor(astro_stat_text_0);
+    canvas38x8.printFixed(0, 0, String( String("") + String(alt) ).c_str(), STYLE_BOLD);
+    display.drawCanvas(tft.width()-42, tft.height()-12, canvas38x8);
   }
 }
 
