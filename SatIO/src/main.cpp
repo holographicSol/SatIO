@@ -16120,7 +16120,6 @@ void UpdateUI(void * pvParamters) {
           // gather initial ui x,y information on startup (temporary until a draw sequence has been fully ascertained)
           // this prevents initial moon orbit circle persisting after x,y have been properly set.
           // ---------------------------------------------------------------------------------------------------------
-          systemData.serial_command=true;
           if (startup_draw_planets==true) {
             drawZodiac();       // behind everything
             drawOrbitalPaths(); // behind zenith and planets
