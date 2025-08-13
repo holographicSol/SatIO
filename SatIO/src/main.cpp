@@ -8019,7 +8019,11 @@ bool checkMeteorShowerWarning(int month_0, int month_0_start, int month_0_end, i
 // -----------------------------------------------
 bool checkMeteorShowerPeakWarning(int peak_days[], int max_peak_days) {
   meteor_peak_warning=false;
-  for (int i; i<max_peak_days; i++) {if (i==peak_days[i]) {meteor_peak_warning=true; break;}}
+  for (int i; i<max_peak_days; i++) {
+    if (peak_days[i]==satData.local_day) {
+      meteor_peak_warning=true;
+    }
+  }
   return meteor_peak_warning;
 }
 
