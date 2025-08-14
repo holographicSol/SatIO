@@ -4905,7 +4905,9 @@ char volcano_nouns[436][3][36]={
   {"Zhupanovsky","Russia",""}, // 433
   {"Zimina","Russia","Stratovolcano"}, // 434
 };
-
+// ----------------------------------------------------
+// 0: latitude  1: longitude  2: elevation (meters)
+// ----------------------------------------------------
 float volcano_data[436][3]={
   {34.5,131.6,641}, // 0
   {-23.3,-67.62,6046}, // 1
