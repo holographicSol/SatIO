@@ -8977,6 +8977,8 @@ int meteor_shower_max_peaks[max_meteor_showers]={
 /*
   specify specific peak days (days can be specified up to coresponding max peaks).
   {0: month, 1: day}
+  note: this makes a meal of it. so long as there are not to many peak days this is fine
+        however this should be changed for a range calculation that can span months.
 */
 // ----------------------------------------------------------------------------------------
 int meteor_shower_peaks[max_meteor_showers][2][2]={
