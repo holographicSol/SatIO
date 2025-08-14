@@ -4456,6 +4456,894 @@ struct SensorDataStruct {
 };
 SensorDataStruct sensorData;
 
+// ----------------------------------------------------
+// current longest string: 34 chars = 34 bytes
+// ----------------------------------------------------
+/*
+  0: Name  1: Location
+  2: Type:
+  'Shield', 'Stratovolcano', 'Caldera', 'Submarine',
+  'Caldera, Shield', 'Complex', 'Lava dome', 'Cinder Cone',
+  'Pyroclastic cone', 'Fissure vent, Maar', 'Volcanic field',
+  'Flood Basalt', 'Plug', 'Somma', 'Maar', 'Fissure vent', '',
+  'Lava cone, Stratovolcano', 'Tuff ring'
+*/
+char volcano_strings[436][3][36]={
+  {"Abu","Japan","Shield"}, // 0
+  {"Acamarachi","Chile","Stratovolcano"}, // 1
+  {"Acatenango","Guatemala","Stratovolcano"}, // 2
+  {"Acigöl-Nevsehir","Turkey","Caldera"}, // 3
+  {"Adams","United States","Stratovolcano"}, // 4
+  {"Adams Seamount","Pacific Ocean","Submarine"}, // 5
+  {"Adatara","Japan","Stratovolcano"}, // 6
+  {"Adwa","Ethiopia","Stratovolcano"}, // 7
+  {"Afderà","Ethiopia","Stratovolcano"}, // 8
+  {"Agrigan","Mariana Islands","Stratovolcano"}, // 9
+  {"Agua","Guatemala","Stratovolcano"}, // 10
+  {"Agua de Pau","Portugal","Stratovolcano"}, // 11
+  {"Aguilera","Chile","Stratovolcano"}, // 12
+  {"Agung","Indonesia","Stratovolcano"}, // 13
+  {"Ahyi","Mariana Islands","Submarine"}, // 14
+  {"Akademia Nauk","Russia","Caldera"}, // 15
+  {"Akagi","Japan","Stratovolcano"}, // 16
+  {"Akan","Japan","Caldera"}, // 17
+  {"Akhtang","Russia","Shield"}, // 18
+  {"Akita Komagatake","Japan","Stratovolcano"}, // 19
+  {"Akita Yakeyama","Japan","Stratovolcano"}, // 20
+  {"Akuseki-jima","Japan","Stratovolcano"}, // 21
+  {"Akutan","United States","Stratovolcano"}, // 22
+  {"Alaid","Russia","Stratovolcano"}, // 23
+  {"Alamagan","Mariana Islands","Stratovolcano"}, // 24
+  {"Alayta","Ethiopia","Shield"}, // 25
+  {"Alban Hills","Italy","Caldera"}, // 26
+  {"Alcedo","Galápagos Islands","Shield"}, // 27
+  {"Ale Bagu","Ethiopia","Stratovolcano"}, // 28
+  {"Alid","Eritrea","Stratovolcano"}, // 29
+  {"Ambrym","Vanuatu","Caldera, Shield"}, // 30
+  {"Ambrym","Vanuatu","Caldera, Shield"}, // 31
+  {"Anatahan","Mariana Islands","Stratovolcano"}, // 32
+  {"Aneityum","Vanuatu","Stratovolcano"}, // 33
+  {"Aniakchak","United States","Caldera"}, // 34
+  {"Antisana","Ecuador","Stratovolcano"}, // 35
+  {"Aoba","Vanuatu","Shield"}, // 36
+  {"Ararat","Turkey","Stratovolcano"}, // 37
+  {"Arenal","Costa Rica","Stratovolcano"}, // 38
+  {"Arintica","Chile","Complex"}, // 39
+  {"Asacha","Russia","Stratovolcano"}, // 40
+  {"Asama","Japan","Complex"}, // 41
+  {"Ascensión","South Atlantic Ocean","Stratovolcano"}, // 42
+  {"Askja","Iceland","Stratovolcano"}, // 43
+  {"Aso","Japan","Caldera"}, // 44
+  {"Atitlán","Guatemala","Complex"}, // 45
+  {"Atka","United States","Caldera"}, // 46
+  {"Atsonupuri","Russia","Stratovolcano"}, // 47
+  {"Augustine","United States","Lava dome"}, // 48
+  {"Avachinsky","Russia","Stratovolcano"}, // 49
+  {"Awu","Indonesia","Stratovolcano"}, // 50
+  {"Axial Seamount","Pacific Ocean","Submarine"}, // 51
+  {"Ayelu","Ethiopia","Stratovolcano"}, // 52
+  {"Azufre","Chile","Complex"}, // 53
+  {"Azuma","Japan","Stratovolcano"}, // 54
+  {"Babuyon Claro","Philippines","Stratovolcano"}, // 55
+  {"Bachelor","United States","Stratovolcano"}, // 56
+  {"Bagana","Papua New Guinea","Cinder Cone"}, // 57
+  {"Baker","United States","Stratovolcano"}, // 58
+  {"Bam","Papua New Guinea","Stratovolcano"}, // 59
+  {"Bamus","Papua New Guinea","Stratovolcano"}, // 60
+  {"Bandai","Japan","Stratovolcano"}, // 61
+  {"Barren Island","India","Pyroclastic cone"}, // 62
+  {"Barrier","Kenya","Complex"}, // 63
+  {"Bazman","Iran","Stratovolcano"}, // 64
+  {"Beerenberg","Norway","Stratovolcano"}, // 65
+  {"Belknap","United States","Shield"}, // 66
+  {"Bezymianny","Russia","Stratovolcano"}, // 67
+  {"Biliran","Philippines","Complex"}, // 68
+  {"Bolshoi Semiachik","Russia","Stratovolcano"}, // 69
+  {"Bulusan","Philippines","Stratovolcano"}, // 70
+  {"Butajira","Ethiopia","Fissure vent, Maar"}, // 71
+  {"Butajira","Ethiopia","Fissure vent, Maar"}, // 72
+  {"Cameroon (Mount)","Cameroon","Stratovolcano"}, // 73
+  {"Camiguin de Babuyanes","Philippines","Stratovolcano"}, // 74
+  {"Canlaon","Philippines","Stratovolcano"}, // 75
+  {"Capulin","United States","Cinder Cone"}, // 76
+  {"Carrizozo","United States","Volcanic field"}, // 77
+  {"Cayambe","Ecuador","Stratovolcano"}, // 78
+  {"Cereme","Indonesia","Stratovolcano"}, // 79
+  {"Chaine des Puys","France","Lava dome"}, // 80
+  {"Chiginagak","United States","Stratovolcano"}, // 81
+  {"Chikurachki","Russia","Stratovolcano"}, // 82
+  {"Chimborazo","Ecuador","Stratovolcano"}, // 83
+  {"Cleveland","United States","Stratovolcano"}, // 84
+  {"Coatepeque","El Salvador","Caldera"}, // 85
+  {"Colima","Mexico","Stratovolcano"}, // 86
+  {"Columbia River Flood Basalts","United States","Flood Basalt"}, // 87
+  {"Concepción","Nicaragua","Stratovolcano"}, // 88
+  {"Copahue","Argentina","Stratovolcano"}, // 89
+  {"Cosigüina","Nicaragua","Shield"}, // 90
+  {"Cotopaxi","Ecuador","Stratovolcano"}, // 91
+  {"Crater Lake","United States","Caldera"}, // 92
+  {"Craters of the Moon","United States","Volcanic field"}, // 93
+  {"Daisetsu","Japan","Stratovolcano"}, // 94
+  {"Dakataua","Papua New Guinea","Caldera"}, // 95
+  {"Damavand","Iran","Stratovolcano"}, // 96
+  {"Deccan Traps","India","Flood Basalt"}, // 97
+  {"Dempo","Indonesia","Stratovolcano"}, // 98
+  {"Devils Garden","United States","Volcanic field"}, // 99
+  {"Devils Tower","United States","Plug"}, // 100
+  {"Diamond Craters","United States","Volcanic field"}, // 101
+  {"Dieng Volcanic Complex","Indonesia","Complex"}, // 102
+  {"Diky Greben","Russia","Lava dome"}, // 103
+  {"Dubbi","Eritrea","Stratovolcano"}, // 104
+  {"Dukono","Indonesia","Complex"}, // 105
+  {"East Epi","Vanuatu","Caldera"}, // 106
+  {"Ebeko","Russia","Somma"}, // 107
+  {"Egmont (Taranaki)","New Zealand","Stratovolcano"}, // 108
+  {"Egon","Indonesia","Stratovolcano"}, // 109
+  {"El Chichon","Mexico","Caldera"}, // 110
+  {"Elbrus","Russia","Stratovolcano"}, // 111
+  {"Erebus","Antarctica","Stratovolcano"}, // 112
+  {"Erta Ale","Ethiopia","Shield"}, // 113
+  {"Etna","Italy","Stratovolcano"}, // 114
+  {"Fantale","Ethiopia","Stratovolcano"}, // 115
+  {"Fernandina","Ecuador","Caldera"}, // 116
+  {"Fisher","United States","Stratovolcano"}, // 117
+  {"Fogo","Cape Verde Islands","Stratovolcano"}, // 118
+  {"Fort Rock","United States","Maar"}, // 119
+  {"Frosty Peak","United States","Stratovolcano"}, // 120
+  {"Fuego","Guatemala","Stratovolcano"}, // 121
+  {"Fuerteventura","Spain","Fissure vent"}, // 122
+  {"Fuji","Japan","Stratovolcano"}, // 123
+  {"Furnas","Portugal","Stratovolcano"}, // 124
+  {"Fuss Peak","Russia","Stratovolcano"}, // 125
+  {"Galeras","Colombia","Stratovolcano"}, // 126
+  {"Galunggung","Indonesia","Stratovolcano"}, // 127
+  {"Gamalama","Indonesia","Stratovolcano"}, // 128
+  {"Gamchen","Russia","Stratovolcano"}, // 129
+  {"Gamkonora","Indonesia","Stratovolcano"}, // 130
+  {"Gareloi","United States","Stratovolcano"}, // 131
+  {"Gaua","Vanuatu","Stratovolcano"}, // 132
+  {"Gede","Indonesia",""}, // 133
+  {"Glacier Peak","United States","Stratovolcano"}, // 134
+  {"Gorely","Russia","Caldera"}, // 135
+  {"Graciosa","Portugal","Stratovolcano"}, // 136
+  {"Gran Canaria","Spain","Fissure vent"}, // 137
+  {"Great Sitkin","United States","Stratovolcano"}, // 138
+  {"Griggs","United States","Stratovolcano"}, // 139
+  {"Grímsvötn","Iceland","Caldera"}, // 140
+  {"Guagua Pichincha","Ecuador",""}, // 141
+  {"Guallatiri","Chile","Stratovolcano"}, // 142
+  {"Guguan","United States","Stratovolcano"}, // 143
+  {"Hakone","Japan",""}, // 144
+  {"Heard","Australia","Stratovolcano"}, // 145
+  {"Hibok-hibok","Philippines","Stratovolcano"}, // 146
+  {"Hierro","Spain","Shield"}, // 147
+  {"Hood","United States","Stratovolcano"}, // 148
+  {"Hualalai","United States","Shield"}, // 149
+  {"Ibu","Indonesia","Stratovolcano"}, // 150
+  {"Ijen","Indonesia","Stratovolcano"}, // 151
+  {"Iliamna","United States","Stratovolcano"}, // 152
+  {"Iliboleng","Indonesia","Stratovolcano"}, // 153
+  {"Iliniza","Ecuador","Stratovolcano"}, // 154
+  {"Ilopango","El Salvador","Caldera"}, // 155
+  {"Ilyinsky","Russia","Stratovolcano"}, // 156
+  {"Ioto (Iwo-jima)","Japan","Caldera"}, // 157
+  {"Iraya","Philippines","Stratovolcano"}, // 158
+  {"Irazu","Costa Rica","Stratovolcano"}, // 159
+  {"Isanotski","United States","Stratovolcano"}, // 160
+  {"Izalco","El Salvador","Stratovolcano"}, // 161
+  {"Iztaccihuatl","Mexico","Stratovolcano"}, // 162
+  {"Izu-Tobu","Japan","Pyroclastic cone"}, // 163
+  {"Jailolo","Indonesia","Stratovolcano"}, // 164
+  {"Jefferson","United States","Stratovolcano"}, // 165
+  {"Jordan Craters","United States","Volcanic field"}, // 166
+  {"Kadovar","Papua New Guinea","Stratovolcano"}, // 167
+  {"Kaguyak","United States","Stratovolcano"}, // 168
+  {"Kahoolawe","United States","Shield"}, // 169
+  {"Kambalny","Russia","Stratovolcano"}, // 170
+  {"Kanaga","United States","Stratovolcano"}, // 171
+  {"Karangetang [Api Siau]","Indonesia","Stratovolcano"}, // 172
+  {"Karisimbi","Congo, Rwanda","Stratovolcano"}, // 173
+  {"Karisimbi","Congo, Rwanda","Stratovolcano"}, // 174
+  {"Karthala","Comoros","Shield"}, // 175
+  {"Karymsky","Russia","Stratovolcano"}, // 176
+  {"Katla","Iceland","Fissure vent"}, // 177
+  {"Katmai","United States","Stratovolcano"}, // 178
+  {"Katwe-Kikorongo","Uganda","Volcanic field"}, // 179
+  {"Kavachi","Solomon Islands","Submarine"}, // 180
+  {"Kell","Russia","Stratovolcano"}, // 181
+  {"Kelut","Indonesia","Stratovolcano"}, // 182
+  {"Kerinci","Indonesia","Stratovolcano"}, // 183
+  {"Khodutka","Russia","Stratovolcano"}, // 184
+  {"Kialagvik","United States","Stratovolcano"}, // 185
+  {"Kick 'em Jenny","Grenada","Submarine"}, // 186
+  {"Kikai","Japan","Caldera"}, // 187
+  {"Kikhpinych","Russia","Stratovolcano"}, // 188
+  {"Kilauea","United States","Shield"}, // 189
+  {"Kilimanjaro","Tanzania","Stratovolcano"}, // 190
+  {"Kirishima","Japan","Stratovolcano"}, // 191
+  {"Kliuchevskoi","Russia","Stratovolcano"}, // 192
+  {"Komagatake","Japan","Stratovolcano"}, // 193
+  {"Kone","Ethiopia","Caldera"}, // 194
+  {"Koryaksky","Russia","Stratovolcano"}, // 195
+  {"Koshelev","Russia","Stratovolcano"}, // 196
+  {"Krafla","Iceland","Caldera"}, // 197
+  {"Krakatau","Indonesia","Stratovolcano"}, // 198
+  {"Krasheninnikov","Russia","Stratovolcano"}, // 199
+  {"Kronotsky","Russia","Stratovolcano"}, // 200
+  {"Ksudach","Russia","Stratovolcano"}, // 201
+  {"Kukak","United States","Stratovolcano"}, // 202
+  {"Kusatsu-Shirane","Japan","Stratovolcano"}, // 203
+  {"Kutcharo","Japan","Caldera"}, // 204
+  {"Kuttara","Japan","Stratovolcano"}, // 205
+  {"Kuwae","Vanuatu","Caldera"}, // 206
+  {"La Palma","Spain","Stratovolcano"}, // 207
+  {"Lamington","Papua New Guinea","Stratovolcano"}, // 208
+  {"Langila","Papua New Guinea","Stratovolcano"}, // 209
+  {"Lanzarote","Spain","Fissure vent"}, // 210
+  {"Láscar","Chile","Stratovolcano"}, // 211
+  {"Lereboleng","Indonesia","Complex"}, // 212
+  {"Lewotobi","Indonesia","Stratovolcano"}, // 213
+  {"Lewotolo","Indonesia","Stratovolcano"}, // 214
+  {"Liamuiga","St. Kitts and Nevis","Stratovolcano"}, // 215
+  {"Lipari","Italy","Stratovolcano"}, // 216
+  {"Little Sitkin","United States","Stratovolcano"}, // 217
+  {"Loihi","United States","Submarine"}, // 218
+  {"Lokon-Empung","Indonesia","Stratovolcano"}, // 219
+  {"Lolo","Papua New Guinea","Stratovolcano"}, // 220
+  {"Lolobau","Papua New Guinea","Caldera"}, // 221
+  {"Loloru","Papua New Guinea","Stratovolcano"}, // 222
+  {"Long Island","Papua New Guinea","Complex"}, // 223
+  {"Longonot","Kenya","Stratovolcano"}, // 224
+  {"Lopevi","Vanuatu","Stratovolcano"}, // 225
+  {"Maderas","Nicaragua","Stratovolcano"}, // 226
+  {"Mageik","United States","Stratovolcano"}, // 227
+  {"Mahawu","Indonesia","Stratovolcano"}, // 228
+  {"Makian","Indonesia","Stratovolcano"}, // 229
+  {"Maly Semiachik","Russia","Caldera"}, // 230
+  {"Manam","Papua New Guinea","Stratovolcano"}, // 231
+  {"Mariveles","Philippines","Stratovolcano"}, // 232
+  {"Marsabit","Kenya","Shield"}, // 233
+  {"Masaya","Nicaragua","Caldera"}, // 234
+  {"Mashkovtsev","Russia","Stratovolcano"}, // 235
+  {"Mashu","Japan","Caldera"}, // 236
+  {"Mauna Kea","United States","Shield"}, // 237
+  {"Mauna Loa","United States","Shield"}, // 238
+  {"Mayon","Philippines","Stratovolcano"}, // 239
+  {"McDonald Islands","Australia","Complex"}, // 240
+  {"McLoughlin","United States","Lava cone, Stratovolcano"}, // 241
+  {"McLoughlin","United States","Lava cone, Stratovolcano"}, // 242
+  {"Mega Basalt Field","Ethiopia, Kenya","Pyroclastic cone"}, // 243
+  {"Mega Basalt Field","Ethiopia, Kenya","Pyroclastic cone"}, // 244
+  {"Menan Buttes","United States","Tuff ring"}, // 245
+  {"Menengai","Kenya","Shield"}, // 246
+  {"Merapi","Indonesia","Stratovolcano"}, // 247
+  {"Merbabu","Indonesia","Stratovolcano"}, // 248
+  {"Meru","Tanzania","Stratovolcano"}, // 249
+  {"Methana","Greece","Lava dome"}, // 250
+  {"Metis Shoal","Tonga","Submarine"}, // 251
+  {"Michael","United Kingdom","Stratovolcano"}, // 252
+  {"Michoacan-Guanajuato","Mexico","Cinder Cone"}, // 253
+  {"Mílos","Greece","Stratovolcano"}, // 254
+  {"Miyake-jima","Japan","Stratovolcano"}, // 255
+  {"Moffett","United States","Stratovolcano"}, // 256
+  {"Mojanda","Ecuador","Stratovolcano"}, // 257
+  {"Momotombo","Nicaragua","Stratovolcano"}, // 258
+  {"Monaco Bank","Portugal","Submarine"}, // 259
+  {"Mono Lake Vol Field","United States","Volcanic field"}, // 260
+  {"Monowai Seamount","New Zealand","Submarine"}, // 261
+  {"Moti","Indonesia","Stratovolcano"}, // 262
+  {"Muria","Indonesia","Stratovolcano"}, // 263
+  {"Nantai","Japan","Stratovolcano"}, // 264
+  {"Nasu","Japan","Stratovolcano"}, // 265
+  {"Navajo Volcanic Field","United States","Volcanic field"}, // 266
+  {"Negro, Cerro","Nicaragua","Cinder Cone"}, // 267
+  {"Nemo Peak","Russia","Caldera"}, // 268
+  {"Nevis Peak","St. Kitts and Nevis","Stratovolcano"}, // 269
+  {"Newberry","United States","Shield"}, // 270
+  {"Newer Volcanics Province","Australia","Shield"}, // 271
+  {"Ngauruhoe","New Zealand","Stratovolcano"}, // 272
+  {"Nikko-Shirane","Japan","Shield"}, // 273
+  {"Nipesotsu-Maruyama","Japan","Stratovolcano"}, // 274
+  {"Nisyros","Greece","Stratovolcano"}, // 275
+  {"Nyambeni Hills","Kenya","Shield"}, // 276
+  {"Nyamuragira","Democratic Republic of Congo","Shield"}, // 277
+  {"Nyiragongo","Democratic Republic of Congo","Stratovolcano"}, // 278
+  {"Oahu","United States","Shield"}, // 279
+  {"Ojos del Salado","Argentina, Chile","Stratovolcano"}, // 280
+  {"Ojos del Salado","Argentina, Chile","Stratovolcano"}, // 281
+  {"Okataina","New Zealand","Lava dome"}, // 282
+  {"Okmok","United States","Shield"}, // 283
+  {"Oku Volcanic Field","Cameroon","Stratovolcano"}, // 284
+  {"Ol Doinyo Lengai","Tanzania","Stratovolcano"}, // 285
+  {"Opala","Russia","Caldera"}, // 286
+  {"Oraefajokull","Iceland","Stratovolcano"}, // 287
+  {"Oshima","Japan","Stratovolcano"}, // 288
+  {"Pacaya","Guatemala","Complex"}, // 289
+  {"Pagan","United States","Stratovolcano"}, // 290
+  {"Pago","Papua New Guinea","Caldera"}, // 291
+  {"Papandayan","Indonesia","Stratovolcano"}, // 292
+  {"Paricutin","Mexico","Cinder Cone"}, // 293
+  {"Parinacota","Bolivia, Chile","Stratovolcano"}, // 294
+  {"Parinacota","Bolivia, Chile","Stratovolcano"}, // 295
+  {"Pauzhetka","Russia","Lava dome"}, // 296
+  {"Pavlof","United States","Stratovolcano"}, // 297
+  {"Pavlof Sister","United States","Stratovolcano"}, // 298
+  {"Pelee","France","Stratovolcano"}, // 299
+  {"Peuet Sague","Indonesia","Complex"}, // 300
+  {"Pico","Portugal","Stratovolcano"}, // 301
+  {"Pilas, Las","Nicaragua","Stratovolcano"}, // 302
+  {"Pinacate","Mexico","Cinder Cone"}, // 303
+  {"Pinatubo","Philippines","Stratovolcano"}, // 304
+  {"Pisgah Lava Field","United States","Volcanic field"}, // 305
+  {"Piton de la Fournaise","France","Shield"}, // 306
+  {"Poas","Costa Rica","Stratovolcano"}, // 307
+  {"Popocatepetl","Mexico","Stratovolcano"}, // 308
+  {"Prevo Peak","Russia","Stratovolcano"}, // 309
+  {"Purace","Colombia","Stratovolcano"}, // 310
+  {"Quill, The","Netherlands","Stratovolcano"}, // 311
+  {"Rabaul","Papua New Guinea","Shield"}, // 312
+  {"Ragang","Philippines","Stratovolcano"}, // 313
+  {"Raikoke","Russia","Stratovolcano"}, // 314
+  {"Rainier","United States","Stratovolcano"}, // 315
+  {"Rajabasa","Indonesia","Stratovolcano"}, // 316
+  {"Raoul","New Zealand","Stratovolcano"}, // 317
+  {"Rasshua","Russia","Stratovolcano"}, // 318
+  {"Raung","Indonesia","Stratovolcano"}, // 319
+  {"Rausu","Japan","Stratovolcano"}, // 320
+  {"Redoubt","United States","Stratovolcano"}, // 321
+  {"Reventador","Ecuador","Stratovolcano"}, // 322
+  {"Rincon de la Vieja","Costa Rica","Complex"}, // 323
+  {"Roundtop","United States","Stratovolcano"}, // 324
+  {"Ruapehu","New Zealand","Stratovolcano"}, // 325
+  {"Rudakov","Russia","Stratovolcano"}, // 326
+  {"Ruiz, Nevado del","Colombia","Stratovolcano"}, // 327
+  {"Rumble IV","New Zealand","Submarine"}, // 328
+  {"Saba","Netherlands","Stratovolcano"}, // 329
+  {"Sabancaya","Peru","Stratovolcano"}, // 330
+  {"Sakar","Papua New Guinea","Stratovolcano"}, // 331
+  {"Sakura-jima","Japan","Stratovolcano"}, // 332
+  {"Salak","Indonesia","Stratovolcano"}, // 333
+  {"San Cristobal","Nicaragua","Stratovolcano"}, // 334
+  {"San Salvador","El Salvador","Stratovolcano"}, // 335
+  {"San Vicente","Cape Verde Islands","Stratovolcano"}, // 336
+  {"Sanford","United States","Shield"}, // 337
+  {"Sangay","Ecuador","Stratovolcano"}, // 338
+  {"Santa Ana","El Salvador","Stratovolcano"}, // 339
+  {"Santa Maria","Guatemala","Stratovolcano"}, // 340
+  {"Santorini","Greece","Shield"}, // 341
+  {"Sarychev Peak","Russia","Stratovolcano"}, // 342
+  {"Savo","Solomon Islands","Stratovolcano"}, // 343
+  {"Segula","United States","Stratovolcano"}, // 344
+  {"Semeru","Indonesia","Stratovolcano"}, // 345
+  {"Semisopochnoi","United States","Stratovolcano"}, // 346
+  {"Sete Cidades","Portugal","Stratovolcano"}, // 347
+  {"Shasta","United States","Stratovolcano"}, // 348
+  {"Sheveluch","Russia","Stratovolcano"}, // 349
+  {"Shikotsu","Japan","Caldera"}, // 350
+  {"Shiretoko-Iwo-zan","Japan","Stratovolcano"}, // 351
+  {"Shishaldin","United States","Stratovolcano"}, // 352
+  {"Sinarka","Russia","Stratovolcano"}, // 353
+  {"Smirnov","Russia","Stratovolcano"}, // 354
+  {"Sollipulli","Chile","Caldera"}, // 355
+  {"Soputan","Indonesia","Stratovolcano"}, // 356
+  {"Soufriere Guadeloupe","France","Stratovolcano"}, // 357
+  {"Soufrière Hills","United Kingdom","Stratovolcano"}, // 358
+  {"Soufrière St. Vincent","St. Vincent","Stratovolcano"}, // 359
+  {"South Island","Kenya",""}, // 360
+  {"SP Mountain","United States","Cinder Cone"}, // 361
+  {"Spurr","United States","Stratovolcano"}, // 362
+  {"Srednii","Russia","Submarine"}, // 363
+  {"Steller","United States","Stratovolcano"}, // 364
+  {"Stromboli","Italy","Stratovolcano"}, // 365
+  {"Sumaco","Ecuador","Stratovolcano"}, // 366
+  {"Sumbing","Indonesia","Stratovolcano"}, // 367
+  {"Sundoro","Indonesia","Stratovolcano"}, // 368
+  {"Sunset Craters","United States","Cinder Cone"}, // 369
+  {"Suswa","Kenya","Shield"}, // 370
+  {"Suwanose-jima","Japan","Stratovolcano"}, // 371
+  {"Taal","Philippines","Caldera"}, // 372
+  {"Talang","Indonesia","Stratovolcano"}, // 373
+  {"Tambora","Indonesia","Stratovolcano"}, // 374
+  {"Tanaga and Takawangha","United States","Stratovolcano"}, // 375
+  {"Tangkubanparahu","Indonesia","Stratovolcano"}, // 376
+  {"Tao-Rusyr Caldera","Russia","Stratovolcano"}, // 377
+  {"Tarso Voon","Chad","Stratovolcano"}, // 378
+  {"Telica Volcano","Nicaragua","Stratovolcano"}, // 379
+  {"Tenerife","Spain","Stratovolcano"}, // 380
+  {"Tengger Caldera and Bromo","Indonesia","Stratovolcano"}, // 381
+  {"Three Fingered Jack","United States","Stratovolcano"}, // 382
+  {"Three Sisters","United States","Stratovolcano"}, // 383
+  {"Thule Islands","United Kingdom","Stratovolcano"}, // 384
+  {"Tiatia","Russia","Stratovolcano"}, // 385
+  {"Toba","Indonesia","Caldera"}, // 386
+  {"Todoko-Ranu","Indonesia","Caldera"}, // 387
+  {"Tokachi","Japan",""}, // 388
+  {"Tolbachik","Russia","Stratovolcano"}, // 389
+  {"Tolimán","Guatemala","Stratovolcano"}, // 390
+  {"Towada","Japan","Caldera"}, // 391
+  {"Traitor's Head","Vanuatu","Stratovolcano"}, // 392
+  {"Tri Sestry","Russia","Stratovolcano"}, // 393
+  {"Tristan da Cunha","United Kingdom","Shield"}, // 394
+  {"Tsurumi","Japan","Lava dome"}, // 395
+  {"Tungurahua","Ecuador","Stratovolcano"}, // 396
+  {"Ubehebe Craters","United States","Maar"}, // 397
+  {"Ubinas","Peru","Stratovolcano"}, // 398
+  {"Udina","Russia","Stratovolcano"}, // 399
+  {"Ugashik and Peulik","United States","Stratovolcano"}, // 400
+  {"Uinkaret Volcanic Field","United States","Volcanic field"}, // 401
+  {"Ulawun","Papua New Guinea","Stratovolcano"}, // 402
+  {"Umboi","Papua New Guinea","Complex"}, // 403
+  {"Undara","Australia","Shield"}, // 404
+  {"Ungaran and Telomoyo","Indonesia","Stratovolcano"}, // 405
+  {"Unzen","Japan","Complex"}, // 406
+  {"Urataman","Russia","Somma"}, // 407
+  {"Ushishur","Russia","Caldera"}, // 408
+  {"Usu","Japan","Stratovolcano"}, // 409
+  {"Uzon","Russia","Caldera"}, // 410
+  {"Veniaminof","United States","Stratovolcano"}, // 411
+  {"Vernadskii Ridge","Russia","Cinder Cone"}, // 412
+  {"Vesuvius","Italy","Somma"}, // 413
+  {"Villarrica","Chile","Stratovolcano"}, // 414
+  {"Vilyuchik","Russia","Stratovolcano"}, // 415
+  {"Visoke","Congo, Rwanda","Stratovolcano"}, // 416
+  {"Visoke","Congo, Rwanda","Stratovolcano"}, // 417
+  {"Vsevidof and Recheschnoi Volcanoes","United States","Stratovolcano"}, // 418
+  {"Vulcano","Italy",""}, // 419
+  {"Washington","United States","Shield"}, // 420
+  {"Wau-en-Namus","Libya","Caldera"}, // 421
+  {"Westdahl","United States","Stratovolcano"}, // 422
+  {"White Island","New Zealand","Stratovolcano"}, // 423
+  {"Wrangell","United States","Shield"}, // 424
+  {"Wudalianchi","China","Volcanic field"}, // 425
+  {"Yake-dake","Japan","Stratovolcano"}, // 426
+  {"Yali","Greece","Lava dome"}, // 427
+  {"Yantarni","United States","Stratovolcano"}, // 428
+  {"Yasur","Vanuatu","Stratovolcano"}, // 429
+  {"Yellowstone","United States","Caldera"}, // 430
+  {"Zavaritzki Caldera","Russia","Caldera"}, // 431
+  {"Zheltovsky","Russia",""}, // 432
+  {"Zhupanovsky","Russia",""}, // 433
+  {"Zimina","Russia","Stratovolcano"}, // 434
+};
+
+float volcano_data[436][3]={
+  {34.5,131.6,641}, // 0
+  {-23.3,-67.62,6046}, // 1
+  {14.5,-90.88,3976}, // 2
+  {38.57,34.52,1689}, // 3
+  {46.21,-121.49,3742}, // 4
+  {-25.37,-129.27,-39}, // 5
+  {37.64,140.29,1718}, // 6
+  {10.07,40.84,1733}, // 7
+  {13.08,40.85,1295}, // 8
+  {18.77,145.67,965}, // 9
+  {14.47,-90.74,3760}, // 10
+  {37.77,-25.47,947}, // 11
+  {-50.33,-73.75,2546}, // 12
+  {-8.34,115.51,3142}, // 13
+  {20.42,145.03,-137}, // 14
+  {53.98,159.45,1180}, // 15
+  {36.56,139.2,1828}, // 16
+  {43.38,144.01,1499}, // 17
+  {55.43,158.65,1956}, // 18
+  {39.76,140.8,1637}, // 19
+  {39.96,140.76,1366}, // 20
+  {29.46,129.6,584}, // 21
+  {54.13,-165.99,1303}, // 22
+  {50.86,155.55,2339}, // 23
+  {17.6,145.83,744}, // 24
+  {12.88,40.57,1501}, // 25
+  {41.73,12.7,949}, // 26
+  {-0.43,-91.12,1130}, // 27
+  {13.52,40.63,1031}, // 28
+  {14.88,39.92,904}, // 29
+  {-16.25,168.12,1334}, // 30
+  {-16.25,168.12,1334}, // 31
+  {16.35,145.67,790}, // 32
+  {-20.2,169.78,852}, // 33
+  {56.88,-158.17,1341}, // 34
+  {-0.48,-78.14,5753}, // 35
+  {-15.4,167.83,1496}, // 36
+  {39.7,44.3,5165}, // 37
+  {10.46,-84.7,1670}, // 38
+  {-18.73,-69.05,5597}, // 39
+  {52.36,157.83,1910}, // 40
+  {36.4,138.53,2568}, // 41
+  {-7.95,-14.37,858}, // 42
+  {65.03,-16.75,1516}, // 43
+  {32.88,131.11,1592}, // 44
+  {14.58,-91.19,3535}, // 45
+  {52.38,-174.15,1533}, // 46
+  {44.81,147.14,1206}, // 47
+  {59.36,-153.43,1252}, // 48
+  {53.26,158.83,2741}, // 49
+  {3.67,125.5,1320}, // 50
+  {45.95,-130.0,-1410}, // 51
+  {10.08,40.7,2145}, // 52
+  {-21.79,-68.24,5846}, // 53
+  {37.73,140.25,2035}, // 54
+  {19.5,121.9,1180}, // 55
+  {43.8,121.6,2763}, // 56
+  {-6.1,155.2,1750}, // 57
+  {48.79,-121.82,3285}, // 58
+  {-3.6,144.85,685}, // 59
+  {-5.2,151.2,2248}, // 60
+  {37.6,140.1,1819}, // 61
+  {12.29,93.88,305}, // 62
+  {2.32,36.57,1032}, // 63
+  {28.0,60.0,3490}, // 64
+  {71.1,-8.2,2277}, // 65
+  {44.28,-121.83,2096}, // 66
+  {55.98,160.58,2882}, // 67
+  {11.5,124.5,1187}, // 68
+  {54.32,160.02,1720}, // 69
+  {12.8,124.1,1565}, // 70
+  {8.05,38.35,2281}, // 71
+  {8.05,38.35,2281}, // 72
+  {4.2,9.17,4095}, // 73
+  {18.83,121.85,712}, // 74
+  {10.41,123.13,2435}, // 75
+  {36.45,-104.09,2494}, // 76
+  {33.7,-106.0,1730}, // 77
+  {0.03,-77.99,5790}, // 78
+  {-6.9,108.41,3078}, // 79
+  {45.78,2.97,1464}, // 80
+  {57.13,-156.99,2067}, // 81
+  {50.33,155.46,5958}, // 82
+  {-1.46,-78.82,6310}, // 83
+  {52.83,-169.95,1730}, // 84
+  {13.86,-89.54,746}, // 85
+  {19.51,103.62,4100}, // 86
+  {NAN,NAN,0}, // 87
+  {11.5,85.6,1610}, // 88
+  {-37.85,-71.17,2965}, // 89
+  {12.98,-87.56,847}, // 90
+  {-0.68,-78.44,5911}, // 91
+  {42.94,-122.11,2471}, // 92
+  {43.42,-113.5,2005}, // 93
+  {43.7,142.9,2290}, // 94
+  {-5.0,150.1,400}, // 95
+  {35.95,52.11,5670}, // 96
+  {NAN,NAN,0}, // 97
+  {-4.0,103.1,3173}, // 98
+  {43.5,-120.9,1525}, // 99
+  {44.6,-104.7,1558}, // 100
+  {43.1,-118.7,1450}, // 101
+  {-7.2,109.9,2565}, // 102
+  {51.46,156.98,1331}, // 103
+  {13.6,41.8,1625}, // 104
+  {1.7,127.87,1185}, // 105
+  {-16.7,168.4,-34}, // 106
+  {50.68,156.02,1156}, // 107
+  {-39.3,174.1,2518}, // 108
+  {-8.7,122.45,788}, // 109
+  {17.36,-93.23,1060}, // 110
+  {43.33,42.45,5633}, // 111
+  {-77.5,167.2,3794}, // 112
+  {13.6,40.7,613}, // 113
+  {37.73,15.0,3350}, // 114
+  {8.98,39.93,2007}, // 115
+  {-0.37,-91.55,1476}, // 116
+  {-54.63,-164.42,1095}, // 117
+  {14.95,-24.35,2829}, // 118
+  {43.37,-121.07,1716}, // 119
+  {55.08,-162.81,1920}, // 120
+  {14.47,-90.88,3763}, // 121
+  {28.36,-14.02,529}, // 122
+  {35.36,138.73,3776}, // 123
+  {37.76,-25.33,805}, // 124
+  {50.27,155.25,1772}, // 125
+  {1.22,-77.37,4276}, // 126
+  {-7.26,108.08,2168}, // 127
+  {0.81,127.33,1715}, // 128
+  {54.97,160.68,2576}, // 129
+  {1.38,127.53,1635}, // 130
+  {51.8,178.8,1573}, // 131
+  {-14.27,167.5,797}, // 132
+  {-6.77,106.94,2958}, // 133
+  {48.11,-121.11,3213}, // 134
+  {52.56,158.03,1829}, // 135
+  {39.02,-27.97,402}, // 136
+  {28.0,15.58,1950}, // 137
+  {52.07,-176.13,1740}, // 138
+  {58.35,-155.09,2317}, // 139
+  {64.42,-17.33,1725}, // 140
+  {-0.17,-78.6,4784}, // 141
+  {-18.42,-69.09,6071}, // 142
+  {17.31,145.84,287}, // 143
+  {35.23,139.02,1439}, // 144
+  {-53.1,73.5,2745}, // 145
+  {9.2,124.7,1332}, // 146
+  {27.73,-18.03,1500}, // 147
+  {45.4,-121.7,3426}, // 148
+  {19.69,-155.87,2523}, // 149
+  {1.49,127.63,1325}, // 150
+  {-8.06,114.24,2386}, // 151
+  {60.03,-153.09,3053}, // 152
+  {-8.34,123.26,1659}, // 153
+  {-0.66,-78.71,5248}, // 154
+  {13.67,-89.05,450}, // 155
+  {51.49,157.2,1578}, // 156
+  {24.75,141.29,161}, // 157
+  {20.47,122.01,1009}, // 158
+  {9.98,83.85,3431}, // 159
+  {54.77,-163.72,2446}, // 160
+  {13.81,-89.63,1950}, // 161
+  {19.18,-98.64,5286}, // 162
+  {34.9,139.1,581}, // 163
+  {1.08,127.42,1130}, // 164
+  {44.67,-121.8,3199}, // 165
+  {43.1,-117.4,1400}, // 166
+  {-3.63,144.63,365}, // 167
+  {58.62,-154.06,901}, // 168
+  {20.55,-156.57,450}, // 169
+  {51.3,156.87,2156}, // 170
+  {51.92,-177.17,1307}, // 171
+  {2.78,125.4,1784}, // 172
+  {-1.51,29.45,4507}, // 173
+  {-1.51,29.45,4507}, // 174
+  {-11.75,43.38,2361}, // 175
+  {54.05,159.45,1536}, // 176
+  {63.63,-19.05,1512}, // 177
+  {58.28,-154.96,2047}, // 178
+  {-0.08,29.92,1067}, // 179
+  {-9.02,157.95,-20}, // 180
+  {51.65,157.35,900}, // 181
+  {-7.93,112.31,1731}, // 182
+  {1.7,101.26,3800}, // 183
+  {52.06,157.7,2090}, // 184
+  {57.2,-156.75,1677}, // 185
+  {12.3,-61.64,-185}, // 186
+  {30.79,130.31,704}, // 187
+  {54.49,160.25,1552}, // 188
+  {19.42,-155.29,1222}, // 189
+  {3.07,37.35,5895}, // 190
+  {31.93,130.86,1700}, // 191
+  {56.06,160.64,4835}, // 192
+  {42.06,140.68,1131}, // 193
+  {8.8,39.69,1619}, // 194
+  {53.32,158.69,3456}, // 195
+  {51.36,156.75,1812}, // 196
+  {65.73,-16.78,818}, // 197
+  {-6.1,105.42,813}, // 198
+  {54.59,160.27,1856}, // 199
+  {54.75,160.53,3528}, // 200
+  {51.8,157.53,1079}, // 201
+  {58.45,-154.36,2043}, // 202
+  {36.64,138.54,2171}, // 203
+  {43.61,144.44,999}, // 204
+  {42.49,141.16,581}, // 205
+  {-16.83,168.54,-2}, // 206
+  {28.57,-17.83,2426}, // 207
+  {-8.95,148.15,1680}, // 208
+  {-5.53,148.42,1330}, // 209
+  {29.03,-13.63,670}, // 210
+  {-23.37,-67.73,5592}, // 211
+  {-8.36,122.84,1117}, // 212
+  {-8.54,122.78,1703}, // 213
+  {-8.27,123.51,1423}, // 214
+  {17.37,-62.8,1156}, // 215
+  {38.48,14.95,602}, // 216
+  {51.95,178.54,1174}, // 217
+  {18.92,-155.27,-975}, // 218
+  {1.36,124.79,1580}, // 219
+  {-5.47,150.51,805}, // 220
+  {-4.92,151.16,858}, // 221
+  {-6.52,155.62,1887}, // 222
+  {-5.36,147.12,1280}, // 223
+  {-0.91,36.45,2776}, // 224
+  {-16.51,168.35,1413}, // 225
+  {11.45,-85.52,1394}, // 226
+  {58.2,155.25,2165}, // 227
+  {1.36,124.86,1324}, // 228
+  {0.32,127.4,1357}, // 229
+  {54.13,159.67,1560}, // 230
+  {-4.08,145.04,1807}, // 231
+  {14.52,120.47,1388}, // 232
+  {2.32,37.97,1707}, // 233
+  {11.98,-86.16,635}, // 234
+  {51.1,156.72,503}, // 235
+  {43.57,144.57,855}, // 236
+  {19.82,-155.47,4205}, // 237
+  {19.48,-155.61,4170}, // 238
+  {13.26,123.69,2462}, // 239
+  {-53.03,72.6,230}, // 240
+  {42.45,-122.32,2894}, // 241
+  {42.45,-122.32,2894}, // 242
+  {37.42,4.08,1067}, // 243
+  {37.42,4.08,1067}, // 244
+  {43.7,-111.96,1713}, // 245
+  {-0.2,36.07,2278}, // 246
+  {-7.54,110.44,2911}, // 247
+  {-7.45,110.43,3145}, // 248
+  {-3.25,36.75,4565}, // 249
+  {37.62,23.34,760}, // 250
+  {-19.18,-174.87,43}, // 251
+  {-57.78,-26.45,990}, // 252
+  {19.85,-101.75,3860}, // 253
+  {36.7,24.44,751}, // 254
+  {34.08,139.53,815}, // 255
+  {51.94,-176.75,1196}, // 256
+  {0.13,-78.27,4263}, // 257
+  {12.42,-86.54,1297}, // 258
+  {37.6,-25.88,-197}, // 259
+  {38.0,-119.03,2121}, // 260
+  {-25.89,-177.19,-132}, // 261
+  {0.45,127.4,950}, // 262
+  {-6.62,110.88,1625}, // 263
+  {36.76,139.48,2486}, // 264
+  {37.12,139.97,1915}, // 265
+  {NAN,NAN,2740}, // 266
+  {12.51,-86.7,728}, // 267
+  {49.57,154.81,1018}, // 268
+  {17.15,-62.58,985}, // 269
+  {43.72,-121.23,2434}, // 270
+  {-37.77,142.5,1011}, // 271
+  {-39.13,175.64,1978}, // 272
+  {36.8,139.38,2578}, // 273
+  {43.45,143.04,2013}, // 274
+  {36.59,27.16,698}, // 275
+  {0.23,37.87,750}, // 276
+  {-1.41,29.2,3058}, // 277
+  {-1.52,29.25,3470}, // 278
+  {NAN,NAN,1220}, // 279
+  {-27.12,-68.55,6887}, // 280
+  {-27.12,-68.55,6887}, // 281
+  {-38.12,176.5,1111}, // 282
+  {53.43,-168.13,1073}, // 283
+  {6.25,10.5,3011}, // 284
+  {-2.76,39.91,2962}, // 285
+  {52.54,157.34,1776}, // 286
+  {64.0,-16.65,2119}, // 287
+  {34.72,139.4,764}, // 288
+  {14.38,-90.6,2552}, // 289
+  {18.13,145.8,570}, // 290
+  {-5.58,150.52,742}, // 291
+  {-7.32,107.73,2665}, // 292
+  {19.5,-102.2,3170}, // 293
+  {-18.17,-69.15,6348}, // 294
+  {-18.17,-69.15,6348}, // 295
+  {51.45,156.97,1070}, // 296
+  {55.42,-161.89,2519}, // 297
+  {55.45,-161.84,2142}, // 298
+  {14.82,-61.17,1397}, // 299
+  {4.91,96.33,2801}, // 300
+  {38.47,-28.4,2351}, // 301
+  {11.54,-85.62,1700}, // 302
+  {31.77,-113.5,1200}, // 303
+  {15.13,120.35,1486}, // 304
+  {34.75,-116.63,1495}, // 305
+  {-21.23,55.71,2631}, // 306
+  {10.2,-84.23,2708}, // 307
+  {19.02,-98.62,5246}, // 308
+  {47.02,152.12,1360}, // 309
+  {2.32,-76.4,4650}, // 310
+  {17.48,-62.96,601}, // 311
+  {-4.27,152.2,688}, // 312
+  {7.7,124.5,2815}, // 313
+  {48.29,153.25,551}, // 314
+  {46.85,-121.76,4392}, // 315
+  {-5.78,105.63,1281}, // 316
+  {-29.27,-177.92,516}, // 317
+  {47.77,153.02,956}, // 318
+  {-8.13,114.04,3332}, // 319
+  {44.07,145.13,1660}, // 320
+  {60.49,-152.74,3108}, // 321
+  {-0.08,-77.66,3562}, // 322
+  {10.83,-85.32,1916}, // 323
+  {54.8,-163.59,1871}, // 324
+  {-39.28,175.57,2797}, // 325
+  {45.88,149.83,542}, // 326
+  {4.89,-75.32,5321}, // 327
+  {-36.13,178.05,500}, // 328
+  {17.63,-63.23,887}, // 329
+  {-15.78,-71.85,5967}, // 330
+  {-5.41,148.09,992}, // 331
+  {31.59,130.66,1117}, // 332
+  {-6.72,106.73,2211}, // 333
+  {12.7,-87.0,1745}, // 334
+  {13.73,-89.29,1893}, // 335
+  {16.9,-25.0,697}, // 336
+  {62.22,-144.13,4949}, // 337
+  {-2.0,-78.34,5230}, // 338
+  {13.85,-89.63,2381}, // 339
+  {14.76,-91.55,3772}, // 340
+  {36.4,25.4,367}, // 341
+  {48.09,153.2,1496}, // 342
+  {-9.13,159.82,485}, // 343
+  {52.02,178.14,1160}, // 344
+  {-8.11,112.92,3676}, // 345
+  {51.93,179.58,1221}, // 346
+  {37.87,-25.78,856}, // 347
+  {41.41,-122.19,4317}, // 348
+  {56.65,161.36,3283}, // 349
+  {42.69,141.38,1320}, // 350
+  {44.13,145.17,1563}, // 351
+  {54.76,-163.97,2857}, // 352
+  {48.88,154.18,934}, // 353
+  {44.42,146.14,1189}, // 354
+  {-38.97,-71.52,2282}, // 355
+  {1.11,124.73,1784}, // 356
+  {16.05,-61.67,1467}, // 357
+  {16.72,-62.18,915}, // 358
+  {13.33,-61.18,1220}, // 359
+  {2.63,36.6,800}, // 360
+  {35.6,-111.6,2141}, // 361
+  {61.3,-152.25,3374}, // 362
+  {47.6,152.92,36}, // 363
+  {58.4,-154.4,2272}, // 364
+  {38.79,15.21,924}, // 365
+  {-0.54,-77.63,3990}, // 366
+  {-7.38,110.07,3371}, // 367
+  {-7.3,109.99,3136}, // 368
+  {35.37,-111.5,2447}, // 369
+  {-1.18,36.35,2356}, // 370
+  {29.64,129.72,799}, // 371
+  {14.0,120.99,311}, // 372
+  {-0.98,100.68,2597}, // 373
+  {-8.25,118.0,2850}, // 374
+  {51.89,-178.15,1806}, // 375
+  {-6.77,107.6,2084}, // 376
+  {49.35,154.7,1325}, // 377
+  {20.92,17.28,3100}, // 378
+  {12.6,-86.85,1010}, // 379
+  {28.27,-16.64,3715}, // 380
+  {-7.94,112.95,2329}, // 381
+  {44.5,-121.8,2390}, // 382
+  {44.1,121.77,3100}, // 383
+  {-59.45,-27.37,1075}, // 384
+  {44.35,146.26,1819}, // 385
+  {2.58,98.83,2157}, // 386
+  {1.25,127.47,979}, // 387
+  {43.42,142.69,2077}, // 388
+  {55.83,160.33,3682}, // 389
+  {14.61,-91.19,3158}, // 390
+  {40.47,140.92,1159}, // 391
+  {-18.75,169.23,1881}, // 392
+  {45.93,149.92,998}, // 393
+  {-37.09,-12.28,2060}, // 394
+  {33.28,131.43,1584}, // 395
+  {-1.47,-78.44,2011}, // 396
+  {37.02,-117.45,752}, // 397
+  {-16.36,-70.9,5672}, // 398
+  {55.76,160.53,2923}, // 399
+  {57.75,-156.37,1474}, // 400
+  {36.38,-113.13,1555}, // 401
+  {-5.05,151.33,2334}, // 402
+  {-5.59,147.88,1548}, // 403
+  {-18.25,144.75,1020}, // 404
+  {-7.18,110.33,2050}, // 405
+  {32.76,130.29,1500}, // 406
+  {47.12,152.25,678}, // 407
+  {47.52,152.8,401}, // 408
+  {42.54,140.84,737}, // 409
+  {54.5,159.97,1617}, // 410
+  {56.17,-159.38,2507}, // 411
+  {50.55,155.97,1183}, // 412
+  {40.82,14.43,1281}, // 413
+  {-39.42,-71.93,2847}, // 414
+  {52.7,158.28,2173}, // 415
+  {-1.47,29.49,3711}, // 416
+  {-1.47,29.49,3711}, // 417
+  {53.13,-168.69,2149}, // 418
+  {38.4,14.96,500}, // 419
+  {44.3,-121.8,2376}, // 420
+  {25.05,17.55,547}, // 421
+  {54.52,-164.65,1654}, // 422
+  {-37.52,177.18,321}, // 423
+  {62.0,-144.02,4317}, // 424
+  {48.72,126.12,597}, // 425
+  {36.22,137.59,2455}, // 426
+  {36.67,27.14,180}, // 427
+  {57.02,-157.19,1345}, // 428
+  {-19.53,169.44,361}, // 429
+  {44.43,-110.67,2805}, // 430
+  {46.93,151.95,624}, // 431
+  {51.57,157.32,1953}, // 432
+  {53.59,159.15,2958}, // 433
+  {55.86,160.6,3081}, // 434
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         CONVERT COORDINTE DATA
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -16329,6 +17217,19 @@ void drawAstroclockStats(double rise, double set, double az, double alt, bool en
   }
 }
 
+void drawMeteorWarning() {
+  // ------------------------------------------------------
+  // yellow: in datetime range. red: in peak datetime range
+  // ------------------------------------------------------
+  canvas8x8.clear();
+  display.setColor(TFT_BLACK);
+  tft.drawRect(3, 26, 12, 12, TFT_BLACK);
+  if (summarize_MeteorShowerWarning()==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(3, 26, 12, 12, RGB_COLOR16(156,156,0));}
+  if (summarize_MeteorShowerPeakWarning()==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(3, 26, 12, 12, RGB_COLOR16(156,0,0));}
+  canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
+  display.drawCanvas(5, 28, canvas8x8);
+}
+
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                        UPDATE UI
 // ----------------------------------------------------------------------------------------------------------------
@@ -16484,16 +17385,10 @@ void UpdateUI(void * pvParamters) {
           // ------------------------------------------------
           drawPlanets();
           startup_draw_planets=true;
-          // ---------------------------------------------------------------------------
-          // draw meteor warning. yellow: in datetime range. red: in peak datetime range
-          // ---------------------------------------------------------------------------
-          canvas8x8.clear();
-          display.setColor(TFT_BLACK);
-          tft.drawRect(3, 26, 12, 12, TFT_BLACK);
-          if (summarize_MeteorShowerWarning()==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(3, 26, 12, 12, RGB_COLOR16(156,156,0));}
-          if (summarize_MeteorShowerPeakWarning()==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(3, 26, 12, 12, RGB_COLOR16(156,0,0));}
-          canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
-          display.drawCanvas(5, 28, canvas8x8);
+          // ------------------------------------------------
+          // draw meteor warning
+          // ------------------------------------------------
+          drawMeteorWarning();
         }
       }
       // ------------------------------------------------
