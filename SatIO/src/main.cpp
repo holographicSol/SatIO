@@ -18444,9 +18444,11 @@ void UpdateUI(void * pvParamters) {
         // -----------------------------------------------------------------
         // warning: grey: out of datetiem range. yellow: in datetime range
         // -----------------------------------------------------------------
-        display.drawBitmap16(11, ui_content_7-3, 15, 15, image_data_meteor_15x15_grey);
-        if (meteor_shower_warning_system[meteor_index_key][0]==true) {display.drawBitmap16(11, ui_content_7-3, 15, 15, image_data_meteor_15x15_yellow);}
-        if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.drawBitmap16(11, ui_content_7-3, 15, 15, image_data_meteor_15x15_red);}
+        if (meteor_shower_warning_system[meteor_index_key][0]==false && meteor_shower_warning_system[meteor_index_key][1]==false) {display.drawBitmap16(11, ui_content_7-3, 15, 15, image_data_meteor_15x15_grey);}
+        else {
+          if (meteor_shower_warning_system[meteor_index_key][0]==true) {display.drawBitmap16(11, ui_content_7-3, 15, 15, image_data_meteor_15x15_yellow);}
+          if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.drawBitmap16(11, ui_content_7-3, 15, 15, image_data_meteor_15x15_red);}
+        }
         // canvas8x8.clear();
         // display.setColor(RGB_COLOR16(92,92,92));
         // tft.drawRect(12, ui_content_7-1, 12, 12, RGB_COLOR16(92,92,92));
