@@ -18300,7 +18300,7 @@ void UpdateUI(void * pvParamters) {
         canvas8x8.clear();
         display.setColor(RGB_COLOR16(92,92,92));
         tft.drawRect(22, ui_content_7, 12, 12, RGB_COLOR16(92,92,92));
-        if (summarize_MeteorShowerWarning()==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(22, ui_content_7, 12, 12, RGB_COLOR16(156,156,0));}
+        if (meteor_shower_warning_system[meteor_index_key][0]==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(22, ui_content_7, 12, 12, RGB_COLOR16(156,156,0));}
         canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
         display.drawCanvas(24, ui_content_7+2, canvas8x8);
         // -----------------------------------------------------------------
@@ -18309,7 +18309,7 @@ void UpdateUI(void * pvParamters) {
         canvas8x8.clear();
         display.setColor(RGB_COLOR16(92,92,92));
         tft.drawRect(52, ui_content_7, 12, 12, RGB_COLOR16(92,92,92));
-        if (summarize_MeteorShowerPeakWarning()==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(52, ui_content_7, 12, 12, RGB_COLOR16(156,0,0));}
+        if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(52, ui_content_7, 12, 12, RGB_COLOR16(156,0,0));}
         canvas8x8.printFixed(0, 0, "P", STYLE_BOLD);
         display.drawCanvas(54, ui_content_7+2, canvas8x8);
       }
