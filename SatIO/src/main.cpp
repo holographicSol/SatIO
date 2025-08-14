@@ -18280,8 +18280,7 @@ void UpdateUI(void * pvParamters) {
           display.drawHLine(1, 28, 127);  // below index
           display.drawHLine(1, 46, 127);  // below name
           display.drawHLine(1, 108, 127); // above input
-
-          display.drawVLine(36, 46, ui_content_4+18); // between data
+          display.drawVLine(36, 46, 107); // between data
           display.drawHLine(1,  ui_content_4+19, 127); // below data
 
           canvas32x8.clear();
@@ -18343,19 +18342,11 @@ void UpdateUI(void * pvParamters) {
         // -----------------------------------------------------------------
         canvas8x8.clear();
         display.setColor(RGB_COLOR16(92,92,92));
-        tft.drawRect(22, ui_content_7, 12, 12, RGB_COLOR16(92,92,92));
-        if (meteor_shower_warning_system[meteor_index_key][0]==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(22, ui_content_7, 12, 12, RGB_COLOR16(156,156,0));}
+        tft.drawRect(12, ui_content_7-1, 12, 12, RGB_COLOR16(92,92,92));
+        if (meteor_shower_warning_system[meteor_index_key][0]==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(12, ui_content_7, 12, 12, RGB_COLOR16(156,156,0));}
+        if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(12, ui_content_7, 12, 12, RGB_COLOR16(156,0,0));}
         canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
-        display.drawCanvas(24, ui_content_7+2, canvas8x8);
-        // -----------------------------------------------------------------
-        // warning: grey: out of datetiem range. red: in peak datetime range
-        // -----------------------------------------------------------------
-        canvas8x8.clear();
-        display.setColor(RGB_COLOR16(92,92,92));
-        tft.drawRect(52, ui_content_7, 12, 12, RGB_COLOR16(92,92,92));
-        if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(52, ui_content_7, 12, 12, RGB_COLOR16(156,0,0));}
-        canvas8x8.printFixed(0, 0, "P", STYLE_BOLD);
-        display.drawCanvas(54, ui_content_7+2, canvas8x8);
+        display.drawCanvas(14, ui_content_7+1, canvas8x8);
       }
 
       // --------------------------------------------------
