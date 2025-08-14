@@ -8964,8 +8964,14 @@ int meteor_shower_datetime[max_meteor_showers][2][2]={
 */
 // ----------------------------------------------------------------------------------------
 int meteor_shower_max_peaks[max_meteor_showers]={
-  2, 2, 2, 2, 2, // 0-4
-  2, 2, 2        // 5-9
+  2, // Quadrantids   0
+  2, // Lyrids        1
+  2, // Eta Aquariids 2
+  2, // Perseids      3
+  2, // Orionids      4
+  2, // Leonids       5
+  2, // Geminids      6
+  2 // Ursids         7
 };
 // ----------------------------------------------------------------------------------------
 /*
