@@ -4468,7 +4468,7 @@ SensorDataStruct sensorData;
   'Flood Basalt', 'Plug', 'Somma', 'Maar', 'Fissure vent', '',
   'Lava cone, Stratovolcano', 'Tuff ring'
 */
-char volcano_strings[436][3][36]={
+char volcano_nouns[436][3][36]={
   {"Abu","Japan","Shield"}, // 0
   {"Acamarachi","Chile","Stratovolcano"}, // 1
   {"Acatenango","Guatemala","Stratovolcano"}, // 2
