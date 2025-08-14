@@ -18292,6 +18292,11 @@ void UpdateUI(void * pvParamters) {
           display.setColor(systemData.color_subtitle);
           canvas32x8.printFixed(0, 0, String("PEAK").c_str(), STYLE_BOLD);
           display.drawCanvas(3, ui_content_4+7, canvas32x8);
+          // static info
+          // canvas32x8.clear();
+          // display.setColor(systemData.color_content);
+          // canvas32x8.printFixed(0, 0, String("Meteros per hour: 60-150.").c_str(), STYLE_BOLD);
+          // display.drawCanvas(3, ui_content_7+1, canvas32x8);
         }
         // ------------------------------------------------
         // dynamic data
@@ -18343,8 +18348,8 @@ void UpdateUI(void * pvParamters) {
         canvas8x8.clear();
         display.setColor(RGB_COLOR16(92,92,92));
         tft.drawRect(12, ui_content_7-1, 12, 12, RGB_COLOR16(92,92,92));
-        if (meteor_shower_warning_system[meteor_index_key][0]==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(12, ui_content_7, 12, 12, RGB_COLOR16(156,156,0));}
-        if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(12, ui_content_7, 12, 12, RGB_COLOR16(156,0,0));}
+        if (meteor_shower_warning_system[meteor_index_key][0]==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(12, ui_content_7-1, 12, 12, RGB_COLOR16(156,156,0));}
+        if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(12, ui_content_7-1, 12, 12, RGB_COLOR16(156,0,0));}
         canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
         display.drawCanvas(14, ui_content_7+1, canvas8x8);
       }
