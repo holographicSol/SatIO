@@ -18245,12 +18245,12 @@ void UpdateUI(void * pvParamters) {
           canvas32x8.clear();
           display.setColor(systemData.color_subtitle);
           canvas32x8.printFixed(0, 0, String("RANGE").c_str(), STYLE_BOLD);
-          display.drawCanvas(3, ui_content_3+4, canvas32x8);
+          display.drawCanvas(3, ui_content_3+7, canvas32x8);
 
           canvas32x8.clear();
           display.setColor(systemData.color_subtitle);
           canvas32x8.printFixed(0, 0, String("PEAK").c_str(), STYLE_BOLD);
-          display.drawCanvas(3, ui_content_4+4, canvas32x8);
+          display.drawCanvas(3, ui_content_4+7, canvas32x8);
         }
         // ------------------------------------------------
         // dynamic data
@@ -18282,18 +18282,18 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // range: day/month -> day/month
         // ------------------------------------------------
-        canvas76x8.clear();
-        display.setColor(systemData.color_subtitle);
-        canvas76x8.printFixed(0, 0, String( String(meteor_shower_datetime[meteor_index_key][1]) + "/" + String(meteor_shower_datetime[meteor_index_key][0]) + " > " +
+        canvas80x8.clear();
+        display.setColor(systemData.color_content);
+        canvas80x8.printFixed(0, 0, String( String(meteor_shower_datetime[meteor_index_key][1]) + "/" + String(meteor_shower_datetime[meteor_index_key][0]) + " > " +
                                             String(meteor_shower_datetime[meteor_index_key][5]) + "/" + String(meteor_shower_datetime[meteor_index_key][3]) ).c_str(), STYLE_BOLD);
-        display.drawCanvas(41, ui_content_3+6, canvas76x8);
+        display.drawCanvas(40, ui_content_3+7, canvas80x8);
         // ------------------------------------------------
         // peak range: day -> day
         // ------------------------------------------------
-        canvas76x8.clear();
-        display.setColor(systemData.color_subtitle);
-        canvas76x8.printFixed(0, 0, String( String(meteor_shower_peaks[meteor_index_key][0]) + " > " + String(meteor_shower_peaks[meteor_index_key][1]) ).c_str(), STYLE_BOLD);
-        display.drawCanvas(41, ui_content_4+6, canvas76x8);
+        canvas80x8.clear();
+        display.setColor(systemData.color_content);
+        canvas80x8.printFixed(0, 0, String( String(meteor_shower_peaks[meteor_index_key][0]) + " > " + String(meteor_shower_peaks[meteor_index_key][1]) ).c_str(), STYLE_BOLD);
+        display.drawCanvas(40, ui_content_4+7, canvas80x8);
         // -----------------------------------------------------------------
         // warning: grey: out of datetiem range. yellow: in datetime range
         // -----------------------------------------------------------------
