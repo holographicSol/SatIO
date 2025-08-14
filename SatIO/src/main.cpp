@@ -758,6 +758,7 @@ char allow_input_data=false;
 signed int enter_digits_key=-1;
 int astroclock_key=0;
 int max_astroclock_key=10;
+int meteor_index_key=0;
 
 // ----------------------------------------------------
 // HOME
@@ -823,11 +824,11 @@ static int page_universe_view_neptune           =169;
 // ----------------------------------------------------
 // DISPLAY
 // ----------------------------------------------------
-static int page_display_main                    =180;
+static int page_display_main                      =180;
 // ----------------------------------------------------
 // CD74HC4067
 // ----------------------------------------------------
-static int page_CD74HC4067_main                 =200;
+static int page_CD74HC4067_main                   =200;
 // ----------------------------------------------------
 // TCA9548A
 // ----------------------------------------------------
@@ -835,7 +836,7 @@ static int page_TCA9548A_main                     =250;
 // ----------------------------------------------------
 // TIME & DATE
 // ----------------------------------------------------
-static int page_timeanddate_main                =300;
+static int page_timeanddate_main                  =300;
 // ----------------------------------------------------
 // ATTITUDE
 // ----------------------------------------------------
@@ -868,7 +869,7 @@ static int ui_content_10=116;
 //                                                                                                                      MENU MAIN
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_main_menu_items=14;
+const int max_main_menu_items=15;
 const char *menuMainItems[max_main_menu_items] =
 {
     "  MATRIX         ", // 0
@@ -885,6 +886,7 @@ const char *menuMainItems[max_main_menu_items] =
     "  HUD            ", // 11
     "  VIEW MAG FIELD ", // 12
     "  INDICATORS     ", // 13
+    "  METEORS        ", // 14
 };
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 15}, {125, 125}} );
 
@@ -14594,6 +14596,26 @@ void inputChar(char * data) {
         }
       }
     }
+    // ---------------------------
+    // meteor
+    // ---------------------------
+    else if (enter_digits_key==6) {
+      if (allow_input_data==true) {
+        // ----------------------------------------
+        // create temporary data to concat and test
+        // ----------------------------------------
+        memset(tmp_input_data, 0, sizeof(tmp_input_data));
+        strcpy(tmp_input_data, input_data);
+        strcat(tmp_input_data, data);
+        // ----------------------------------------
+        // test range
+        // ----------------------------------------
+        if (atoi(tmp_input_data)>=0 && atoi(tmp_input_data)<max_meteor_showers) {
+          memset(input_data, 0, sizeof(input_data));
+          strcpy(input_data, tmp_input_data);
+        }
+      }
+    }
   }
 }
 
@@ -14609,7 +14631,9 @@ void menuUp() {
     if (menu_column_selection==2) {}
     if (menu_column_selection==4) {menuMatrixFunctionSelect.up();}
   }
-  else if (menu_page==page_input_data) {}
+  else if (menu_page==page_input_data) {
+    if (enter_digits_key==6) {meteor_index_key--; if (meteor_index_key<0) {meteor_index_key=max_meteor_showers-1;}}
+  }
   else if (menu_page==page_matrix_logic_select_setup) {menuMatrixConfigureFunction.up();}
   else if (menu_page==page_matrix_logic_setup_function) {menuMatrixSetFunctionName.up();}
   else if (menu_page==page_file_main) {menuFile.up();}
@@ -14625,7 +14649,6 @@ void menuUp() {
   else if (menu_page==page_CD74HC4067_main) {menuCD74HC4067.up();}
   else if (menu_page==page_TCA9548A_main) {menuTCA9548A.up();}
   else if (menu_page==page_indicators) {menuIndicators.up();}
-  
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -14640,7 +14663,9 @@ void menuDown() {
     if (menu_column_selection==2) {}
     if (menu_column_selection==4) {menuMatrixFunctionSelect.down();}
   }
-  else if (menu_page==page_input_data) {}
+  else if (menu_page==page_input_data) {
+    if (enter_digits_key==6) {meteor_index_key++; if (meteor_index_key>=max_meteor_showers) {meteor_index_key=0;}}
+  }
   else if (menu_page==page_matrix_logic_select_setup) {menuMatrixConfigureFunction.down();}
   else if (menu_page==page_matrix_logic_setup_function) {menuMatrixSetFunctionName.down();}
   else if (menu_page==page_file_main) {menuFile.down();}
@@ -14706,6 +14731,10 @@ void menuBack() {
     // enter utc offset seconds
     // -------------------------------------------------------------
     else if (enter_digits_key==5) {menu_page=page_timeanddate_main;}
+    // -------------------------------------------------------------
+    // enter meteor key
+    // -------------------------------------------------------------
+    else if (enter_digits_key==6) {menu_page=page_main_menu;}
   }
   else if (menu_page==page_matrix_logic_select_setup) {menu_page=page_matrix_logic_main;}
   else if (menu_page==page_matrix_logic_setup_function) {menu_page=page_matrix_logic_select_setup;}
@@ -15122,7 +15151,14 @@ void menuEnter() {
     else if (menuMain.selection()==13) {
       menu_page=page_indicators;
     }
-    
+    // ------------------------------------------------
+    // go to meteors page
+    // ------------------------------------------------
+    else if (menuMain.selection()==14) {
+      allow_input_data=true;
+      enter_digits_key=6;
+      menu_page=page_input_data;
+    }
   }
   // ----------------------------------------------------------------
   // matrix switch configuration page
@@ -15163,13 +15199,12 @@ void menuEnter() {
   // ----------------------------------------------------------------
   else if (menu_page==page_input_data) {
     // Serial.println("[input_data] " + String(input_data, 10));
-    allow_input_data=false;
-    if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=page_matrix_logic_main;}
-    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=strtod(input_data, NULL); menu_page=page_matrix_logic_select_setup;}
-    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=strtod(input_data, NULL); menu_page=page_matrix_logic_select_setup;}
-    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=strtod(input_data, NULL); menu_page=page_matrix_logic_select_setup;}
-    else if (enter_digits_key==5) {satData.utc_second_offset=atol(input_data); menu_page=page_timeanddate_main;}
-    enter_digits_key=-1;
+    if (enter_digits_key==1) {allow_input_data=false; matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); enter_digits_key=-1; menu_page=page_matrix_logic_main;}
+    else if (enter_digits_key==2) {allow_input_data=false; matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=strtod(input_data, NULL); enter_digits_key=-1; menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==3) {allow_input_data=false; matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=strtod(input_data, NULL); enter_digits_key=-1; menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==4) {allow_input_data=false; matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=strtod(input_data, NULL); enter_digits_key=-1; menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==5) {allow_input_data=false; satData.utc_second_offset=atol(input_data); enter_digits_key=-1; menu_page=page_timeanddate_main;}
+    else if (enter_digits_key==6) {allow_input_data=true; meteor_index_key=atoi(input_data); memset(input_data, 0, sizeof(input_data));}
     // Serial.println("[matrix x] " + String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 10));
   }
 
@@ -18187,6 +18222,98 @@ void UpdateUI(void * pvParamters) {
         canvas92x8.printFixed(1, 1, String(satData.utc_second_offset).c_str(), STYLE_BOLD);
         display.drawCanvas(28, ui_content_0, canvas92x8);
       }
+
+      // --------------------------------------------------
+      // enter meteor key
+      // --------------------------------------------------
+      else if (enter_digits_key==6) {
+        // ------------------------------------------------
+        // static data
+        // ------------------------------------------------
+        if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
+          previous_menu_page=menu_page; display.clear();
+          drawMainBorder();
+          drawGeneralTitle("METEORS", systemData.color_title, systemData.color_border);
+          display.setColor(systemData.color_border);
+          display.drawHLine(1, 28, 127);  // below index
+          display.drawHLine(1, 46, 127);  // below name
+          display.drawHLine(1, 108, 127); // above input
+
+          display.drawVLine(36, 46, ui_content_4+18); // between data
+          display.drawHLine(1,  ui_content_4+19, 127); // below data
+
+          canvas32x8.clear();
+          display.setColor(systemData.color_subtitle);
+          canvas32x8.printFixed(0, 0, String("RANGE").c_str(), STYLE_BOLD);
+          display.drawCanvas(3, ui_content_3+4, canvas32x8);
+
+          canvas32x8.clear();
+          display.setColor(systemData.color_subtitle);
+          canvas32x8.printFixed(0, 0, String("PEAK").c_str(), STYLE_BOLD);
+          display.drawCanvas(3, ui_content_4+4, canvas32x8);
+        }
+        // ------------------------------------------------
+        // dynamic data
+        // ------------------------------------------------
+        // ------------------------------------------------
+        // load
+        // ------------------------------------------------
+        DisplayDiscreteLoadPercentage(115, 3, 10);
+        // ------------------------------------------------
+        // satellites & sync
+        // ------------------------------------------------
+        if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+        else {DisplaySignal(3, 3);}
+        DisplayDebugSymbol(18, 3);
+        // ------------------------------------------------
+        // meteor index
+        // ------------------------------------------------
+        canvas120x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas120x8.printFixed((125/2)-((strlen(String( String(meteor_index_key) + "/" + String(max_meteor_showers-1) ).c_str())/2)*6), 0, String( String(meteor_index_key) + "/" + String(max_meteor_showers-1) ).c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_0+1, canvas120x8);
+        // ------------------------------------------------
+        // meteor name
+        // ------------------------------------------------
+        canvas120x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas120x8.printFixed((125/2)-((strlen(String(meteor_shower_names[meteor_index_key]).c_str())/2)*6), 0, String(meteor_shower_names[meteor_index_key]).c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_1+8, canvas120x8);
+        // ------------------------------------------------
+        // range: day/month -> day/month
+        // ------------------------------------------------
+        canvas76x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas76x8.printFixed(0, 0, String( String(meteor_shower_datetime[meteor_index_key][1]) + "/" + String(meteor_shower_datetime[meteor_index_key][0]) + " > " +
+                                            String(meteor_shower_datetime[meteor_index_key][5]) + "/" + String(meteor_shower_datetime[meteor_index_key][3]) ).c_str(), STYLE_BOLD);
+        display.drawCanvas(41, ui_content_3+6, canvas76x8);
+        // ------------------------------------------------
+        // peak range: day -> day
+        // ------------------------------------------------
+        canvas76x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas76x8.printFixed(0, 0, String( String(meteor_shower_peaks[meteor_index_key][0]) + " > " + String(meteor_shower_peaks[meteor_index_key][1]) ).c_str(), STYLE_BOLD);
+        display.drawCanvas(41, ui_content_4+6, canvas76x8);
+        // -----------------------------------------------------------------
+        // warning: grey: out of datetiem range. yellow: in datetime range
+        // -----------------------------------------------------------------
+        canvas8x8.clear();
+        display.setColor(RGB_COLOR16(92,92,92));
+        tft.drawRect(22, ui_content_7, 12, 12, RGB_COLOR16(92,92,92));
+        if (summarize_MeteorShowerWarning()==true) {display.setColor(RGB_COLOR16(156,156,0)); tft.drawRect(22, ui_content_7, 12, 12, RGB_COLOR16(156,156,0));}
+        canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
+        display.drawCanvas(24, ui_content_7+2, canvas8x8);
+        // -----------------------------------------------------------------
+        // warning: grey: out of datetiem range. red: in peak datetime range
+        // -----------------------------------------------------------------
+        canvas8x8.clear();
+        display.setColor(RGB_COLOR16(92,92,92));
+        tft.drawRect(52, ui_content_7, 12, 12, RGB_COLOR16(92,92,92));
+        if (summarize_MeteorShowerPeakWarning()==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(52, ui_content_7, 12, 12, RGB_COLOR16(156,0,0));}
+        canvas8x8.printFixed(0, 0, "P", STYLE_BOLD);
+        display.drawCanvas(54, ui_content_7+2, canvas8x8);
+      }
+
       // --------------------------------------------------
       // draw input data
       // --------------------------------------------------
