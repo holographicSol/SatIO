@@ -19479,11 +19479,11 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // volcano elevation
         // ------------------------------------------------
-        canvas92x8.clear();
+        canvas120x8.clear();
         display.setColor(systemData.color_content);
-        if (volcano_elevation[volcano_index_key]>=0) {canvas92x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters AMSL")).c_str());}
-        else {canvas92x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters BMSL")).c_str());}
-        display.drawCanvas(3, ui_content_4, canvas92x8);
+        if (volcano_elevation[volcano_index_key]>=0) {canvas120x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters AMSL")).c_str());}
+        else {canvas120x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters BMSL")).c_str());}
+        display.drawCanvas(3, ui_content_4, canvas120x8);
 
         // ------------------------------------------------
         // volcano latitude
