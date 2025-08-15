@@ -8131,12 +8131,12 @@ String getVolcanoName(int index) {
   if (index==0) {v_name_string="Abu";}
   else if (index==1) {v_name_string="Acamarachi";}
   else if (index==2) {v_name_string="Acatenango";}
-  else if (index==3) {v_name_string="Acigöl-Nevsehir";}
+  else if (index==3) {v_name_string="Acigol-Nevsehir";}
   else if (index==4) {v_name_string="Adams";}
   else if (index==5) {v_name_string="Adams Seamount";}
   else if (index==6) {v_name_string="Adatara";}
   else if (index==7) {v_name_string="Adwa";}
-  else if (index==8) {v_name_string="Afderà";}
+  else if (index==8) {v_name_string="Afdera";}
   else if (index==9) {v_name_string="Agrigan";}
   else if (index==10) {v_name_string="Agua";}
   else if (index==11) {v_name_string="Agua de Pau";}
@@ -8173,7 +8173,7 @@ String getVolcanoName(int index) {
   else if (index==42) {v_name_string="Ascensión";}
   else if (index==43) {v_name_string="Askja";}
   else if (index==44) {v_name_string="Aso";}
-  else if (index==45) {v_name_string="Atitlán";}
+  else if (index==45) {v_name_string="Atitlan";}
   else if (index==46) {v_name_string="Atka";}
   else if (index==47) {v_name_string="Atsonupuri";}
   else if (index==48) {v_name_string="Augustine";}
@@ -8202,7 +8202,7 @@ String getVolcanoName(int index) {
   else if (index==71) {v_name_string="Butajira";}
   else if (index==72) {v_name_string="Butajira";}
   else if (index==73) {v_name_string="Cameroon (Mount)";}
-  else if (index==74) {v_name_string="Camiguin de Babuyanes";}
+  else if (index==74) {v_name_string="Camiguin Babuyanes";}
   else if (index==75) {v_name_string="Canlaon";}
   else if (index==76) {v_name_string="Capulin";}
   else if (index==77) {v_name_string="Carrizozo";}
@@ -8215,10 +8215,10 @@ String getVolcanoName(int index) {
   else if (index==84) {v_name_string="Cleveland";}
   else if (index==85) {v_name_string="Coatepeque";}
   else if (index==86) {v_name_string="Colima";}
-  else if (index==87) {v_name_string="Columbia River Basalts";}
+  else if (index==87) {v_name_string="Columbia Basalts";}
   else if (index==88) {v_name_string="Concepción";}
   else if (index==89) {v_name_string="Copahue";}
-  else if (index==90) {v_name_string="Cosigüina";}
+  else if (index==90) {v_name_string="Cosiguina";}
   else if (index==91) {v_name_string="Cotopaxi";}
   else if (index==92) {v_name_string="Crater Lake";}
   else if (index==93) {v_name_string="Craters of the Moon";}
@@ -8230,7 +8230,7 @@ String getVolcanoName(int index) {
   else if (index==99) {v_name_string="Devils Garden";}
   else if (index==100) {v_name_string="Devils Tower";}
   else if (index==101) {v_name_string="Diamond Craters";}
-  else if (index==102) {v_name_string="Dieng Volc. Complex";}
+  else if (index==102) {v_name_string="Dieng Complex";}
   else if (index==103) {v_name_string="Diky Greben";}
   else if (index==104) {v_name_string="Dubbi";}
   else if (index==105) {v_name_string="Dukono";}
@@ -8268,7 +8268,7 @@ String getVolcanoName(int index) {
   else if (index==137) {v_name_string="Gran Canaria";}
   else if (index==138) {v_name_string="Great Sitkin";}
   else if (index==139) {v_name_string="Griggs";}
-  else if (index==140) {v_name_string="Grímsvötn";}
+  else if (index==140) {v_name_string="Grímsvotn";}
   else if (index==141) {v_name_string="Guagua Pichincha";}
   else if (index==142) {v_name_string="Guallatiri";}
   else if (index==143) {v_name_string="Guguan";}
@@ -8300,7 +8300,7 @@ String getVolcanoName(int index) {
   else if (index==169) {v_name_string="Kahoolawe";}
   else if (index==170) {v_name_string="Kambalny";}
   else if (index==171) {v_name_string="Kanaga";}
-  else if (index==172) {v_name_string="Karangetang (Api Siau)";}
+  else if (index==172) {v_name_string="Karangetang";}
   else if (index==173) {v_name_string="Karisimbi";}
   else if (index==174) {v_name_string="Karisimbi";}
   else if (index==175) {v_name_string="Karthala";}
@@ -8381,25 +8381,25 @@ String getVolcanoName(int index) {
   else if (index==250) {v_name_string="Methana";}
   else if (index==251) {v_name_string="Metis Shoal";}
   else if (index==252) {v_name_string="Michael";}
-  else if (index==253) {v_name_string="Michoacan-Guanajuato";}
+  else if (index==253) {v_name_string="MichoacanGuanajuato";}
   else if (index==254) {v_name_string="Mílos";}
   else if (index==255) {v_name_string="Miyake-jima";}
   else if (index==256) {v_name_string="Moffett";}
   else if (index==257) {v_name_string="Mojanda";}
   else if (index==258) {v_name_string="Momotombo";}
   else if (index==259) {v_name_string="Monaco Bank";}
-  else if (index==260) {v_name_string="Mono Lake Vol Field";}
+  else if (index==260) {v_name_string="Mono Lake v. Field";}
   else if (index==261) {v_name_string="Monowai Seamount";}
   else if (index==262) {v_name_string="Moti";}
   else if (index==263) {v_name_string="Muria";}
   else if (index==264) {v_name_string="Nantai";}
   else if (index==265) {v_name_string="Nasu";}
-  else if (index==266) {v_name_string="Navajo Volcanic Field";}
+  else if (index==266) {v_name_string="Navajo v. Field";}
   else if (index==267) {v_name_string="Negro, Cerro";}
   else if (index==268) {v_name_string="Nemo Peak";}
   else if (index==269) {v_name_string="Nevis Peak";}
   else if (index==270) {v_name_string="Newberry";}
-  else if (index==271) {v_name_string="Newer Volcanics Province";}
+  else if (index==271) {v_name_string="Newer v. Province";}
   else if (index==272) {v_name_string="Ngauruhoe";}
   else if (index==273) {v_name_string="Nikko-Shirane";}
   else if (index==274) {v_name_string="Nipesotsu-Maruyama";}
@@ -8412,7 +8412,7 @@ String getVolcanoName(int index) {
   else if (index==281) {v_name_string="Ojos del Salado";}
   else if (index==282) {v_name_string="Okataina";}
   else if (index==283) {v_name_string="Okmok";}
-  else if (index==284) {v_name_string="Oku Volcanic Field";}
+  else if (index==284) {v_name_string="Oku v. Field";}
   else if (index==285) {v_name_string="Ol Doinyo Lengai";}
   else if (index==286) {v_name_string="Opala";}
   else if (index==287) {v_name_string="Oraefajokull";}
@@ -8434,7 +8434,7 @@ String getVolcanoName(int index) {
   else if (index==303) {v_name_string="Pinacate";}
   else if (index==304) {v_name_string="Pinatubo";}
   else if (index==305) {v_name_string="Pisgah Lava Field";}
-  else if (index==306) {v_name_string="Piton de la Fournaise";}
+  else if (index==306) {v_name_string="Piton dela Fournaise";}
   else if (index==307) {v_name_string="Poas";}
   else if (index==308) {v_name_string="Popocatepetl";}
   else if (index==309) {v_name_string="Prevo Peak";}
@@ -8487,7 +8487,7 @@ String getVolcanoName(int index) {
   else if (index==356) {v_name_string="Soputan";}
   else if (index==357) {v_name_string="Soufriere Guadeloupe";}
   else if (index==358) {v_name_string="Soufrière Hills";}
-  else if (index==359) {v_name_string="Soufrière St. Vincent";}
+  else if (index==359) {v_name_string="SoufriereSt.Vincent";}
   else if (index==360) {v_name_string="South Island";}
   else if (index==361) {v_name_string="SP Mountain";}
   else if (index==362) {v_name_string="Spurr";}
@@ -8509,7 +8509,7 @@ String getVolcanoName(int index) {
   else if (index==378) {v_name_string="Tarso Voon";}
   else if (index==379) {v_name_string="Telica Volcano";}
   else if (index==380) {v_name_string="Tenerife";}
-  else if (index==381) {v_name_string="Tengger Caldera & Bromo";}
+  else if (index==381) {v_name_string="TenggerCaldera&Bromo";}
   else if (index==382) {v_name_string="Three Fingered Jack";}
   else if (index==383) {v_name_string="Three Sisters";}
   else if (index==384) {v_name_string="Thule Islands";}
@@ -8529,7 +8529,7 @@ String getVolcanoName(int index) {
   else if (index==398) {v_name_string="Ubinas";}
   else if (index==399) {v_name_string="Udina";}
   else if (index==400) {v_name_string="Ugashik & Peulik";}
-  else if (index==401) {v_name_string="Uinkaret Volc. Field";}
+  else if (index==401) {v_name_string="Uinkaret v. Field";}
   else if (index==402) {v_name_string="Ulawun";}
   else if (index==403) {v_name_string="Umboi";}
   else if (index==404) {v_name_string="Undara";}
@@ -8546,7 +8546,7 @@ String getVolcanoName(int index) {
   else if (index==415) {v_name_string="Vilyuchik";}
   else if (index==416) {v_name_string="Visoke";}
   else if (index==417) {v_name_string="Visoke";}
-  else if (index==418) {v_name_string="Vsevidof & Recheschnoi";}
+  else if (index==418) {v_name_string="Vsevidof&Recheschnoi";}
   else if (index==419) {v_name_string="Vulcano";}
   else if (index==420) {v_name_string="Washington";}
   else if (index==421) {v_name_string="Wau-en-Namus";}
