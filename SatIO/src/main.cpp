@@ -19501,6 +19501,13 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         canvas120x8.printFixed(0, 0, String("Lon: " + String(volcano_lat_long[volcano_index_key][volcano_index[volcano_index_key][1]])).c_str());
         display.drawCanvas(3, ui_content_6+1, canvas120x8);
+        // ------------------------------------------------
+        // volcano meters radius/square danger zone
+        // ------------------------------------------------
+
+        // ------------------------------------------------
+        // volcano meters distance
+        // ------------------------------------------------
       }
 
       // --------------------------------------------------
