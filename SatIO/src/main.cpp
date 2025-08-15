@@ -970,7 +970,7 @@ static int ui_content_10=116;
 //                                                                                                                      MENU MAIN
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_main_menu_items=15;
+const int max_main_menu_items=16;
 const char *menuMainItems[max_main_menu_items] =
 {
     "  MATRIX         ", // 0
@@ -988,6 +988,7 @@ const char *menuMainItems[max_main_menu_items] =
     "  VIEW MAG FIELD ", // 12
     "  INDICATORS     ", // 13
     "  METEORS        ", // 14
+    "  VOLCANOS       ", // 15
 };
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 15}, {125, 125}} );
 
@@ -8109,6 +8110,1817 @@ void sdcardQuickCheck() {
   }
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                       VOLCANOS
+// ------------------------------------------------------------------------------------------------------------------------------
+
+#define max_volcanos 435
+int volcano_index_key=0;
+
+// -----------------------------------------------------------------
+/*
+   getVolcanoName provides a much lower memory footprint than a char
+   array of volcano names.
+
+   getVolcanoName should be accessed via: volcano_index_key
+*/
+// -----------------------------------------------------------------
+String v_name_string;
+
+String getVolcanoName(int index) {
+  if (index==0) {v_name_string="Abu";}
+  else if (index==1) {v_name_string="Acamarachi";}
+  else if (index==2) {v_name_string="Acatenango";}
+  else if (index==3) {v_name_string="Acigöl-Nevsehir";}
+  else if (index==4) {v_name_string="Adams";}
+  else if (index==5) {v_name_string="Adams Seamount";}
+  else if (index==6) {v_name_string="Adatara";}
+  else if (index==7) {v_name_string="Adwa";}
+  else if (index==8) {v_name_string="Afderà";}
+  else if (index==9) {v_name_string="Agrigan";}
+  else if (index==10) {v_name_string="Agua";}
+  else if (index==11) {v_name_string="Agua de Pau";}
+  else if (index==12) {v_name_string="Aguilera";}
+  else if (index==13) {v_name_string="Agung";}
+  else if (index==14) {v_name_string="Ahyi";}
+  else if (index==15) {v_name_string="Akademia Nauk";}
+  else if (index==16) {v_name_string="Akagi";}
+  else if (index==17) {v_name_string="Akan";}
+  else if (index==18) {v_name_string="Akhtang";}
+  else if (index==19) {v_name_string="Akita Komagatake";}
+  else if (index==20) {v_name_string="Akita Yakeyama";}
+  else if (index==21) {v_name_string="Akuseki-jima";}
+  else if (index==22) {v_name_string="Akutan";}
+  else if (index==23) {v_name_string="Alaid";}
+  else if (index==24) {v_name_string="Alamagan";}
+  else if (index==25) {v_name_string="Alayta";}
+  else if (index==26) {v_name_string="Alban Hills";}
+  else if (index==27) {v_name_string="Alcedo";}
+  else if (index==28) {v_name_string="Ale Bagu";}
+  else if (index==29) {v_name_string="Alid";}
+  else if (index==30) {v_name_string="Ambrym";}
+  else if (index==31) {v_name_string="Ambrym";}
+  else if (index==32) {v_name_string="Anatahan";}
+  else if (index==33) {v_name_string="Aneityum";}
+  else if (index==34) {v_name_string="Aniakchak";}
+  else if (index==35) {v_name_string="Antisana";}
+  else if (index==36) {v_name_string="Aoba";}
+  else if (index==37) {v_name_string="Ararat";}
+  else if (index==38) {v_name_string="Arenal";}
+  else if (index==39) {v_name_string="Arintica";}
+  else if (index==40) {v_name_string="Asacha";}
+  else if (index==41) {v_name_string="Asama";}
+  else if (index==42) {v_name_string="Ascensión";}
+  else if (index==43) {v_name_string="Askja";}
+  else if (index==44) {v_name_string="Aso";}
+  else if (index==45) {v_name_string="Atitlán";}
+  else if (index==46) {v_name_string="Atka";}
+  else if (index==47) {v_name_string="Atsonupuri";}
+  else if (index==48) {v_name_string="Augustine";}
+  else if (index==49) {v_name_string="Avachinsky";}
+  else if (index==50) {v_name_string="Awu";}
+  else if (index==51) {v_name_string="Axial Seamount";}
+  else if (index==52) {v_name_string="Ayelu";}
+  else if (index==53) {v_name_string="Azufre";}
+  else if (index==54) {v_name_string="Azuma";}
+  else if (index==55) {v_name_string="Babuyon Claro";}
+  else if (index==56) {v_name_string="Bachelor";}
+  else if (index==57) {v_name_string="Bagana";}
+  else if (index==58) {v_name_string="Baker";}
+  else if (index==59) {v_name_string="Bam";}
+  else if (index==60) {v_name_string="Bamus";}
+  else if (index==61) {v_name_string="Bandai";}
+  else if (index==62) {v_name_string="Barren Island";}
+  else if (index==63) {v_name_string="Barrier";}
+  else if (index==64) {v_name_string="Bazman";}
+  else if (index==65) {v_name_string="Beerenberg";}
+  else if (index==66) {v_name_string="Belknap";}
+  else if (index==67) {v_name_string="Bezymianny";}
+  else if (index==68) {v_name_string="Biliran";}
+  else if (index==69) {v_name_string="Bolshoi Semiachik";}
+  else if (index==70) {v_name_string="Bulusan";}
+  else if (index==71) {v_name_string="Butajira";}
+  else if (index==72) {v_name_string="Butajira";}
+  else if (index==73) {v_name_string="Cameroon (Mount)";}
+  else if (index==74) {v_name_string="Camiguin de Babuyanes";}
+  else if (index==75) {v_name_string="Canlaon";}
+  else if (index==76) {v_name_string="Capulin";}
+  else if (index==77) {v_name_string="Carrizozo";}
+  else if (index==78) {v_name_string="Cayambe";}
+  else if (index==79) {v_name_string="Cereme";}
+  else if (index==80) {v_name_string="Chaine des Puys";}
+  else if (index==81) {v_name_string="Chiginagak";}
+  else if (index==82) {v_name_string="Chikurachki";}
+  else if (index==83) {v_name_string="Chimborazo";}
+  else if (index==84) {v_name_string="Cleveland";}
+  else if (index==85) {v_name_string="Coatepeque";}
+  else if (index==86) {v_name_string="Colima";}
+  else if (index==87) {v_name_string="Columbia River Flood Basalts";}
+  else if (index==88) {v_name_string="Concepción";}
+  else if (index==89) {v_name_string="Copahue";}
+  else if (index==90) {v_name_string="Cosigüina";}
+  else if (index==91) {v_name_string="Cotopaxi";}
+  else if (index==92) {v_name_string="Crater Lake";}
+  else if (index==93) {v_name_string="Craters of the Moon";}
+  else if (index==94) {v_name_string="Daisetsu";}
+  else if (index==95) {v_name_string="Dakataua";}
+  else if (index==96) {v_name_string="Damavand";}
+  else if (index==97) {v_name_string="Deccan Traps";}
+  else if (index==98) {v_name_string="Dempo";}
+  else if (index==99) {v_name_string="Devils Garden";}
+  else if (index==100) {v_name_string="Devils Tower";}
+  else if (index==101) {v_name_string="Diamond Craters";}
+  else if (index==102) {v_name_string="Dieng Volcanic Complex";}
+  else if (index==103) {v_name_string="Diky Greben";}
+  else if (index==104) {v_name_string="Dubbi";}
+  else if (index==105) {v_name_string="Dukono";}
+  else if (index==106) {v_name_string="East Epi";}
+  else if (index==107) {v_name_string="Ebeko";}
+  else if (index==108) {v_name_string="Egmont (Taranaki)";}
+  else if (index==109) {v_name_string="Egon";}
+  else if (index==110) {v_name_string="El Chichon";}
+  else if (index==111) {v_name_string="Elbrus";}
+  else if (index==112) {v_name_string="Erebus";}
+  else if (index==113) {v_name_string="Erta Ale";}
+  else if (index==114) {v_name_string="Etna";}
+  else if (index==115) {v_name_string="Fantale";}
+  else if (index==116) {v_name_string="Fernandina";}
+  else if (index==117) {v_name_string="Fisher";}
+  else if (index==118) {v_name_string="Fogo";}
+  else if (index==119) {v_name_string="Fort Rock";}
+  else if (index==120) {v_name_string="Frosty Peak";}
+  else if (index==121) {v_name_string="Fuego";}
+  else if (index==122) {v_name_string="Fuerteventura";}
+  else if (index==123) {v_name_string="Fuji";}
+  else if (index==124) {v_name_string="Furnas";}
+  else if (index==125) {v_name_string="Fuss Peak";}
+  else if (index==126) {v_name_string="Galeras";}
+  else if (index==127) {v_name_string="Galunggung";}
+  else if (index==128) {v_name_string="Gamalama";}
+  else if (index==129) {v_name_string="Gamchen";}
+  else if (index==130) {v_name_string="Gamkonora";}
+  else if (index==131) {v_name_string="Gareloi";}
+  else if (index==132) {v_name_string="Gaua";}
+  else if (index==133) {v_name_string="Gede";}
+  else if (index==134) {v_name_string="Glacier Peak";}
+  else if (index==135) {v_name_string="Gorely";}
+  else if (index==136) {v_name_string="Graciosa";}
+  else if (index==137) {v_name_string="Gran Canaria";}
+  else if (index==138) {v_name_string="Great Sitkin";}
+  else if (index==139) {v_name_string="Griggs";}
+  else if (index==140) {v_name_string="Grímsvötn";}
+  else if (index==141) {v_name_string="Guagua Pichincha";}
+  else if (index==142) {v_name_string="Guallatiri";}
+  else if (index==143) {v_name_string="Guguan";}
+  else if (index==144) {v_name_string="Hakone";}
+  else if (index==145) {v_name_string="Heard";}
+  else if (index==146) {v_name_string="Hibok-hibok";}
+  else if (index==147) {v_name_string="Hierro";}
+  else if (index==148) {v_name_string="Hood";}
+  else if (index==149) {v_name_string="Hualalai";}
+  else if (index==150) {v_name_string="Ibu";}
+  else if (index==151) {v_name_string="Ijen";}
+  else if (index==152) {v_name_string="Iliamna";}
+  else if (index==153) {v_name_string="Iliboleng";}
+  else if (index==154) {v_name_string="Iliniza";}
+  else if (index==155) {v_name_string="Ilopango";}
+  else if (index==156) {v_name_string="Ilyinsky";}
+  else if (index==157) {v_name_string="Ioto (Iwo-jima)";}
+  else if (index==158) {v_name_string="Iraya";}
+  else if (index==159) {v_name_string="Irazu";}
+  else if (index==160) {v_name_string="Isanotski";}
+  else if (index==161) {v_name_string="Izalco";}
+  else if (index==162) {v_name_string="Iztaccihuatl";}
+  else if (index==163) {v_name_string="Izu-Tobu";}
+  else if (index==164) {v_name_string="Jailolo";}
+  else if (index==165) {v_name_string="Jefferson";}
+  else if (index==166) {v_name_string="Jordan Craters";}
+  else if (index==167) {v_name_string="Kadovar";}
+  else if (index==168) {v_name_string="Kaguyak";}
+  else if (index==169) {v_name_string="Kahoolawe";}
+  else if (index==170) {v_name_string="Kambalny";}
+  else if (index==171) {v_name_string="Kanaga";}
+  else if (index==172) {v_name_string="Karangetang [Api Siau]";}
+  else if (index==173) {v_name_string="Karisimbi";}
+  else if (index==174) {v_name_string="Karisimbi";}
+  else if (index==175) {v_name_string="Karthala";}
+  else if (index==176) {v_name_string="Karymsky";}
+  else if (index==177) {v_name_string="Katla";}
+  else if (index==178) {v_name_string="Katmai";}
+  else if (index==179) {v_name_string="Katwe-Kikorongo";}
+  else if (index==180) {v_name_string="Kavachi";}
+  else if (index==181) {v_name_string="Kell";}
+  else if (index==182) {v_name_string="Kelut";}
+  else if (index==183) {v_name_string="Kerinci";}
+  else if (index==184) {v_name_string="Khodutka";}
+  else if (index==185) {v_name_string="Kialagvik";}
+  else if (index==186) {v_name_string="Kick 'em Jenny";}
+  else if (index==187) {v_name_string="Kikai";}
+  else if (index==188) {v_name_string="Kikhpinych";}
+  else if (index==189) {v_name_string="Kilauea";}
+  else if (index==190) {v_name_string="Kilimanjaro";}
+  else if (index==191) {v_name_string="Kirishima";}
+  else if (index==192) {v_name_string="Kliuchevskoi";}
+  else if (index==193) {v_name_string="Komagatake";}
+  else if (index==194) {v_name_string="Kone";}
+  else if (index==195) {v_name_string="Koryaksky";}
+  else if (index==196) {v_name_string="Koshelev";}
+  else if (index==197) {v_name_string="Krafla";}
+  else if (index==198) {v_name_string="Krakatau";}
+  else if (index==199) {v_name_string="Krasheninnikov";}
+  else if (index==200) {v_name_string="Kronotsky";}
+  else if (index==201) {v_name_string="Ksudach";}
+  else if (index==202) {v_name_string="Kukak";}
+  else if (index==203) {v_name_string="Kusatsu-Shirane";}
+  else if (index==204) {v_name_string="Kutcharo";}
+  else if (index==205) {v_name_string="Kuttara";}
+  else if (index==206) {v_name_string="Kuwae";}
+  else if (index==207) {v_name_string="La Palma";}
+  else if (index==208) {v_name_string="Lamington";}
+  else if (index==209) {v_name_string="Langila";}
+  else if (index==210) {v_name_string="Lanzarote";}
+  else if (index==211) {v_name_string="Láscar";}
+  else if (index==212) {v_name_string="Lereboleng";}
+  else if (index==213) {v_name_string="Lewotobi";}
+  else if (index==214) {v_name_string="Lewotolo";}
+  else if (index==215) {v_name_string="Liamuiga";}
+  else if (index==216) {v_name_string="Lipari";}
+  else if (index==217) {v_name_string="Little Sitkin";}
+  else if (index==218) {v_name_string="Loihi";}
+  else if (index==219) {v_name_string="Lokon-Empung";}
+  else if (index==220) {v_name_string="Lolo";}
+  else if (index==221) {v_name_string="Lolobau";}
+  else if (index==222) {v_name_string="Loloru";}
+  else if (index==223) {v_name_string="Long Island";}
+  else if (index==224) {v_name_string="Longonot";}
+  else if (index==225) {v_name_string="Lopevi";}
+  else if (index==226) {v_name_string="Maderas";}
+  else if (index==227) {v_name_string="Mageik";}
+  else if (index==228) {v_name_string="Mahawu";}
+  else if (index==229) {v_name_string="Makian";}
+  else if (index==230) {v_name_string="Maly Semiachik";}
+  else if (index==231) {v_name_string="Manam";}
+  else if (index==232) {v_name_string="Mariveles";}
+  else if (index==233) {v_name_string="Marsabit";}
+  else if (index==234) {v_name_string="Masaya";}
+  else if (index==235) {v_name_string="Mashkovtsev";}
+  else if (index==236) {v_name_string="Mashu";}
+  else if (index==237) {v_name_string="Mauna Kea";}
+  else if (index==238) {v_name_string="Mauna Loa";}
+  else if (index==239) {v_name_string="Mayon";}
+  else if (index==240) {v_name_string="McDonald Islands";}
+  else if (index==241) {v_name_string="McLoughlin";}
+  else if (index==242) {v_name_string="McLoughlin";}
+  else if (index==243) {v_name_string="Mega Basalt Field";}
+  else if (index==244) {v_name_string="Mega Basalt Field";}
+  else if (index==245) {v_name_string="Menan Buttes";}
+  else if (index==246) {v_name_string="Menengai";}
+  else if (index==247) {v_name_string="Merapi";}
+  else if (index==248) {v_name_string="Merbabu";}
+  else if (index==249) {v_name_string="Meru";}
+  else if (index==250) {v_name_string="Methana";}
+  else if (index==251) {v_name_string="Metis Shoal";}
+  else if (index==252) {v_name_string="Michael";}
+  else if (index==253) {v_name_string="Michoacan-Guanajuato";}
+  else if (index==254) {v_name_string="Mílos";}
+  else if (index==255) {v_name_string="Miyake-jima";}
+  else if (index==256) {v_name_string="Moffett";}
+  else if (index==257) {v_name_string="Mojanda";}
+  else if (index==258) {v_name_string="Momotombo";}
+  else if (index==259) {v_name_string="Monaco Bank";}
+  else if (index==260) {v_name_string="Mono Lake Vol Field";}
+  else if (index==261) {v_name_string="Monowai Seamount";}
+  else if (index==262) {v_name_string="Moti";}
+  else if (index==263) {v_name_string="Muria";}
+  else if (index==264) {v_name_string="Nantai";}
+  else if (index==265) {v_name_string="Nasu";}
+  else if (index==266) {v_name_string="Navajo Volcanic Field";}
+  else if (index==267) {v_name_string="Negro, Cerro";}
+  else if (index==268) {v_name_string="Nemo Peak";}
+  else if (index==269) {v_name_string="Nevis Peak";}
+  else if (index==270) {v_name_string="Newberry";}
+  else if (index==271) {v_name_string="Newer Volcanics Province";}
+  else if (index==272) {v_name_string="Ngauruhoe";}
+  else if (index==273) {v_name_string="Nikko-Shirane";}
+  else if (index==274) {v_name_string="Nipesotsu-Maruyama";}
+  else if (index==275) {v_name_string="Nisyros";}
+  else if (index==276) {v_name_string="Nyambeni Hills";}
+  else if (index==277) {v_name_string="Nyamuragira";}
+  else if (index==278) {v_name_string="Nyiragongo";}
+  else if (index==279) {v_name_string="Oahu";}
+  else if (index==280) {v_name_string="Ojos del Salado";}
+  else if (index==281) {v_name_string="Ojos del Salado";}
+  else if (index==282) {v_name_string="Okataina";}
+  else if (index==283) {v_name_string="Okmok";}
+  else if (index==284) {v_name_string="Oku Volcanic Field";}
+  else if (index==285) {v_name_string="Ol Doinyo Lengai";}
+  else if (index==286) {v_name_string="Opala";}
+  else if (index==287) {v_name_string="Oraefajokull";}
+  else if (index==288) {v_name_string="Oshima";}
+  else if (index==289) {v_name_string="Pacaya";}
+  else if (index==290) {v_name_string="Pagan";}
+  else if (index==291) {v_name_string="Pago";}
+  else if (index==292) {v_name_string="Papandayan";}
+  else if (index==293) {v_name_string="Paricutin";}
+  else if (index==294) {v_name_string="Parinacota";}
+  else if (index==295) {v_name_string="Parinacota";}
+  else if (index==296) {v_name_string="Pauzhetka";}
+  else if (index==297) {v_name_string="Pavlof";}
+  else if (index==298) {v_name_string="Pavlof Sister";}
+  else if (index==299) {v_name_string="Pelee";}
+  else if (index==300) {v_name_string="Peuet Sague";}
+  else if (index==301) {v_name_string="Pico";}
+  else if (index==302) {v_name_string="Pilas, Las";}
+  else if (index==303) {v_name_string="Pinacate";}
+  else if (index==304) {v_name_string="Pinatubo";}
+  else if (index==305) {v_name_string="Pisgah Lava Field";}
+  else if (index==306) {v_name_string="Piton de la Fournaise";}
+  else if (index==307) {v_name_string="Poas";}
+  else if (index==308) {v_name_string="Popocatepetl";}
+  else if (index==309) {v_name_string="Prevo Peak";}
+  else if (index==310) {v_name_string="Purace";}
+  else if (index==311) {v_name_string="Quill, The";}
+  else if (index==312) {v_name_string="Rabaul";}
+  else if (index==313) {v_name_string="Ragang";}
+  else if (index==314) {v_name_string="Raikoke";}
+  else if (index==315) {v_name_string="Rainier";}
+  else if (index==316) {v_name_string="Rajabasa";}
+  else if (index==317) {v_name_string="Raoul";}
+  else if (index==318) {v_name_string="Rasshua";}
+  else if (index==319) {v_name_string="Raung";}
+  else if (index==320) {v_name_string="Rausu";}
+  else if (index==321) {v_name_string="Redoubt";}
+  else if (index==322) {v_name_string="Reventador";}
+  else if (index==323) {v_name_string="Rincon de la Vieja";}
+  else if (index==324) {v_name_string="Roundtop";}
+  else if (index==325) {v_name_string="Ruapehu";}
+  else if (index==326) {v_name_string="Rudakov";}
+  else if (index==327) {v_name_string="Ruiz, Nevado del";}
+  else if (index==328) {v_name_string="Rumble IV";}
+  else if (index==329) {v_name_string="Saba";}
+  else if (index==330) {v_name_string="Sabancaya";}
+  else if (index==331) {v_name_string="Sakar";}
+  else if (index==332) {v_name_string="Sakura-jima";}
+  else if (index==333) {v_name_string="Salak";}
+  else if (index==334) {v_name_string="San Cristobal";}
+  else if (index==335) {v_name_string="San Salvador";}
+  else if (index==336) {v_name_string="San Vicente";}
+  else if (index==337) {v_name_string="Sanford";}
+  else if (index==338) {v_name_string="Sangay";}
+  else if (index==339) {v_name_string="Santa Ana";}
+  else if (index==340) {v_name_string="Santa Maria";}
+  else if (index==341) {v_name_string="Santorini";}
+  else if (index==342) {v_name_string="Sarychev Peak";}
+  else if (index==343) {v_name_string="Savo";}
+  else if (index==344) {v_name_string="Segula";}
+  else if (index==345) {v_name_string="Semeru";}
+  else if (index==346) {v_name_string="Semisopochnoi";}
+  else if (index==347) {v_name_string="Sete Cidades";}
+  else if (index==348) {v_name_string="Shasta";}
+  else if (index==349) {v_name_string="Sheveluch";}
+  else if (index==350) {v_name_string="Shikotsu";}
+  else if (index==351) {v_name_string="Shiretoko-Iwo-zan";}
+  else if (index==352) {v_name_string="Shishaldin";}
+  else if (index==353) {v_name_string="Sinarka";}
+  else if (index==354) {v_name_string="Smirnov";}
+  else if (index==355) {v_name_string="Sollipulli";}
+  else if (index==356) {v_name_string="Soputan";}
+  else if (index==357) {v_name_string="Soufriere Guadeloupe";}
+  else if (index==358) {v_name_string="Soufrière Hills";}
+  else if (index==359) {v_name_string="Soufrière St. Vincent";}
+  else if (index==360) {v_name_string="South Island";}
+  else if (index==361) {v_name_string="SP Mountain";}
+  else if (index==362) {v_name_string="Spurr";}
+  else if (index==363) {v_name_string="Srednii";}
+  else if (index==364) {v_name_string="Steller";}
+  else if (index==365) {v_name_string="Stromboli";}
+  else if (index==366) {v_name_string="Sumaco";}
+  else if (index==367) {v_name_string="Sumbing";}
+  else if (index==368) {v_name_string="Sundoro";}
+  else if (index==369) {v_name_string="Sunset Craters";}
+  else if (index==370) {v_name_string="Suswa";}
+  else if (index==371) {v_name_string="Suwanose-jima";}
+  else if (index==372) {v_name_string="Taal";}
+  else if (index==373) {v_name_string="Talang";}
+  else if (index==374) {v_name_string="Tambora";}
+  else if (index==375) {v_name_string="Tanaga and Takawangha";}
+  else if (index==376) {v_name_string="Tangkubanparahu";}
+  else if (index==377) {v_name_string="Tao-Rusyr Caldera";}
+  else if (index==378) {v_name_string="Tarso Voon";}
+  else if (index==379) {v_name_string="Telica Volcano";}
+  else if (index==380) {v_name_string="Tenerife";}
+  else if (index==381) {v_name_string="Tengger Caldera and Bromo";}
+  else if (index==382) {v_name_string="Three Fingered Jack";}
+  else if (index==383) {v_name_string="Three Sisters";}
+  else if (index==384) {v_name_string="Thule Islands";}
+  else if (index==385) {v_name_string="Tiatia";}
+  else if (index==386) {v_name_string="Toba";}
+  else if (index==387) {v_name_string="Todoko-Ranu";}
+  else if (index==388) {v_name_string="Tokachi";}
+  else if (index==389) {v_name_string="Tolbachik";}
+  else if (index==390) {v_name_string="Tolimán";}
+  else if (index==391) {v_name_string="Towada";}
+  else if (index==392) {v_name_string="Traitor's Head";}
+  else if (index==393) {v_name_string="Tri Sestry";}
+  else if (index==394) {v_name_string="Tristan da Cunha";}
+  else if (index==395) {v_name_string="Tsurumi";}
+  else if (index==396) {v_name_string="Tungurahua";}
+  else if (index==397) {v_name_string="Ubehebe Craters";}
+  else if (index==398) {v_name_string="Ubinas";}
+  else if (index==399) {v_name_string="Udina";}
+  else if (index==400) {v_name_string="Ugashik and Peulik";}
+  else if (index==401) {v_name_string="Uinkaret Volcanic Field";}
+  else if (index==402) {v_name_string="Ulawun";}
+  else if (index==403) {v_name_string="Umboi";}
+  else if (index==404) {v_name_string="Undara";}
+  else if (index==405) {v_name_string="Ungaran and Telomoyo";}
+  else if (index==406) {v_name_string="Unzen";}
+  else if (index==407) {v_name_string="Urataman";}
+  else if (index==408) {v_name_string="Ushishur";}
+  else if (index==409) {v_name_string="Usu";}
+  else if (index==410) {v_name_string="Uzon";}
+  else if (index==411) {v_name_string="Veniaminof";}
+  else if (index==412) {v_name_string="Vernadskii Ridge";}
+  else if (index==413) {v_name_string="Vesuvius";}
+  else if (index==414) {v_name_string="Villarrica";}
+  else if (index==415) {v_name_string="Vilyuchik";}
+  else if (index==416) {v_name_string="Visoke";}
+  else if (index==417) {v_name_string="Visoke";}
+  else if (index==418) {v_name_string="Vsevidof and Recheschnoi Volcanoes";}
+  else if (index==419) {v_name_string="Vulcano";}
+  else if (index==420) {v_name_string="Washington";}
+  else if (index==421) {v_name_string="Wau-en-Namus";}
+  else if (index==422) {v_name_string="Westdahl";}
+  else if (index==423) {v_name_string="White Island";}
+  else if (index==424) {v_name_string="Wrangell";}
+  else if (index==425) {v_name_string="Wudalianchi";}
+  else if (index==426) {v_name_string="Yake-dake";}
+  else if (index==427) {v_name_string="Yali";}
+  else if (index==428) {v_name_string="Yantarni";}
+  else if (index==429) {v_name_string="Yasur";}
+  else if (index==430) {v_name_string="Yellowstone";}
+  else if (index==431) {v_name_string="Zavaritzki Caldera";}
+  else if (index==432) {v_name_string="Zheltovsky";}
+  else if (index==433) {v_name_string="Zhupanovsky";}
+  else if (index==434) {v_name_string="Zimina";}
+  return v_name_string;
+}
+
+// -----------------------------------------------------------------
+/*
+   volcano_name should be accessed via: volcano_index[0]
+*/
+// -----------------------------------------------------------------
+char volcano_name[57][29] = {"Antarctica", "Argentina", "Argentina, Chile", "Australia", "Bolivia, Chile", "Cameroon",
+                   "Cape Verde Islands", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Rwanda", "Costa Rica",
+                   "Democratic Republic of Congo", "Ecuador", "El Salvador", "Eritrea", "Ethiopia", "Ethiopia, Kenya",
+                   "France", "Galápagos Islands", "Greece", "Grenada", "Guatemala", "Iceland", "India", "Indonesia",
+                   "Iran", "Italy", "Japan", "Kenya", "Libya", "Mariana Islands", "Mexico", "Netherlands",
+                   "New Zealand", "Nicaragua", "Norway", "Pacific Ocean", "Papua New Guinea", "Peru", "Philippines",
+                   "Portugal", "Russia", "Solomon Islands", "South Atlantic Ocean", "Spain", "St. Kitts and Nevis",
+                   "St. Vincent", "Tanzania", "Tonga", "Turkey", "Uganda", "United Kingdom", "United States",
+                   "Vanuatu"};
+
+// -----------------------------------------------------------------
+/*
+   volcano_type should be accessed via: volcano_index[1]
+*/
+// -----------------------------------------------------------------
+char volcano_type[19][25] = {"", "Caldera", "Caldera, Shield", "Cinder Cone", "Complex", "Fissure vent", "Fissure vent, Maar",
+                   "Flood Basalt", "Lava cone, Stratovolcano", "Lava dome", "Maar", "Plug", "Pyroclastic cone",
+                   "Shield", "Somma", "Stratovolcano", "Submarine", "Tuff ring", "Volcanic field"};
+
+// -----------------------------------------------------------------
+/*
+   volcano_elevation should be accessed via: volcano_index_key
+*/
+// -----------------------------------------------------------------
+int volcano_elevation[max_volcanos]={
+  641, // 0
+  6046, // 1
+  3976, // 2
+  1689, // 3
+  3742, // 4
+  -39, // 5
+  1718, // 6
+  1733, // 7
+  1295, // 8
+  965, // 9
+  3760, // 10
+  947, // 11
+  2546, // 12
+  3142, // 13
+  -137, // 14
+  1180, // 15
+  1828, // 16
+  1499, // 17
+  1956, // 18
+  1637, // 19
+  1366, // 20
+  584, // 21
+  1303, // 22
+  2339, // 23
+  744, // 24
+  1501, // 25
+  949, // 26
+  1130, // 27
+  1031, // 28
+  904, // 29
+  1334, // 30
+  1334, // 31
+  790, // 32
+  852, // 33
+  1341, // 34
+  5753, // 35
+  1496, // 36
+  5165, // 37
+  1670, // 38
+  5597, // 39
+  1910, // 40
+  2568, // 41
+  858, // 42
+  1516, // 43
+  1592, // 44
+  3535, // 45
+  1533, // 46
+  1206, // 47
+  1252, // 48
+  2741, // 49
+  1320, // 50
+  -1410, // 51
+  2145, // 52
+  5846, // 53
+  2035, // 54
+  1180, // 55
+  2763, // 56
+  1750, // 57
+  3285, // 58
+  685, // 59
+  2248, // 60
+  1819, // 61
+  305, // 62
+  1032, // 63
+  3490, // 64
+  2277, // 65
+  2096, // 66
+  2882, // 67
+  1187, // 68
+  1720, // 69
+  1565, // 70
+  2281, // 71
+  2281, // 72
+  4095, // 73
+  712, // 74
+  2435, // 75
+  2494, // 76
+  1730, // 77
+  5790, // 78
+  3078, // 79
+  1464, // 80
+  2067, // 81
+  5958, // 82
+  6310, // 83
+  1730, // 84
+  746, // 85
+  4100, // 86
+  0, // 87
+  1610, // 88
+  2965, // 89
+  847, // 90
+  5911, // 91
+  2471, // 92
+  2005, // 93
+  2290, // 94
+  400, // 95
+  5670, // 96
+  0, // 97
+  3173, // 98
+  1525, // 99
+  1558, // 100
+  1450, // 101
+  2565, // 102
+  1331, // 103
+  1625, // 104
+  1185, // 105
+  -34, // 106
+  1156, // 107
+  2518, // 108
+  788, // 109
+  1060, // 110
+  5633, // 111
+  3794, // 112
+  613, // 113
+  3350, // 114
+  2007, // 115
+  1476, // 116
+  1095, // 117
+  2829, // 118
+  1716, // 119
+  1920, // 120
+  3763, // 121
+  529, // 122
+  3776, // 123
+  805, // 124
+  1772, // 125
+  4276, // 126
+  2168, // 127
+  1715, // 128
+  2576, // 129
+  1635, // 130
+  1573, // 131
+  797, // 132
+  2958, // 133
+  3213, // 134
+  1829, // 135
+  402, // 136
+  1950, // 137
+  1740, // 138
+  2317, // 139
+  1725, // 140
+  4784, // 141
+  6071, // 142
+  287, // 143
+  1439, // 144
+  2745, // 145
+  1332, // 146
+  1500, // 147
+  3426, // 148
+  2523, // 149
+  1325, // 150
+  2386, // 151
+  3053, // 152
+  1659, // 153
+  5248, // 154
+  450, // 155
+  1578, // 156
+  161, // 157
+  1009, // 158
+  3431, // 159
+  2446, // 160
+  1950, // 161
+  5286, // 162
+  581, // 163
+  1130, // 164
+  3199, // 165
+  1400, // 166
+  365, // 167
+  901, // 168
+  450, // 169
+  2156, // 170
+  1307, // 171
+  1784, // 172
+  4507, // 173
+  4507, // 174
+  2361, // 175
+  1536, // 176
+  1512, // 177
+  2047, // 178
+  1067, // 179
+  -20, // 180
+  900, // 181
+  1731, // 182
+  3800, // 183
+  2090, // 184
+  1677, // 185
+  -185, // 186
+  704, // 187
+  1552, // 188
+  1222, // 189
+  5895, // 190
+  1700, // 191
+  4835, // 192
+  1131, // 193
+  1619, // 194
+  3456, // 195
+  1812, // 196
+  818, // 197
+  813, // 198
+  1856, // 199
+  3528, // 200
+  1079, // 201
+  2043, // 202
+  2171, // 203
+  999, // 204
+  581, // 205
+  -2, // 206
+  2426, // 207
+  1680, // 208
+  1330, // 209
+  670, // 210
+  5592, // 211
+  1117, // 212
+  1703, // 213
+  1423, // 214
+  1156, // 215
+  602, // 216
+  1174, // 217
+  -975, // 218
+  1580, // 219
+  805, // 220
+  858, // 221
+  1887, // 222
+  1280, // 223
+  2776, // 224
+  1413, // 225
+  1394, // 226
+  2165, // 227
+  1324, // 228
+  1357, // 229
+  1560, // 230
+  1807, // 231
+  1388, // 232
+  1707, // 233
+  635, // 234
+  503, // 235
+  855, // 236
+  4205, // 237
+  4170, // 238
+  2462, // 239
+  230, // 240
+  2894, // 241
+  2894, // 242
+  1067, // 243
+  1067, // 244
+  1713, // 245
+  2278, // 246
+  2911, // 247
+  3145, // 248
+  4565, // 249
+  760, // 250
+  43, // 251
+  990, // 252
+  3860, // 253
+  751, // 254
+  815, // 255
+  1196, // 256
+  4263, // 257
+  1297, // 258
+  -197, // 259
+  2121, // 260
+  -132, // 261
+  950, // 262
+  1625, // 263
+  2486, // 264
+  1915, // 265
+  2740, // 266
+  728, // 267
+  1018, // 268
+  985, // 269
+  2434, // 270
+  1011, // 271
+  1978, // 272
+  2578, // 273
+  2013, // 274
+  698, // 275
+  750, // 276
+  3058, // 277
+  3470, // 278
+  1220, // 279
+  6887, // 280
+  6887, // 281
+  1111, // 282
+  1073, // 283
+  3011, // 284
+  2962, // 285
+  1776, // 286
+  2119, // 287
+  764, // 288
+  2552, // 289
+  570, // 290
+  742, // 291
+  2665, // 292
+  3170, // 293
+  6348, // 294
+  6348, // 295
+  1070, // 296
+  2519, // 297
+  2142, // 298
+  1397, // 299
+  2801, // 300
+  2351, // 301
+  1700, // 302
+  1200, // 303
+  1486, // 304
+  1495, // 305
+  2631, // 306
+  2708, // 307
+  5246, // 308
+  1360, // 309
+  4650, // 310
+  601, // 311
+  688, // 312
+  2815, // 313
+  551, // 314
+  4392, // 315
+  1281, // 316
+  516, // 317
+  956, // 318
+  3332, // 319
+  1660, // 320
+  3108, // 321
+  3562, // 322
+  1916, // 323
+  1871, // 324
+  2797, // 325
+  542, // 326
+  5321, // 327
+  500, // 328
+  887, // 329
+  5967, // 330
+  992, // 331
+  1117, // 332
+  2211, // 333
+  1745, // 334
+  1893, // 335
+  697, // 336
+  4949, // 337
+  5230, // 338
+  2381, // 339
+  3772, // 340
+  367, // 341
+  1496, // 342
+  485, // 343
+  1160, // 344
+  3676, // 345
+  1221, // 346
+  856, // 347
+  4317, // 348
+  3283, // 349
+  1320, // 350
+  1563, // 351
+  2857, // 352
+  934, // 353
+  1189, // 354
+  2282, // 355
+  1784, // 356
+  1467, // 357
+  915, // 358
+  1220, // 359
+  800, // 360
+  2141, // 361
+  3374, // 362
+  36, // 363
+  2272, // 364
+  924, // 365
+  3990, // 366
+  3371, // 367
+  3136, // 368
+  2447, // 369
+  2356, // 370
+  799, // 371
+  311, // 372
+  2597, // 373
+  2850, // 374
+  1806, // 375
+  2084, // 376
+  1325, // 377
+  3100, // 378
+  1010, // 379
+  3715, // 380
+  2329, // 381
+  2390, // 382
+  3100, // 383
+  1075, // 384
+  1819, // 385
+  2157, // 386
+  979, // 387
+  2077, // 388
+  3682, // 389
+  3158, // 390
+  1159, // 391
+  1881, // 392
+  998, // 393
+  2060, // 394
+  1584, // 395
+  2011, // 396
+  752, // 397
+  5672, // 398
+  2923, // 399
+  1474, // 400
+  1555, // 401
+  2334, // 402
+  1548, // 403
+  1020, // 404
+  2050, // 405
+  1500, // 406
+  678, // 407
+  401, // 408
+  737, // 409
+  1617, // 410
+  2507, // 411
+  1183, // 412
+  1281, // 413
+  2847, // 414
+  2173, // 415
+  3711, // 416
+  3711, // 417
+  2149, // 418
+  500, // 419
+  2376, // 420
+  547, // 421
+  1654, // 422
+  321, // 423
+  4317, // 424
+  597, // 425
+  2455, // 426
+  180, // 427
+  1345, // 428
+  361, // 429
+  2805, // 430
+  624, // 431
+  1953, // 432
+  2958, // 433
+  3081, // 434
+};
+// -----------------------------------------------------------------
+/*
+   volcano_lat_long should be accessed via: volcano_index_key
+   0: latitude
+   1: longitude
+*/
+// -----------------------------------------------------------------
+float volcano_lat_long[max_volcanos][2]={
+  {34.5,131.6}, // 0
+  {-23.3,-67.62}, // 1
+  {14.5,-90.88}, // 2
+  {38.57,34.52}, // 3
+  {46.21,-121.49}, // 4
+  {-25.37,-129.27}, // 5
+  {37.64,140.29}, // 6
+  {10.07,40.84}, // 7
+  {13.08,40.85}, // 8
+  {18.77,145.67}, // 9
+  {14.47,-90.74}, // 10
+  {37.77,-25.47}, // 11
+  {-50.33,-73.75}, // 12
+  {-8.34,115.51}, // 13
+  {20.42,145.03}, // 14
+  {53.98,159.45}, // 15
+  {36.56,139.2}, // 16
+  {43.38,144.01}, // 17
+  {55.43,158.65}, // 18
+  {39.76,140.8}, // 19
+  {39.96,140.76}, // 20
+  {29.46,129.6}, // 21
+  {54.13,-165.99}, // 22
+  {50.86,155.55}, // 23
+  {17.6,145.83}, // 24
+  {12.88,40.57}, // 25
+  {41.73,12.7}, // 26
+  {-0.43,-91.12}, // 27
+  {13.52,40.63}, // 28
+  {14.88,39.92}, // 29
+  {-16.25,168.12}, // 30
+  {-16.25,168.12}, // 31
+  {16.35,145.67}, // 32
+  {-20.2,169.78}, // 33
+  {56.88,-158.17}, // 34
+  {-0.48,-78.14}, // 35
+  {-15.4,167.83}, // 36
+  {39.7,44.3}, // 37
+  {10.46,-84.7}, // 38
+  {-18.73,-69.05}, // 39
+  {52.36,157.83}, // 40
+  {36.4,138.53}, // 41
+  {-7.95,-14.37}, // 42
+  {65.03,-16.75}, // 43
+  {32.88,131.11}, // 44
+  {14.58,-91.19}, // 45
+  {52.38,-174.15}, // 46
+  {44.81,147.14}, // 47
+  {59.36,-153.43}, // 48
+  {53.26,158.83}, // 49
+  {3.67,125.5}, // 50
+  {45.95,-130.0}, // 51
+  {10.08,40.7}, // 52
+  {-21.79,-68.24}, // 53
+  {37.73,140.25}, // 54
+  {19.5,121.9}, // 55
+  {43.8,121.6}, // 56
+  {-6.1,155.2}, // 57
+  {48.79,-121.82}, // 58
+  {-3.6,144.85}, // 59
+  {-5.2,151.2}, // 60
+  {37.6,140.1}, // 61
+  {12.29,93.88}, // 62
+  {2.32,36.57}, // 63
+  {28.0,60.0}, // 64
+  {71.1,-8.2}, // 65
+  {44.28,-121.83}, // 66
+  {55.98,160.58}, // 67
+  {11.5,124.5}, // 68
+  {54.32,160.02}, // 69
+  {12.8,124.1}, // 70
+  {8.05,38.35}, // 71
+  {8.05,38.35}, // 72
+  {4.2,9.17}, // 73
+  {18.83,121.85}, // 74
+  {10.41,123.13}, // 75
+  {36.45,-104.09}, // 76
+  {33.7,-106.0}, // 77
+  {0.03,-77.99}, // 78
+  {-6.9,108.41}, // 79
+  {45.78,2.97}, // 80
+  {57.13,-156.99}, // 81
+  {50.33,155.46}, // 82
+  {-1.46,-78.82}, // 83
+  {52.83,-169.95}, // 84
+  {13.86,-89.54}, // 85
+  {19.51,103.62}, // 86
+  {NAN,NAN}, // 87
+  {11.5,85.6}, // 88
+  {-37.85,-71.17}, // 89
+  {12.98,-87.56}, // 90
+  {-0.68,-78.44}, // 91
+  {42.94,-122.11}, // 92
+  {43.42,-113.5}, // 93
+  {43.7,142.9}, // 94
+  {-5.0,150.1}, // 95
+  {35.95,52.11}, // 96
+  {NAN,NAN}, // 97
+  {-4.0,103.1}, // 98
+  {43.5,-120.9}, // 99
+  {44.6,-104.7}, // 100
+  {43.1,-118.7}, // 101
+  {-7.2,109.9}, // 102
+  {51.46,156.98}, // 103
+  {13.6,41.8}, // 104
+  {1.7,127.87}, // 105
+  {-16.7,168.4}, // 106
+  {50.68,156.02}, // 107
+  {-39.3,174.1}, // 108
+  {-8.7,122.45}, // 109
+  {17.36,-93.23}, // 110
+  {43.33,42.45}, // 111
+  {-77.5,167.2}, // 112
+  {13.6,40.7}, // 113
+  {37.73,15.0}, // 114
+  {8.98,39.93}, // 115
+  {-0.37,-91.55}, // 116
+  {-54.63,-164.42}, // 117
+  {14.95,-24.35}, // 118
+  {43.37,-121.07}, // 119
+  {55.08,-162.81}, // 120
+  {14.47,-90.88}, // 121
+  {28.36,-14.02}, // 122
+  {35.36,138.73}, // 123
+  {37.76,-25.33}, // 124
+  {50.27,155.25}, // 125
+  {1.22,-77.37}, // 126
+  {-7.26,108.08}, // 127
+  {0.81,127.33}, // 128
+  {54.97,160.68}, // 129
+  {1.38,127.53}, // 130
+  {51.8,178.8}, // 131
+  {-14.27,167.5}, // 132
+  {-6.77,106.94}, // 133
+  {48.11,-121.11}, // 134
+  {52.56,158.03}, // 135
+  {39.02,-27.97}, // 136
+  {28.0,15.58}, // 137
+  {52.07,-176.13}, // 138
+  {58.35,-155.09}, // 139
+  {64.42,-17.33}, // 140
+  {-0.17,-78.6}, // 141
+  {-18.42,-69.09}, // 142
+  {17.31,145.84}, // 143
+  {35.23,139.02}, // 144
+  {-53.1,73.5}, // 145
+  {9.2,124.7}, // 146
+  {27.73,-18.03}, // 147
+  {45.4,-121.7}, // 148
+  {19.69,-155.87}, // 149
+  {1.49,127.63}, // 150
+  {-8.06,114.24}, // 151
+  {60.03,-153.09}, // 152
+  {-8.34,123.26}, // 153
+  {-0.66,-78.71}, // 154
+  {13.67,-89.05}, // 155
+  {51.49,157.2}, // 156
+  {24.75,141.29}, // 157
+  {20.47,122.01}, // 158
+  {9.98,83.85}, // 159
+  {54.77,-163.72}, // 160
+  {13.81,-89.63}, // 161
+  {19.18,-98.64}, // 162
+  {34.9,139.1}, // 163
+  {1.08,127.42}, // 164
+  {44.67,-121.8}, // 165
+  {43.1,-117.4}, // 166
+  {-3.63,144.63}, // 167
+  {58.62,-154.06}, // 168
+  {20.55,-156.57}, // 169
+  {51.3,156.87}, // 170
+  {51.92,-177.17}, // 171
+  {2.78,125.4}, // 172
+  {-1.51,29.45}, // 173
+  {-1.51,29.45}, // 174
+  {-11.75,43.38}, // 175
+  {54.05,159.45}, // 176
+  {63.63,-19.05}, // 177
+  {58.28,-154.96}, // 178
+  {-0.08,29.92}, // 179
+  {-9.02,157.95}, // 180
+  {51.65,157.35}, // 181
+  {-7.93,112.31}, // 182
+  {1.7,101.26}, // 183
+  {52.06,157.7}, // 184
+  {57.2,-156.75}, // 185
+  {12.3,-61.64}, // 186
+  {30.79,130.31}, // 187
+  {54.49,160.25}, // 188
+  {19.42,-155.29}, // 189
+  {3.07,37.35}, // 190
+  {31.93,130.86}, // 191
+  {56.06,160.64}, // 192
+  {42.06,140.68}, // 193
+  {8.8,39.69}, // 194
+  {53.32,158.69}, // 195
+  {51.36,156.75}, // 196
+  {65.73,-16.78}, // 197
+  {-6.1,105.42}, // 198
+  {54.59,160.27}, // 199
+  {54.75,160.53}, // 200
+  {51.8,157.53}, // 201
+  {58.45,-154.36}, // 202
+  {36.64,138.54}, // 203
+  {43.61,144.44}, // 204
+  {42.49,141.16}, // 205
+  {-16.83,168.54}, // 206
+  {28.57,-17.83}, // 207
+  {-8.95,148.15}, // 208
+  {-5.53,148.42}, // 209
+  {29.03,-13.63}, // 210
+  {-23.37,-67.73}, // 211
+  {-8.36,122.84}, // 212
+  {-8.54,122.78}, // 213
+  {-8.27,123.51}, // 214
+  {17.37,-62.8}, // 215
+  {38.48,14.95}, // 216
+  {51.95,178.54}, // 217
+  {18.92,-155.27}, // 218
+  {1.36,124.79}, // 219
+  {-5.47,150.51}, // 220
+  {-4.92,151.16}, // 221
+  {-6.52,155.62}, // 222
+  {-5.36,147.12}, // 223
+  {-0.91,36.45}, // 224
+  {-16.51,168.35}, // 225
+  {11.45,-85.52}, // 226
+  {58.2,155.25}, // 227
+  {1.36,124.86}, // 228
+  {0.32,127.4}, // 229
+  {54.13,159.67}, // 230
+  {-4.08,145.04}, // 231
+  {14.52,120.47}, // 232
+  {2.32,37.97}, // 233
+  {11.98,-86.16}, // 234
+  {51.1,156.72}, // 235
+  {43.57,144.57}, // 236
+  {19.82,-155.47}, // 237
+  {19.48,-155.61}, // 238
+  {13.26,123.69}, // 239
+  {-53.03,72.6}, // 240
+  {42.45,-122.32}, // 241
+  {42.45,-122.32}, // 242
+  {37.42,4.08}, // 243
+  {37.42,4.08}, // 244
+  {43.7,-111.96}, // 245
+  {-0.2,36.07}, // 246
+  {-7.54,110.44}, // 247
+  {-7.45,110.43}, // 248
+  {-3.25,36.75}, // 249
+  {37.62,23.34}, // 250
+  {-19.18,-174.87}, // 251
+  {-57.78,-26.45}, // 252
+  {19.85,-101.75}, // 253
+  {36.7,24.44}, // 254
+  {34.08,139.53}, // 255
+  {51.94,-176.75}, // 256
+  {0.13,-78.27}, // 257
+  {12.42,-86.54}, // 258
+  {37.6,-25.88}, // 259
+  {38.0,-119.03}, // 260
+  {-25.89,-177.19}, // 261
+  {0.45,127.4}, // 262
+  {-6.62,110.88}, // 263
+  {36.76,139.48}, // 264
+  {37.12,139.97}, // 265
+  {NAN,NAN}, // 266
+  {12.51,-86.7}, // 267
+  {49.57,154.81}, // 268
+  {17.15,-62.58}, // 269
+  {43.72,-121.23}, // 270
+  {-37.77,142.5}, // 271
+  {-39.13,175.64}, // 272
+  {36.8,139.38}, // 273
+  {43.45,143.04}, // 274
+  {36.59,27.16}, // 275
+  {0.23,37.87}, // 276
+  {-1.41,29.2}, // 277
+  {-1.52,29.25}, // 278
+  {NAN,NAN}, // 279
+  {-27.12,-68.55}, // 280
+  {-27.12,-68.55}, // 281
+  {-38.12,176.5}, // 282
+  {53.43,-168.13}, // 283
+  {6.25,10.5}, // 284
+  {-2.76,39.91}, // 285
+  {52.54,157.34}, // 286
+  {64.0,-16.65}, // 287
+  {34.72,139.4}, // 288
+  {14.38,-90.6}, // 289
+  {18.13,145.8}, // 290
+  {-5.58,150.52}, // 291
+  {-7.32,107.73}, // 292
+  {19.5,-102.2}, // 293
+  {-18.17,-69.15}, // 294
+  {-18.17,-69.15}, // 295
+  {51.45,156.97}, // 296
+  {55.42,-161.89}, // 297
+  {55.45,-161.84}, // 298
+  {14.82,-61.17}, // 299
+  {4.91,96.33}, // 300
+  {38.47,-28.4}, // 301
+  {11.54,-85.62}, // 302
+  {31.77,-113.5}, // 303
+  {15.13,120.35}, // 304
+  {34.75,-116.63}, // 305
+  {-21.23,55.71}, // 306
+  {10.2,-84.23}, // 307
+  {19.02,-98.62}, // 308
+  {47.02,152.12}, // 309
+  {2.32,-76.4}, // 310
+  {17.48,-62.96}, // 311
+  {-4.27,152.2}, // 312
+  {7.7,124.5}, // 313
+  {48.29,153.25}, // 314
+  {46.85,-121.76}, // 315
+  {-5.78,105.63}, // 316
+  {-29.27,-177.92}, // 317
+  {47.77,153.02}, // 318
+  {-8.13,114.04}, // 319
+  {44.07,145.13}, // 320
+  {60.49,-152.74}, // 321
+  {-0.08,-77.66}, // 322
+  {10.83,-85.32}, // 323
+  {54.8,-163.59}, // 324
+  {-39.28,175.57}, // 325
+  {45.88,149.83}, // 326
+  {4.89,-75.32}, // 327
+  {-36.13,178.05}, // 328
+  {17.63,-63.23}, // 329
+  {-15.78,-71.85}, // 330
+  {-5.41,148.09}, // 331
+  {31.59,130.66}, // 332
+  {-6.72,106.73}, // 333
+  {12.7,-87.0}, // 334
+  {13.73,-89.29}, // 335
+  {16.9,-25.0}, // 336
+  {62.22,-144.13}, // 337
+  {-2.0,-78.34}, // 338
+  {13.85,-89.63}, // 339
+  {14.76,-91.55}, // 340
+  {36.4,25.4}, // 341
+  {48.09,153.2}, // 342
+  {-9.13,159.82}, // 343
+  {52.02,178.14}, // 344
+  {-8.11,112.92}, // 345
+  {51.93,179.58}, // 346
+  {37.87,-25.78}, // 347
+  {41.41,-122.19}, // 348
+  {56.65,161.36}, // 349
+  {42.69,141.38}, // 350
+  {44.13,145.17}, // 351
+  {54.76,-163.97}, // 352
+  {48.88,154.18}, // 353
+  {44.42,146.14}, // 354
+  {-38.97,-71.52}, // 355
+  {1.11,124.73}, // 356
+  {16.05,-61.67}, // 357
+  {16.72,-62.18}, // 358
+  {13.33,-61.18}, // 359
+  {2.63,36.6}, // 360
+  {35.6,-111.6}, // 361
+  {61.3,-152.25}, // 362
+  {47.6,152.92}, // 363
+  {58.4,-154.4}, // 364
+  {38.79,15.21}, // 365
+  {-0.54,-77.63}, // 366
+  {-7.38,110.07}, // 367
+  {-7.3,109.99}, // 368
+  {35.37,-111.5}, // 369
+  {-1.18,36.35}, // 370
+  {29.64,129.72}, // 371
+  {14.0,120.99}, // 372
+  {-0.98,100.68}, // 373
+  {-8.25,118.0}, // 374
+  {51.89,-178.15}, // 375
+  {-6.77,107.6}, // 376
+  {49.35,154.7}, // 377
+  {20.92,17.28}, // 378
+  {12.6,-86.85}, // 379
+  {28.27,-16.64}, // 380
+  {-7.94,112.95}, // 381
+  {44.5,-121.8}, // 382
+  {44.1,121.77}, // 383
+  {-59.45,-27.37}, // 384
+  {44.35,146.26}, // 385
+  {2.58,98.83}, // 386
+  {1.25,127.47}, // 387
+  {43.42,142.69}, // 388
+  {55.83,160.33}, // 389
+  {14.61,-91.19}, // 390
+  {40.47,140.92}, // 391
+  {-18.75,169.23}, // 392
+  {45.93,149.92}, // 393
+  {-37.09,-12.28}, // 394
+  {33.28,131.43}, // 395
+  {-1.47,-78.44}, // 396
+  {37.02,-117.45}, // 397
+  {-16.36,-70.9}, // 398
+  {55.76,160.53}, // 399
+  {57.75,-156.37}, // 400
+  {36.38,-113.13}, // 401
+  {-5.05,151.33}, // 402
+  {-5.59,147.88}, // 403
+  {-18.25,144.75}, // 404
+  {-7.18,110.33}, // 405
+  {32.76,130.29}, // 406
+  {47.12,152.25}, // 407
+  {47.52,152.8}, // 408
+  {42.54,140.84}, // 409
+  {54.5,159.97}, // 410
+  {56.17,-159.38}, // 411
+  {50.55,155.97}, // 412
+  {40.82,14.43}, // 413
+  {-39.42,-71.93}, // 414
+  {52.7,158.28}, // 415
+  {-1.47,29.49}, // 416
+  {-1.47,29.49}, // 417
+  {53.13,-168.69}, // 418
+  {38.4,14.96}, // 419
+  {44.3,-121.8}, // 420
+  {25.05,17.55}, // 421
+  {54.52,-164.65}, // 422
+  {-37.52,177.18}, // 423
+  {62.0,-144.02}, // 424
+  {48.72,126.12}, // 425
+  {36.22,137.59}, // 426
+  {36.67,27.14}, // 427
+  {57.02,-157.19}, // 428
+  {-19.53,169.44}, // 429
+  {44.43,-110.67}, // 430
+  {46.93,151.95}, // 431
+  {51.57,157.32}, // 432
+  {53.59,159.15}, // 433
+  {55.86,160.6}, // 434
+};
+// -----------------------------------------------------------------
+/*
+   volcano_index should be accessed via: volcano_index_key
+   0: location index
+   1: type index
+*/
+// -----------------------------------------------------------------
+int volcano_index[max_volcanos][2]={
+  {30,13}, // 0
+  {8,15}, // 1
+  {24,15}, // 2
+  {52,1}, // 3
+  {55,15}, // 4
+  {39,16}, // 5
+  {30,15}, // 6
+  {18,15}, // 7
+  {18,15}, // 8
+  {33,15}, // 9
+  {24,15}, // 10
+  {43,15}, // 11
+  {8,15}, // 12
+  {27,15}, // 13
+  {33,16}, // 14
+  {44,1}, // 15
+  {30,15}, // 16
+  {30,1}, // 17
+  {44,13}, // 18
+  {30,15}, // 19
+  {30,15}, // 20
+  {30,15}, // 21
+  {55,15}, // 22
+  {44,15}, // 23
+  {33,15}, // 24
+  {18,13}, // 25
+  {29,1}, // 26
+  {21,13}, // 27
+  {18,15}, // 28
+  {17,15}, // 29
+  {56,2}, // 30
+  {56,2}, // 31
+  {33,15}, // 32
+  {56,15}, // 33
+  {55,1}, // 34
+  {15,15}, // 35
+  {56,13}, // 36
+  {52,15}, // 37
+  {13,15}, // 38
+  {8,4}, // 39
+  {44,15}, // 40
+  {30,4}, // 41
+  {46,15}, // 42
+  {25,15}, // 43
+  {30,1}, // 44
+  {24,4}, // 45
+  {55,1}, // 46
+  {44,15}, // 47
+  {55,9}, // 48
+  {44,15}, // 49
+  {27,15}, // 50
+  {39,16}, // 51
+  {18,15}, // 52
+  {8,4}, // 53
+  {30,15}, // 54
+  {42,15}, // 55
+  {55,15}, // 56
+  {40,3}, // 57
+  {55,15}, // 58
+  {40,15}, // 59
+  {40,15}, // 60
+  {30,15}, // 61
+  {26,12}, // 62
+  {31,4}, // 63
+  {28,15}, // 64
+  {38,15}, // 65
+  {55,13}, // 66
+  {44,15}, // 67
+  {42,4}, // 68
+  {44,15}, // 69
+  {42,15}, // 70
+  {18,6}, // 71
+  {18,6}, // 72
+  {5,15}, // 73
+  {42,15}, // 74
+  {42,15}, // 75
+  {55,3}, // 76
+  {55,18}, // 77
+  {15,15}, // 78
+  {27,15}, // 79
+  {20,9}, // 80
+  {55,15}, // 81
+  {44,15}, // 82
+  {15,15}, // 83
+  {55,15}, // 84
+  {16,1}, // 85
+  {34,15}, // 86
+  {55,7}, // 87
+  {37,15}, // 88
+  {1,15}, // 89
+  {37,13}, // 90
+  {15,15}, // 91
+  {55,1}, // 92
+  {55,18}, // 93
+  {30,15}, // 94
+  {40,1}, // 95
+  {28,15}, // 96
+  {26,7}, // 97
+  {27,15}, // 98
+  {55,18}, // 99
+  {55,11}, // 100
+  {55,18}, // 101
+  {27,4}, // 102
+  {44,9}, // 103
+  {17,15}, // 104
+  {27,4}, // 105
+  {56,1}, // 106
+  {44,14}, // 107
+  {36,15}, // 108
+  {27,15}, // 109
+  {34,1}, // 110
+  {44,15}, // 111
+  {0,15}, // 112
+  {18,13}, // 113
+  {29,15}, // 114
+  {18,15}, // 115
+  {15,1}, // 116
+  {55,15}, // 117
+  {6,15}, // 118
+  {55,10}, // 119
+  {55,15}, // 120
+  {24,15}, // 121
+  {47,5}, // 122
+  {30,15}, // 123
+  {43,15}, // 124
+  {44,15}, // 125
+  {10,15}, // 126
+  {27,15}, // 127
+  {27,15}, // 128
+  {44,15}, // 129
+  {27,15}, // 130
+  {55,15}, // 131
+  {56,15}, // 132
+  {27,0}, // 133
+  {55,15}, // 134
+  {44,1}, // 135
+  {43,15}, // 136
+  {47,5}, // 137
+  {55,15}, // 138
+  {55,15}, // 139
+  {25,1}, // 140
+  {15,0}, // 141
+  {8,15}, // 142
+  {55,15}, // 143
+  {30,0}, // 144
+  {3,15}, // 145
+  {42,15}, // 146
+  {47,13}, // 147
+  {55,15}, // 148
+  {55,13}, // 149
+  {27,15}, // 150
+  {27,15}, // 151
+  {55,15}, // 152
+  {27,15}, // 153
+  {15,15}, // 154
+  {16,1}, // 155
+  {44,15}, // 156
+  {30,1}, // 157
+  {42,15}, // 158
+  {13,15}, // 159
+  {55,15}, // 160
+  {16,15}, // 161
+  {34,15}, // 162
+  {30,12}, // 163
+  {27,15}, // 164
+  {55,15}, // 165
+  {55,18}, // 166
+  {40,15}, // 167
+  {55,15}, // 168
+  {55,13}, // 169
+  {44,15}, // 170
+  {55,15}, // 171
+  {27,15}, // 172
+  {12,15}, // 173
+  {12,15}, // 174
+  {11,13}, // 175
+  {44,15}, // 176
+  {25,5}, // 177
+  {55,15}, // 178
+  {53,18}, // 179
+  {45,16}, // 180
+  {44,15}, // 181
+  {27,15}, // 182
+  {27,15}, // 183
+  {44,15}, // 184
+  {55,15}, // 185
+  {23,16}, // 186
+  {30,1}, // 187
+  {44,15}, // 188
+  {55,13}, // 189
+  {50,15}, // 190
+  {30,15}, // 191
+  {44,15}, // 192
+  {30,15}, // 193
+  {18,1}, // 194
+  {44,15}, // 195
+  {44,15}, // 196
+  {25,1}, // 197
+  {27,15}, // 198
+  {44,15}, // 199
+  {44,15}, // 200
+  {44,15}, // 201
+  {55,15}, // 202
+  {30,15}, // 203
+  {30,1}, // 204
+  {30,15}, // 205
+  {56,1}, // 206
+  {47,15}, // 207
+  {40,15}, // 208
+  {40,15}, // 209
+  {47,5}, // 210
+  {8,15}, // 211
+  {27,4}, // 212
+  {27,15}, // 213
+  {27,15}, // 214
+  {48,15}, // 215
+  {29,15}, // 216
+  {55,15}, // 217
+  {55,16}, // 218
+  {27,15}, // 219
+  {40,15}, // 220
+  {40,1}, // 221
+  {40,15}, // 222
+  {40,4}, // 223
+  {31,15}, // 224
+  {56,15}, // 225
+  {37,15}, // 226
+  {55,15}, // 227
+  {27,15}, // 228
+  {27,15}, // 229
+  {44,1}, // 230
+  {40,15}, // 231
+  {42,15}, // 232
+  {31,13}, // 233
+  {37,1}, // 234
+  {44,15}, // 235
+  {30,1}, // 236
+  {55,13}, // 237
+  {55,13}, // 238
+  {42,15}, // 239
+  {3,4}, // 240
+  {55,8}, // 241
+  {55,8}, // 242
+  {19,12}, // 243
+  {19,12}, // 244
+  {55,17}, // 245
+  {31,13}, // 246
+  {27,15}, // 247
+  {27,15}, // 248
+  {50,15}, // 249
+  {22,9}, // 250
+  {51,16}, // 251
+  {54,15}, // 252
+  {34,3}, // 253
+  {22,15}, // 254
+  {30,15}, // 255
+  {55,15}, // 256
+  {15,15}, // 257
+  {37,15}, // 258
+  {43,16}, // 259
+  {55,18}, // 260
+  {36,16}, // 261
+  {27,15}, // 262
+  {27,15}, // 263
+  {30,15}, // 264
+  {30,15}, // 265
+  {55,18}, // 266
+  {37,3}, // 267
+  {44,1}, // 268
+  {48,15}, // 269
+  {55,13}, // 270
+  {3,13}, // 271
+  {36,15}, // 272
+  {30,13}, // 273
+  {30,15}, // 274
+  {22,15}, // 275
+  {31,13}, // 276
+  {14,13}, // 277
+  {14,15}, // 278
+  {55,13}, // 279
+  {2,15}, // 280
+  {2,15}, // 281
+  {36,9}, // 282
+  {55,13}, // 283
+  {5,15}, // 284
+  {50,15}, // 285
+  {44,1}, // 286
+  {25,15}, // 287
+  {30,15}, // 288
+  {24,4}, // 289
+  {55,15}, // 290
+  {40,1}, // 291
+  {27,15}, // 292
+  {34,3}, // 293
+  {4,15}, // 294
+  {4,15}, // 295
+  {44,9}, // 296
+  {55,15}, // 297
+  {55,15}, // 298
+  {20,15}, // 299
+  {27,4}, // 300
+  {43,15}, // 301
+  {37,15}, // 302
+  {34,3}, // 303
+  {42,15}, // 304
+  {55,18}, // 305
+  {20,13}, // 306
+  {13,15}, // 307
+  {34,15}, // 308
+  {44,15}, // 309
+  {10,15}, // 310
+  {35,15}, // 311
+  {40,13}, // 312
+  {42,15}, // 313
+  {44,15}, // 314
+  {55,15}, // 315
+  {27,15}, // 316
+  {36,15}, // 317
+  {44,15}, // 318
+  {27,15}, // 319
+  {30,15}, // 320
+  {55,15}, // 321
+  {15,15}, // 322
+  {13,4}, // 323
+  {55,15}, // 324
+  {36,15}, // 325
+  {44,15}, // 326
+  {10,15}, // 327
+  {36,16}, // 328
+  {35,15}, // 329
+  {41,15}, // 330
+  {40,15}, // 331
+  {30,15}, // 332
+  {27,15}, // 333
+  {37,15}, // 334
+  {16,15}, // 335
+  {6,15}, // 336
+  {55,13}, // 337
+  {15,15}, // 338
+  {16,15}, // 339
+  {24,15}, // 340
+  {22,13}, // 341
+  {44,15}, // 342
+  {45,15}, // 343
+  {55,15}, // 344
+  {27,15}, // 345
+  {55,15}, // 346
+  {43,15}, // 347
+  {55,15}, // 348
+  {44,15}, // 349
+  {30,1}, // 350
+  {30,15}, // 351
+  {55,15}, // 352
+  {44,15}, // 353
+  {44,15}, // 354
+  {8,1}, // 355
+  {27,15}, // 356
+  {20,15}, // 357
+  {54,15}, // 358
+  {49,15}, // 359
+  {31,0}, // 360
+  {55,3}, // 361
+  {55,15}, // 362
+  {44,16}, // 363
+  {55,15}, // 364
+  {29,15}, // 365
+  {15,15}, // 366
+  {27,15}, // 367
+  {27,15}, // 368
+  {55,3}, // 369
+  {31,13}, // 370
+  {30,15}, // 371
+  {42,1}, // 372
+  {27,15}, // 373
+  {27,15}, // 374
+  {55,15}, // 375
+  {27,15}, // 376
+  {44,15}, // 377
+  {7,15}, // 378
+  {37,15}, // 379
+  {47,15}, // 380
+  {27,15}, // 381
+  {55,15}, // 382
+  {55,15}, // 383
+  {54,15}, // 384
+  {44,15}, // 385
+  {27,1}, // 386
+  {27,1}, // 387
+  {30,0}, // 388
+  {44,15}, // 389
+  {24,15}, // 390
+  {30,1}, // 391
+  {56,15}, // 392
+  {44,15}, // 393
+  {54,13}, // 394
+  {30,9}, // 395
+  {15,15}, // 396
+  {55,10}, // 397
+  {41,15}, // 398
+  {44,15}, // 399
+  {55,15}, // 400
+  {55,18}, // 401
+  {40,15}, // 402
+  {40,4}, // 403
+  {3,13}, // 404
+  {27,15}, // 405
+  {30,4}, // 406
+  {44,14}, // 407
+  {44,1}, // 408
+  {30,15}, // 409
+  {44,1}, // 410
+  {55,15}, // 411
+  {44,3}, // 412
+  {29,14}, // 413
+  {8,15}, // 414
+  {44,15}, // 415
+  {12,15}, // 416
+  {12,15}, // 417
+  {55,15}, // 418
+  {29,0}, // 419
+  {55,13}, // 420
+  {32,1}, // 421
+  {55,15}, // 422
+  {36,15}, // 423
+  {55,13}, // 424
+  {9,18}, // 425
+  {30,15}, // 426
+  {22,9}, // 427
+  {55,15}, // 428
+  {56,15}, // 429
+  {55,1}, // 430
+  {44,1}, // 431
+  {44,0}, // 432
+  {44,0}, // 433
+  {44,15}, // 434
+};
+
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                     METEOR SHOWER WARNING SYSTEM
 // ----------------------------------------------------------------------------------------------------------------
@@ -8119,7 +9931,7 @@ void sdcardQuickCheck() {
 
 #define max_meteor_showers 8
 
-char meteor_shower_names[max_meteor_showers][56]={
+char meteor_shower_names[max_meteor_showers][16]={
   "Quadrantids",   // 0
   "Lyrids",        // 1
   "Eta Aquariids", // 2
@@ -13869,6 +15681,26 @@ void inputChar(char * data) {
         }
       }
     }
+    // ---------------------------
+    // volcano
+    // ---------------------------
+    else if (enter_digits_key==7) {
+      if (allow_input_data==true) {
+        // ----------------------------------------
+        // create temporary data to concat and test
+        // ----------------------------------------
+        memset(tmp_input_data, 0, sizeof(tmp_input_data));
+        strcpy(tmp_input_data, input_data);
+        strcat(tmp_input_data, data);
+        // ----------------------------------------
+        // test range
+        // ----------------------------------------
+        if (atoi(tmp_input_data)>=0 && atoi(tmp_input_data)<max_volcanos) {
+          memset(input_data, 0, sizeof(input_data));
+          strcpy(input_data, tmp_input_data);
+        }
+      }
+    }
   }
 }
 
@@ -13886,6 +15718,7 @@ void menuUp() {
   }
   else if (menu_page==page_input_data) {
     if (enter_digits_key==6) {meteor_index_key--; if (meteor_index_key<0) {meteor_index_key=max_meteor_showers-1;}}
+    if (enter_digits_key==7) {volcano_index_key--; if (volcano_index_key<0) {volcano_index_key=max_volcanos-1;}}
   }
   else if (menu_page==page_matrix_logic_select_setup) {menuMatrixConfigureFunction.up();}
   else if (menu_page==page_matrix_logic_setup_function) {menuMatrixSetFunctionName.up();}
@@ -13918,6 +15751,7 @@ void menuDown() {
   }
   else if (menu_page==page_input_data) {
     if (enter_digits_key==6) {meteor_index_key++; if (meteor_index_key>=max_meteor_showers) {meteor_index_key=0;}}
+    if (enter_digits_key==7) {volcano_index_key++; if (volcano_index_key>=max_volcanos) {volcano_index_key=0;}}
   }
   else if (menu_page==page_matrix_logic_select_setup) {menuMatrixConfigureFunction.down();}
   else if (menu_page==page_matrix_logic_setup_function) {menuMatrixSetFunctionName.down();}
@@ -13988,6 +15822,10 @@ void menuBack() {
     // enter meteor key
     // -------------------------------------------------------------
     else if (enter_digits_key==6) {menu_page=page_main_menu;}
+    // -------------------------------------------------------------
+    // enter volcano key
+    // -------------------------------------------------------------
+    else if (enter_digits_key==7) {menu_page=page_main_menu;}
   }
   else if (menu_page==page_matrix_logic_select_setup) {menu_page=page_matrix_logic_main;}
   else if (menu_page==page_matrix_logic_setup_function) {menu_page=page_matrix_logic_select_setup;}
@@ -14412,6 +16250,14 @@ void menuEnter() {
       enter_digits_key=6;
       menu_page=page_input_data;
     }
+    // ------------------------------------------------
+    // go to volcano page
+    // ------------------------------------------------
+    else if (menuMain.selection()==15) {
+      allow_input_data=true;
+      enter_digits_key=7;
+      menu_page=page_input_data;
+    }
   }
   // ----------------------------------------------------------------
   // matrix switch configuration page
@@ -14458,6 +16304,7 @@ void menuEnter() {
     else if (enter_digits_key==4) {allow_input_data=false; matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=strtod(input_data, NULL); enter_digits_key=-1; menu_page=page_matrix_logic_select_setup;}
     else if (enter_digits_key==5) {allow_input_data=false; satData.utc_second_offset=atol(input_data); enter_digits_key=-1; menu_page=page_timeanddate_main;}
     else if (enter_digits_key==6) {allow_input_data=true; meteor_index_key=atoi(input_data); memset(input_data, 0, sizeof(input_data));}
+    else if (enter_digits_key==7) {allow_input_data=true; volcano_index_key=atoi(input_data); memset(input_data, 0, sizeof(input_data));}
     // Serial.println("[matrix x] " + String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 10));
   }
 
@@ -17568,6 +19415,51 @@ void UpdateUI(void * pvParamters) {
         // if (meteor_shower_warning_system[meteor_index_key][1]==true) {display.setColor(RGB_COLOR16(156,0,0)); tft.drawRect(12, ui_content_7-1, 12, 12, RGB_COLOR16(156,0,0));}
         // canvas8x8.printFixed(0, 0, "M", STYLE_BOLD);
         // display.drawCanvas(14, ui_content_7+1, canvas8x8);
+      }
+
+      // --------------------------------------------------
+      // enter volcano key
+      // --------------------------------------------------
+      else if (enter_digits_key==7) {
+        // ------------------------------------------------
+        // static data
+        // ------------------------------------------------
+        if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
+          previous_menu_page=menu_page; display.clear();
+          drawMainBorder();
+          drawGeneralTitle("VOLCANOS", systemData.color_title, systemData.color_border);
+          display.setColor(systemData.color_border);
+          display.drawHLine(1, 28, 127);  // below index
+          display.drawHLine(1, 46, 127);  // below name
+          display.drawHLine(1, 108, 127); // above input
+        }
+        // ------------------------------------------------
+        // dynamic data
+        // ------------------------------------------------
+        // ------------------------------------------------
+        // load
+        // ------------------------------------------------
+        DisplayDiscreteLoadPercentage(115, 3, 10);
+        // ------------------------------------------------
+        // satellites & sync
+        // ------------------------------------------------
+        if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+        else {DisplaySignal(3, 3);}
+        DisplayDebugSymbol(18, 3);
+        // ------------------------------------------------
+        // volcano index
+        // ------------------------------------------------
+        canvas120x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas120x8.printFixed((125/2)-((strlen(String( String(volcano_index_key) + "/" + String(max_volcanos-1) ).c_str())/2)*6), 0, String( String(volcano_index_key) + "/" + String(max_volcanos-1) ).c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_0+1, canvas120x8);
+        // ------------------------------------------------
+        // volcano name
+        // ------------------------------------------------
+        canvas120x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas120x8.printFixed((125/2)-((strlen(String(getVolcanoName(volcano_index_key)).c_str())/2)*6), 0, String(getVolcanoName(volcano_index_key)).c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_1+8, canvas120x8);
       }
 
       // --------------------------------------------------
