@@ -9037,6 +9037,9 @@ int volcano_elevation[max_volcanos]={
    volcano_lat_long should be accessed via: volcano_index_key
    0: latitude
    1: longitude
+
+   todo: check coordinates and add a meters 'danger range' list.
+   todo: active/doemant/extinct
 */
 // -----------------------------------------------------------------
 float volcano_lat_long[max_volcanos][2]={
