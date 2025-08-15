@@ -8215,7 +8215,7 @@ String getVolcanoName(int index) {
   else if (index==84) {v_name_string="Cleveland";}
   else if (index==85) {v_name_string="Coatepeque";}
   else if (index==86) {v_name_string="Colima";}
-  else if (index==87) {v_name_string="Columbia River Flood Basalts";}
+  else if (index==87) {v_name_string="Columbia River Basalts";}
   else if (index==88) {v_name_string="Concepción";}
   else if (index==89) {v_name_string="Copahue";}
   else if (index==90) {v_name_string="Cosigüina";}
@@ -8230,7 +8230,7 @@ String getVolcanoName(int index) {
   else if (index==99) {v_name_string="Devils Garden";}
   else if (index==100) {v_name_string="Devils Tower";}
   else if (index==101) {v_name_string="Diamond Craters";}
-  else if (index==102) {v_name_string="Dieng Volcanic Complex";}
+  else if (index==102) {v_name_string="Dieng Volc. Complex";}
   else if (index==103) {v_name_string="Diky Greben";}
   else if (index==104) {v_name_string="Dubbi";}
   else if (index==105) {v_name_string="Dukono";}
@@ -8300,7 +8300,7 @@ String getVolcanoName(int index) {
   else if (index==169) {v_name_string="Kahoolawe";}
   else if (index==170) {v_name_string="Kambalny";}
   else if (index==171) {v_name_string="Kanaga";}
-  else if (index==172) {v_name_string="Karangetang [Api Siau]";}
+  else if (index==172) {v_name_string="Karangetang (Api Siau)";}
   else if (index==173) {v_name_string="Karisimbi";}
   else if (index==174) {v_name_string="Karisimbi";}
   else if (index==175) {v_name_string="Karthala";}
@@ -8503,13 +8503,13 @@ String getVolcanoName(int index) {
   else if (index==372) {v_name_string="Taal";}
   else if (index==373) {v_name_string="Talang";}
   else if (index==374) {v_name_string="Tambora";}
-  else if (index==375) {v_name_string="Tanaga and Takawangha";}
+  else if (index==375) {v_name_string="Tanaga & Takawangha";}
   else if (index==376) {v_name_string="Tangkubanparahu";}
   else if (index==377) {v_name_string="Tao-Rusyr Caldera";}
   else if (index==378) {v_name_string="Tarso Voon";}
   else if (index==379) {v_name_string="Telica Volcano";}
   else if (index==380) {v_name_string="Tenerife";}
-  else if (index==381) {v_name_string="Tengger Caldera and Bromo";}
+  else if (index==381) {v_name_string="Tengger Caldera & Bromo";}
   else if (index==382) {v_name_string="Three Fingered Jack";}
   else if (index==383) {v_name_string="Three Sisters";}
   else if (index==384) {v_name_string="Thule Islands";}
@@ -8528,12 +8528,12 @@ String getVolcanoName(int index) {
   else if (index==397) {v_name_string="Ubehebe Craters";}
   else if (index==398) {v_name_string="Ubinas";}
   else if (index==399) {v_name_string="Udina";}
-  else if (index==400) {v_name_string="Ugashik and Peulik";}
-  else if (index==401) {v_name_string="Uinkaret Volcanic Field";}
+  else if (index==400) {v_name_string="Ugashik & Peulik";}
+  else if (index==401) {v_name_string="Uinkaret Volc. Field";}
   else if (index==402) {v_name_string="Ulawun";}
   else if (index==403) {v_name_string="Umboi";}
   else if (index==404) {v_name_string="Undara";}
-  else if (index==405) {v_name_string="Ungaran and Telomoyo";}
+  else if (index==405) {v_name_string="Ungaran & Telomoyo";}
   else if (index==406) {v_name_string="Unzen";}
   else if (index==407) {v_name_string="Urataman";}
   else if (index==408) {v_name_string="Ushishur";}
@@ -8546,7 +8546,7 @@ String getVolcanoName(int index) {
   else if (index==415) {v_name_string="Vilyuchik";}
   else if (index==416) {v_name_string="Visoke";}
   else if (index==417) {v_name_string="Visoke";}
-  else if (index==418) {v_name_string="Vsevidof and Recheschnoi Volcanoes";}
+  else if (index==418) {v_name_string="Vsevidof & Recheschnoi";}
   else if (index==419) {v_name_string="Vulcano";}
   else if (index==420) {v_name_string="Washington";}
   else if (index==421) {v_name_string="Wau-en-Namus";}
