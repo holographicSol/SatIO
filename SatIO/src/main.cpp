@@ -8568,10 +8568,10 @@ String getVolcanoName(int index) {
 
 // -----------------------------------------------------------------
 /*
-   volcano_name should be accessed via: volcano_index[0]
+   volcano_loaction should be accessed via: volcano_index[0]
 */
 // -----------------------------------------------------------------
-char volcano_name[57][29] = {"Antarctica", "Argentina", "Argentina, Chile", "Australia", "Bolivia, Chile", "Cameroon",
+char volcano_loaction[57][29] = {"Antarctica", "Argentina", "Argentina, Chile", "Australia", "Bolivia, Chile", "Cameroon",
                    "Cape Verde Islands", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Rwanda", "Costa Rica",
                    "Democratic Republic of Congo", "Ecuador", "El Salvador", "Eritrea", "Ethiopia", "Ethiopia, Kenya",
                    "France", "Galápagos Islands", "Greece", "Grenada", "Guatemala", "Iceland", "India", "Indonesia",
@@ -19429,8 +19429,8 @@ void UpdateUI(void * pvParamters) {
           drawMainBorder();
           drawGeneralTitle("VOLCANOS", systemData.color_title, systemData.color_border);
           display.setColor(systemData.color_border);
-          display.drawHLine(1, 28, 127);  // below index
-          display.drawHLine(1, 46, 127);  // below name
+          // display.drawHLine(1, 25, 127);  // below index
+          // display.drawHLine(1, 46, 127);  // below name
           display.drawHLine(1, 108, 127); // above input
         }
         // ------------------------------------------------
@@ -19446,20 +19446,52 @@ void UpdateUI(void * pvParamters) {
         if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
         else {DisplaySignal(3, 3);}
         DisplayDebugSymbol(18, 3);
+
         // ------------------------------------------------
         // volcano index
         // ------------------------------------------------
         canvas120x8.clear();
         display.setColor(systemData.color_subtitle);
         canvas120x8.printFixed((125/2)-((strlen(String( String(volcano_index_key) + "/" + String(max_volcanos-1) ).c_str())/2)*6), 0, String( String(volcano_index_key) + "/" + String(max_volcanos-1) ).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_0+1, canvas120x8);
+        display.drawCanvas(3, ui_content_0, canvas120x8);
         // ------------------------------------------------
         // volcano name
         // ------------------------------------------------
         canvas120x8.clear();
         display.setColor(systemData.color_subtitle);
-        canvas120x8.printFixed((125/2)-((strlen(String(getVolcanoName(volcano_index_key)).c_str())/2)*6), 0, String(getVolcanoName(volcano_index_key)).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_1+8, canvas120x8);
+        // canvas120x8.printFixed((125/2)-((strlen(String(getVolcanoName(volcano_index_key)).c_str())/2)*6), 0, String(getVolcanoName(volcano_index_key)).c_str(), STYLE_BOLD);
+        canvas120x8.printFixed(0, 0, String(getVolcanoName(volcano_index_key)).c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_1, canvas120x8);
+        // ------------------------------------------------
+        // volcano location name
+        // ------------------------------------------------
+        canvas120x8.clear();
+        display.setColor(systemData.color_content);
+        canvas120x8.printFixed(0, 0, String(volcano_loaction[volcano_index[volcano_index_key][0]]).c_str());
+        display.drawCanvas(3, ui_content_2, canvas120x8);
+        // ------------------------------------------------
+        // volcano type
+        // ------------------------------------------------
+        canvas120x8.clear();
+        display.setColor(systemData.color_content);
+        canvas120x8.printFixed(0, 0, String(volcano_type[volcano_index[volcano_index_key][1]]).c_str());
+        display.drawCanvas(3, ui_content_3, canvas120x8);
+        // ------------------------------------------------
+        // volcano elevation
+        // ------------------------------------------------
+        canvas92x8.clear();
+        display.setColor(systemData.color_content);
+        if (volcano_elevation[volcano_index_key]>=0) {canvas92x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters AMSL")).c_str());}
+        else {canvas92x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters BMSL")).c_str());}
+        display.drawCanvas(3, ui_content_4, canvas92x8);
+
+        // ------------------------------------------------
+        // volcano latitude
+        // ------------------------------------------------
+
+        // ------------------------------------------------
+        // volcano longitude
+        // ------------------------------------------------
       }
 
       // --------------------------------------------------
