@@ -19458,24 +19458,24 @@ void UpdateUI(void * pvParamters) {
         // volcano name
         // ------------------------------------------------
         canvas120x8.clear();
-        display.setColor(systemData.color_subtitle);
+        display.setColor(systemData.color_content);
         // canvas120x8.printFixed((125/2)-((strlen(String(getVolcanoName(volcano_index_key)).c_str())/2)*6), 0, String(getVolcanoName(volcano_index_key)).c_str(), STYLE_BOLD);
         canvas120x8.printFixed(0, 0, String(getVolcanoName(volcano_index_key)).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_1, canvas120x8);
+        display.drawCanvas(3, ui_content_1+1, canvas120x8);
         // ------------------------------------------------
         // volcano location name
         // ------------------------------------------------
         canvas120x8.clear();
         display.setColor(systemData.color_content);
         canvas120x8.printFixed(0, 0, String(volcano_loaction[volcano_index[volcano_index_key][0]]).c_str());
-        display.drawCanvas(3, ui_content_2, canvas120x8);
+        display.drawCanvas(3, ui_content_2+1, canvas120x8);
         // ------------------------------------------------
         // volcano type
         // ------------------------------------------------
         canvas120x8.clear();
         display.setColor(systemData.color_content);
         canvas120x8.printFixed(0, 0, String(volcano_type[volcano_index[volcano_index_key][1]]).c_str());
-        display.drawCanvas(3, ui_content_3, canvas120x8);
+        display.drawCanvas(3, ui_content_3+1, canvas120x8);
         // ------------------------------------------------
         // volcano elevation
         // ------------------------------------------------
@@ -19483,7 +19483,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         if (volcano_elevation[volcano_index_key]>=0) {canvas120x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters AMSL")).c_str());}
         else {canvas120x8.printFixed(0, 0, String(String(volcano_elevation[volcano_index_key]) + String(" meters BMSL")).c_str());}
-        display.drawCanvas(3, ui_content_4, canvas120x8);
+        display.drawCanvas(3, ui_content_4+1, canvas120x8);
 
         // ------------------------------------------------
         // volcano latitude
