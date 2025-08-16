@@ -10082,7 +10082,7 @@ bool checkMeteorShowerPeakWarning(int key) {
   // Serial.println("[peak meteor shower start]");
   // Serial.println("[key] " + String(key));
   // Serial.println("[month now] " + String(satData.local_month) + " [peak month] " + String(meteor_shower_peaks[key][0][0]));
-  // Serial.println("[day now]   " + String(satData.local_month) + " [peak day]   " + String(meteor_shower_peaks[key][0][1]));
+  // Serial.println("[day now]   " + String(satData.local_day) + " [peak day]   " + String(meteor_shower_peaks[key][0][1]));
   if (satData.local_month==meteor_shower_peaks[key][0][0]) {
     if (satData.local_day>=meteor_shower_peaks[key][0][1]) {
       meteor_peak_warning=true;
@@ -10095,7 +10095,7 @@ bool checkMeteorShowerPeakWarning(int key) {
   // Serial.println("[peak meteor shower end]");
   // Serial.println("[key] " + String(key));
   // Serial.println("[month now] " + String(satData.local_month) + " [peak month] " + String(meteor_shower_peaks[key][1][0]));
-  // Serial.println("[day now]   " + String(satData.local_month) + " [peak day]   " + String(meteor_shower_peaks[key][1][1]));
+  // Serial.println("[day now]   " + String(satData.local_day) + " [peak day]   " + String(meteor_shower_peaks[key][1][1]));
   if (satData.local_month==meteor_shower_peaks[key][1][0]) {
     if (satData.local_day<=meteor_shower_peaks[key][1][1]) {
       meteor_peak_warning=true;
