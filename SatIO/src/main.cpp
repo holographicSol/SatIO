@@ -10071,7 +10071,7 @@ bool checkMeteorShowerWarning(int key) {
 //                                                     METEOR SHOWER IN PEAK DATETIME RANGE
 // ----------------------------------------------------------------------------------------
 // check and return, does not set.
-// peak days must currently be with the same calender month
+// peak days must currently be within the same calender month
 // ----------------------------------------------------------------------------------------
 bool checkMeteorShowerPeakWarning(int key) {
   meteor_peak_warning=false;
