@@ -9974,7 +9974,7 @@ int meteor_shower_datetime[max_meteor_showers][2][2]={
   // ----------------------------
   // Leonids                    5
   // ----------------------------
-  { {11, 6},  {11, 17}},
+  { {11, 6},  {11, 30}},
   // ----------------------------
   // Geminids                   6
   // ----------------------------
@@ -9987,42 +9987,42 @@ int meteor_shower_datetime[max_meteor_showers][2][2]={
 // ----------------------------------------------------------------------------------------
 /*
   specify peak meteor datetime range (up to 2 concurrent calender months).
-  {0: month_start, 1: day_start}, {0: month_end, 1: day_end}
+  {0: month_start, 1: day_start, 2: day_end}, {0: month_end, 1: day_start, 2: day_end}
 */
 // ----------------------------------------------------------------------------------------
-int meteor_shower_peaks[max_meteor_showers][2][2]={
+int meteor_shower_peaks[max_meteor_showers][2][3]={
   // ----------------------------
   // Quadrantids                0
   // ----------------------------
-  { {1, 3}, {1, 4} },
+  { {1, 3, 4}, {1, 4, 4} },
   // ----------------------------
   // Lyrids                     1
   // ----------------------------
-  { {4, 22}, {4, 23} },
+  { {4, 22, 23}, {4, 23, 23} },
   // ----------------------------
   // Eta Aquariids              2
   // ----------------------------
-  { {5, 5}, {5, 6} },
+  { {5, 5, 6}, {5, 6, 6} },
   // ----------------------------
   // Perseids                   3
   // ----------------------------
-  { {8, 12}, {8, 13} },
+  { {8, 12, 13}, {8, 13, 13} },
   // ----------------------------
   // Orionids                   4
   // ----------------------------
-  { {10, 21}, {10, 22} },
+  { {10, 21, 22}, {10, 22, 22} },
   // ----------------------------
   // Leonids                    5
   // ----------------------------
-  { {11, 16}, {11, 17} },
+  { {11, 16, 17}, {11, 17, 17} },
   // ----------------------------
   // Geminids                   6
   // ----------------------------
-  { {12, 13}, {12, 14} },
+  { {12, 13, 14}, {12, 14, 14} },
   // ----------------------------
   // Ursids                     7
   // ----------------------------
-  { {12, 21}, {12, 22} },
+  { {12, 21, 22}, {12, 22, 22} },
 };
 // ----------------------------------------------------------------------------------------
 /*
@@ -10071,20 +10071,20 @@ bool checkMeteorShowerWarning(int key) {
 //                                                     METEOR SHOWER IN PEAK DATETIME RANGE
 // ----------------------------------------------------------------------------------------
 // check and return, does not set.
-// peak days must currently be within the same calender month
+// allows spanning up to 2 consecutive calender months.
 // ----------------------------------------------------------------------------------------
 bool checkMeteorShowerPeakWarning(int key) {
   meteor_peak_warning=false;
   // --------------------------------
   // peak meteor shower start
   // --------------------------------
-  // Serial.println("------------------------------------------------------");
-  // Serial.println("[peak meteor shower start]");
-  // Serial.println("[key] " + String(key));
-  // Serial.println("[month now] " + String(satData.local_month) + " [peak month] " + String(meteor_shower_peaks[key][0][0]));
-  // Serial.println("[day now]   " + String(satData.local_day) + " [peak day]   " + String(meteor_shower_peaks[key][0][1]));
   if (satData.local_month==meteor_shower_peaks[key][0][0]) {
-    if (satData.local_day>=meteor_shower_peaks[key][0][1] && satData.local_day<=meteor_shower_peaks[key][1][1]) {
+    if (satData.local_day>=meteor_shower_peaks[key][0][1] && satData.local_day<=meteor_shower_peaks[key][0][2]) {
+      meteor_peak_warning=true;
+    }
+  }
+  if (satData.local_month==meteor_shower_peaks[key][1][0]) {
+    if (satData.local_day>=meteor_shower_peaks[key][1][1] && satData.local_day<=meteor_shower_peaks[key][1][2]) {
       meteor_peak_warning=true;
     }
   }
@@ -19396,9 +19396,8 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         canvas80x8.clear();
         display.setColor(systemData.color_content);
-        // canvas80x8.printFixed(0, 0, String( String(meteor_shower_peaks[meteor_index_key][0][0]) + " > " + String(meteor_shower_peaks[meteor_index_key][1]) ).c_str(), STYLE_BOLD);
         canvas80x8.printFixed(0, 0, String( String(meteor_shower_peaks[meteor_index_key][0][0]) + "/" + String(meteor_shower_peaks[meteor_index_key][0][1]) + " > " +
-                                    String(meteor_shower_peaks[meteor_index_key][1][0]) + "/" + String(meteor_shower_peaks[meteor_index_key][1][1]) ).c_str(), STYLE_BOLD);
+                                            String(meteor_shower_peaks[meteor_index_key][1][0]) + "/" + String(meteor_shower_peaks[meteor_index_key][1][2]) ).c_str(), STYLE_BOLD);
         display.drawCanvas(40, ui_content_4+7, canvas80x8);
         // -----------------------------------------------------------------
         // warning: grey: out of datetiem range. yellow: in datetime range
